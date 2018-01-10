@@ -11,16 +11,12 @@ Some notes, which will change over time as this project progresses and matures:
 * React itself is not a dependency of this project.  That is intentional, and left up to you to decide how to integrate.
 * TypeScript definitions for all classes and modules are included in the package, allowing you to import this project and utilize it in other TypeScript projects.
 
-----
-
 ## Building Locally
 
 1. Clone the repo
 1. Install dependencies via yarn: `yarn install`
 1. Run tests: `yarn run test`
 1. Build output: `yarn run build`
-
-----
 
 ## Project Use
 
