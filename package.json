@@ -1,0 +1,80 @@
+{
+  "name": "strontium",
+  "version": "0.1.0",
+  "description": "",
+  "main": "dist/lib.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "types": "dist/lib.d.ts",
+  "scripts": {
+    "prepublish": "npm run build",
+    "build": "tsc",
+    "test": "jest --no-cache"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jodacola/strontium.git"
+  },
+  "files": [
+    "dist",
+    "package.json",
+    "LICENSE",
+    "README.md"
+  ],
+  "author": "Josh Coulter",
+  "bugs": {
+    "url": "https://github.com/Jodacola/strontium/issues"
+  },
+  "homepage": "https://github.com/Jodacola/strontium#readme",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/enzyme": "^3.1.6",
+    "@types/enzyme-adapter-react-16": "^1.0.1",
+    "@types/jest": "^22.0.1",
+    "@types/react-test-renderer": "^16.0.0",
+    "babel-core": "^6.26.0",
+    "babel-jest": "^22.0.4",
+    "enzyme": "^3.3.0",
+    "enzyme-adapter-react-16": "^1.1.1",
+    "jest": "^22.0.5",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-test-renderer": "^16.2.0",
+    "ts-jest": "^22.0.1",
+    "typescript": "^2.6.2"
+  },
+  "dependencies": {
+    "@types/bootstrap": "^3.3.36",
+    "@types/circular-json": "^0.4.0",
+    "@types/jquery": "^3.2.17",
+    "@types/react": "^16.0.32",
+    "@types/react-bootstrap": "0.31.6",
+    "@types/react-dom": "^16.0.3",
+    "@types/react-transition-group": "^2.0.6",
+    "@types/spin.js": "^3.0.0",
+    "@types/uuid": "^3.4.3",
+    "circular-json": "^0.5.1",
+    "spin.js": "^3.1.0",
+    "uuid": "^3.1.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "ts",
+      "tsx"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    },
+    "testMatch": [
+      "<rootDir>/spec/**/*.(js|ts|tsx)"
+    ],
+    "verbose": true,
+    "globals": {
+      "ts-jest": {
+        "tsConfigFile": "tsconfig.json"
+      }
+    }
+  }
+}
