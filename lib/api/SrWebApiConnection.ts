@@ -64,7 +64,7 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     protected getContentType(request: SrServiceRequest): any {
-        return "application/x-www-form-urlencoded; charset=UTF-8";
+        return "application/json";
     }
 
     protected getProcessData(request: SrServiceRequest): boolean {
@@ -76,9 +76,9 @@ export default class WebApiConnection implements IApiConnection {
             var resp = new SrServiceResponse();
             resp.action = req.action;
             resp.requestId = req.requestId;
-            resp.data = (data || {}).data;
+            resp.data = data;
             resp.status = xhr.status;
-            resp.errors = (data || {}).errors as string[];
+            resp.errors = [];
             this.responseHandler(resp);
         } else {
             Log.e(this, "Response received, but no handler available", { request: req, data: data });

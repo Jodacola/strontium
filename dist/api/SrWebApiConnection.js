@@ -54,7 +54,7 @@ export default class WebApiConnection {
         });
     }
     getContentType(request) {
-        return "application/x-www-form-urlencoded; charset=UTF-8";
+        return "application/json";
     }
     getProcessData(request) {
         return true;
@@ -64,9 +64,9 @@ export default class WebApiConnection {
             var resp = new SrServiceResponse();
             resp.action = req.action;
             resp.requestId = req.requestId;
-            resp.data = (data || {}).data;
+            resp.data = data;
             resp.status = xhr.status;
-            resp.errors = (data || {}).errors;
+            resp.errors = [];
             this.responseHandler(resp);
         }
         else {
