@@ -11,9 +11,6 @@ import { NavigationTarget } from "../navigation/Navigation";
 import { Log, LogLevel, runtime } from "../framework/Framework";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import { GeneralUtility as Utils } from "../utils/Utils";
-import uuid from "uuid";
-import TransitionGroup from "react-transition-group";
 export default class SrUi {
     constructor() {
         this.resizeHandler = null;
@@ -220,14 +217,11 @@ export default class SrUi {
         return __awaiter(this, void 0, void 0, function* () {
             this.currentView = view;
             if (view == null) {
-                ReactDOM.render(React.createElement("div", null), document.getElementById(this.rootElement));
+                ReactDOM.render(React.createElement("div", { className: "no-view" }), document.getElementById(this.rootElement));
                 return;
             }
-            if (!onlyQueryUpdated) {
-                ReactDOM.render(this.getAnimatedEntryItem(React.createElement("div", null)), document.getElementById(this.rootElement));
-                yield Utils.delay(320);
-            }
-            ReactDOM.render(this.getAnimatedEntryItem(React.createElement("div", { key: this.lastViewId, className: "app-view" }, view)), document.getElementById(this.rootElement));
+            view.key = this.lastViewId;
+            ReactDOM.render(view, document.getElementById(this.rootElement));
         });
     }
     getDefaultLocation() {
@@ -264,22 +258,6 @@ export default class SrUi {
                     });
                     */
         });
-    }
-    getAnimatedEntryItem(element, delayStep = 0, skip = false, rebuild = false, fromDirection = "left") {
-        if (skip) {
-            return element;
-        }
-        if (fromDirection === "random") {
-            var choices = ["left", "right", "top", "bottom"];
-            fromDirection = choices[Math.floor((Math.random() * choices.length))];
-        }
-        try {
-            return (React.createElement(TransitionGroup.CSSTransition, { key: rebuild ? uuid.v4() : "animated-entry", classNames: "internal-ui", appear: true, exit: true, enter: true, timeout: { enter: 500 + 200 * delayStep, exit: 300 } }, element));
-        }
-        catch (exc) {
-            Log.e(this, 'Unable to create react-transition-group animation. Please check your bundler config or included libraries.', { exception: exc });
-            return element;
-        }
     }
 }
 //# sourceMappingURL=SrUi.js.map

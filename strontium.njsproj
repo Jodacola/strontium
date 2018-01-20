@@ -1,0 +1,276 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+        <SchemaVersion>2.0</SchemaVersion>
+        <ProjectGuid>{4242f24a-2749-4f1a-b18a-055d6922b9a1}</ProjectGuid>
+        <ProjectHome />
+        <ProjectView>ShowAllFiles</ProjectView>
+        <StartupFile />
+        <WorkingDirectory>.</WorkingDirectory>
+        <OutputPath>.</OutputPath>
+        <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+        <TypeScriptSourceMap>true</TypeScriptSourceMap>
+        <TypeScriptModuleKind>CommonJS</TypeScriptModuleKind>
+        <EnableTypeScript>true</EnableTypeScript>
+        <TypeScriptToolsVersion>2.5</TypeScriptToolsVersion>
+        <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+        <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+    <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+    <ItemGroup>
+        <Content Include="package.json" />
+        <Content Include="tsconfig.json" />
+        <Content Include="README.md" />
+        <TypeScriptCompile Include="dist\lib.d.ts" />
+        <Compile Include="dist\lib.js" />
+        <TypeScriptCompile Include="lib\lib.ts" />
+        <Content Include="spec\test.tsx" />
+        <TypeScriptCompile Include="dist\api\API.d.ts" />
+        <TypeScriptCompile Include="dist\api\IApiConnection.d.ts" />
+        <TypeScriptCompile Include="dist\api\IApiLoadingState.d.ts" />
+        <TypeScriptCompile Include="dist\api\LoadStates.d.ts" />
+        <TypeScriptCompile Include="dist\api\RequestType.d.ts" />
+        <TypeScriptCompile Include="dist\api\SrApi.d.ts" />
+        <TypeScriptCompile Include="dist\api\SrServiceRequest.d.ts" />
+        <TypeScriptCompile Include="dist\api\SrServiceResponse.d.ts" />
+        <TypeScriptCompile Include="dist\api\SrWebApiConnection.d.ts" />
+        <Compile Include="dist\api\API.js" />
+        <Compile Include="dist\api\IApiConnection.js" />
+        <Compile Include="dist\api\IApiLoadingState.js" />
+        <Compile Include="dist\api\LoadStates.js" />
+        <Compile Include="dist\api\RequestType.js" />
+        <Compile Include="dist\api\SrApi.js" />
+        <Compile Include="dist\api\SrServiceRequest.js" />
+        <Compile Include="dist\api\SrServiceResponse.js" />
+        <Compile Include="dist\api\SrWebApiConnection.js" />
+        <TypeScriptCompile Include="dist\config\Config.d.ts" />
+        <TypeScriptCompile Include="dist\config\DefaultAppConfig.d.ts" />
+        <TypeScriptCompile Include="dist\config\IApiInitializer.d.ts" />
+        <TypeScriptCompile Include="dist\config\IErrorReporter.d.ts" />
+        <TypeScriptCompile Include="dist\config\IUiInitializer.d.ts" />
+        <TypeScriptCompile Include="dist\config\SrAppConfig.d.ts" />
+        <Compile Include="dist\config\Config.js" />
+        <Compile Include="dist\config\DefaultAppConfig.js" />
+        <Compile Include="dist\config\IApiInitializer.js" />
+        <Compile Include="dist\config\IErrorReporter.js" />
+        <Compile Include="dist\config\IUiInitializer.js" />
+        <Compile Include="dist\config\SrAppConfig.js" />
+        <TypeScriptCompile Include="dist\framework\Framework.d.ts" />
+        <TypeScriptCompile Include="dist\framework\IAppService.d.ts" />
+        <TypeScriptCompile Include="dist\framework\Log.d.ts" />
+        <TypeScriptCompile Include="dist\framework\SrApp.d.ts" />
+        <TypeScriptCompile Include="dist\framework\SrStats.d.ts" />
+        <Compile Include="dist\framework\Framework.js" />
+        <Compile Include="dist\framework\IAppService.js" />
+        <Compile Include="dist\framework\Log.js" />
+        <Compile Include="dist\framework\SrApp.js" />
+        <Compile Include="dist\framework\SrStats.js" />
+        <TypeScriptCompile Include="dist\messaging\CommonMessages.d.ts" />
+        <TypeScriptCompile Include="dist\messaging\IMessageHandler.d.ts" />
+        <TypeScriptCompile Include="dist\messaging\IMessageInterceptor.d.ts" />
+        <TypeScriptCompile Include="dist\messaging\Messaging.d.ts" />
+        <TypeScriptCompile Include="dist\messaging\SrAppMessage.d.ts" />
+        <TypeScriptCompile Include="dist\messaging\SrLocalMessaging.d.ts" />
+        <Compile Include="dist\messaging\CommonMessages.js" />
+        <Compile Include="dist\messaging\IMessageHandler.js" />
+        <Compile Include="dist\messaging\IMessageInterceptor.js" />
+        <Compile Include="dist\messaging\Messaging.js" />
+        <Compile Include="dist\messaging\SrAppMessage.js" />
+        <Compile Include="dist\messaging\SrLocalMessaging.js" />
+        <TypeScriptCompile Include="dist\navigation\IMatchItem.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\INavigationHandler.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\MatchByTypes.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\NavHandler.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\NavHandlerBase.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\Navigation.d.ts" />
+        <TypeScriptCompile Include="dist\navigation\NavigationTarget.d.ts" />
+        <Compile Include="dist\navigation\IMatchItem.js" />
+        <Compile Include="dist\navigation\INavigationHandler.js" />
+        <Compile Include="dist\navigation\MatchByTypes.js" />
+        <Compile Include="dist\navigation\NavHandler.js" />
+        <Compile Include="dist\navigation\NavHandlerBase.js" />
+        <Compile Include="dist\navigation\Navigation.js" />
+        <Compile Include="dist\navigation\NavigationTarget.js" />
+        <TypeScriptCompile Include="dist\ui\Alert.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Animated.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Button.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Checkbox.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Clear.d.ts" />
+        <TypeScriptCompile Include="dist\ui\ErrorBoundary.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Glyph.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Header.d.ts" />
+        <TypeScriptCompile Include="dist\ui\HeaderSection.d.ts" />
+        <TypeScriptCompile Include="dist\ui\ITabConfig.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Link.d.ts" />
+        <TypeScriptCompile Include="dist\ui\LinkButton.d.ts" />
+        <TypeScriptCompile Include="dist\ui\LoadIndicator.d.ts" />
+        <TypeScriptCompile Include="dist\ui\LoadMask.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Modal.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Popover.d.ts" />
+        <TypeScriptCompile Include="dist\ui\SrApiUiComponent.d.ts" />
+        <TypeScriptCompile Include="dist\ui\SrUi.d.ts" />
+        <TypeScriptCompile Include="dist\ui\SrUiComponent.d.ts" />
+        <TypeScriptCompile Include="dist\ui\TabbedViewer.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Textbox.d.ts" />
+        <TypeScriptCompile Include="dist\ui\Title.d.ts" />
+        <TypeScriptCompile Include="dist\ui\TitleSection.d.ts" />
+        <TypeScriptCompile Include="dist\ui\UI.d.ts" />
+        <TypeScriptCompile Include="dist\ui\WaitSpinner.d.ts" />
+        <Compile Include="dist\ui\Alert.js" />
+        <Compile Include="dist\ui\Animated.js" />
+        <Compile Include="dist\ui\Button.js" />
+        <Compile Include="dist\ui\Checkbox.js" />
+        <Compile Include="dist\ui\Clear.js" />
+        <Compile Include="dist\ui\ErrorBoundary.js" />
+        <Compile Include="dist\ui\Glyph.js" />
+        <Compile Include="dist\ui\Header.js" />
+        <Compile Include="dist\ui\HeaderSection.js" />
+        <Compile Include="dist\ui\ITabConfig.js" />
+        <Compile Include="dist\ui\Link.js" />
+        <Compile Include="dist\ui\LinkButton.js" />
+        <Compile Include="dist\ui\LoadIndicator.js" />
+        <Compile Include="dist\ui\LoadMask.js" />
+        <Compile Include="dist\ui\Modal.js" />
+        <Compile Include="dist\ui\Popover.js" />
+        <Compile Include="dist\ui\SrApiUiComponent.js" />
+        <Compile Include="dist\ui\SrUi.js" />
+        <Compile Include="dist\ui\SrUiComponent.js" />
+        <Compile Include="dist\ui\TabbedViewer.js" />
+        <Compile Include="dist\ui\Textbox.js" />
+        <Compile Include="dist\ui\Title.js" />
+        <Compile Include="dist\ui\TitleSection.js" />
+        <Compile Include="dist\ui\UI.js" />
+        <Compile Include="dist\ui\WaitSpinner.js" />
+        <TypeScriptCompile Include="dist\utils\EnvironmentUtility.d.ts" />
+        <TypeScriptCompile Include="dist\utils\GeneralUtility.d.ts" />
+        <TypeScriptCompile Include="dist\utils\Utils.d.ts" />
+        <Compile Include="dist\utils\EnvironmentUtility.js" />
+        <Compile Include="dist\utils\GeneralUtility.js" />
+        <Compile Include="dist\utils\Utils.js" />
+        <TypeScriptCompile Include="lib\api\API.ts" />
+        <TypeScriptCompile Include="lib\api\IApiConnection.ts" />
+        <TypeScriptCompile Include="lib\api\IApiLoadingState.ts" />
+        <TypeScriptCompile Include="lib\api\LoadStates.ts" />
+        <TypeScriptCompile Include="lib\api\RequestType.ts" />
+        <TypeScriptCompile Include="lib\api\SrApi.ts" />
+        <TypeScriptCompile Include="lib\api\SrServiceRequest.ts" />
+        <TypeScriptCompile Include="lib\api\SrServiceResponse.ts" />
+        <TypeScriptCompile Include="lib\api\SrWebApiConnection.ts" />
+        <TypeScriptCompile Include="lib\config\Config.ts" />
+        <TypeScriptCompile Include="lib\config\DefaultAppConfig.ts" />
+        <TypeScriptCompile Include="lib\config\IApiInitializer.ts" />
+        <TypeScriptCompile Include="lib\config\IErrorReporter.ts" />
+        <TypeScriptCompile Include="lib\config\IUiInitializer.ts" />
+        <TypeScriptCompile Include="lib\config\SrAppConfig.ts" />
+        <TypeScriptCompile Include="lib\framework\Framework.ts" />
+        <TypeScriptCompile Include="lib\framework\IAppService.ts" />
+        <TypeScriptCompile Include="lib\framework\Log.ts" />
+        <TypeScriptCompile Include="lib\framework\SrApp.ts" />
+        <TypeScriptCompile Include="lib\framework\SrStats.ts" />
+        <TypeScriptCompile Include="lib\messaging\CommonMessages.ts" />
+        <TypeScriptCompile Include="lib\messaging\IMessageHandler.ts" />
+        <TypeScriptCompile Include="lib\messaging\IMessageInterceptor.ts" />
+        <TypeScriptCompile Include="lib\messaging\Messaging.ts" />
+        <TypeScriptCompile Include="lib\messaging\SrAppMessage.ts" />
+        <TypeScriptCompile Include="lib\messaging\SrLocalMessaging.ts" />
+        <TypeScriptCompile Include="lib\navigation\IMatchItem.ts" />
+        <TypeScriptCompile Include="lib\navigation\INavigationHandler.ts" />
+        <TypeScriptCompile Include="lib\navigation\MatchByTypes.ts" />
+        <TypeScriptCompile Include="lib\navigation\NavHandler.ts" />
+        <TypeScriptCompile Include="lib\navigation\NavHandlerBase.ts" />
+        <TypeScriptCompile Include="lib\navigation\Navigation.ts" />
+        <TypeScriptCompile Include="lib\navigation\NavigationTarget.ts" />
+        <TypeScriptCompile Include="lib\ui\ITabConfig.ts" />
+        <TypeScriptCompile Include="lib\ui\UI.ts" />
+        <Content Include="lib\ui\Alert.tsx" />
+        <Content Include="lib\ui\Animated.tsx" />
+        <Content Include="lib\ui\Button.tsx" />
+        <Content Include="lib\ui\Checkbox.tsx" />
+        <Content Include="lib\ui\Clear.tsx" />
+        <Content Include="lib\ui\ErrorBoundary.tsx" />
+        <Content Include="lib\ui\Glyph.tsx" />
+        <Content Include="lib\ui\Header.tsx" />
+        <Content Include="lib\ui\HeaderSection.tsx" />
+        <Content Include="lib\ui\Link.tsx" />
+        <Content Include="lib\ui\LinkButton.tsx" />
+        <Content Include="lib\ui\LoadIndicator.tsx" />
+        <Content Include="lib\ui\LoadMask.tsx" />
+        <Content Include="lib\ui\Modal.tsx" />
+        <Content Include="lib\ui\Popover.tsx" />
+        <Content Include="lib\ui\SrApiUiComponent.tsx" />
+        <Content Include="lib\ui\SrUi.tsx" />
+        <Content Include="lib\ui\SrUiComponent.tsx" />
+        <Content Include="lib\ui\TabbedViewer.tsx" />
+        <Content Include="lib\ui\Textbox.tsx" />
+        <Content Include="lib\ui\Title.tsx" />
+        <Content Include="lib\ui\TitleSection.tsx" />
+        <Content Include="lib\ui\WaitSpinner.tsx" />
+        <TypeScriptCompile Include="lib\utils\EnvironmentUtility.ts" />
+        <TypeScriptCompile Include="lib\utils\Utils.ts" />
+        <Content Include="lib\utils\GeneralUtility.tsx" />
+    </ItemGroup>
+    <ItemGroup>
+        <Folder Include="dist" />
+        <Folder Include="dist\api" />
+        <Folder Include="dist\config" />
+        <Folder Include="dist\framework" />
+        <Folder Include="dist\messaging" />
+        <Folder Include="dist\navigation" />
+        <Folder Include="dist\ui" />
+        <Folder Include="dist\utils" />
+        <Folder Include="lib" />
+        <Folder Include="lib\api" />
+        <Folder Include="lib\config" />
+        <Folder Include="lib\framework" />
+        <Folder Include="lib\messaging" />
+        <Folder Include="lib\navigation" />
+        <Folder Include="lib\ui" />
+        <Folder Include="lib\utils" />
+        <Folder Include="spec" />
+        <Folder Include="strontium" />
+    </ItemGroup>
+    <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+    <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+    <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+    <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+    <ProjectExtensions>
+        <VisualStudio>
+          <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+            <WebProjectProperties>
+              <UseIIS>False</UseIIS>
+              <AutoAssignPort>True</AutoAssignPort>
+              <DevelopmentServerPort>0</DevelopmentServerPort>
+              <DevelopmentServerVPath>/</DevelopmentServerVPath>
+              <IISUrl>http://localhost:48022/</IISUrl>
+              <NTLMAuthentication>False</NTLMAuthentication>
+              <UseCustomServer>True</UseCustomServer>
+              <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+              <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+            </WebProjectProperties>
+          </FlavorProperties>
+          <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+            <WebProjectProperties>
+              <StartPageUrl>
+              </StartPageUrl>
+              <StartAction>CurrentPage</StartAction>
+              <AspNetDebugging>True</AspNetDebugging>
+              <SilverlightDebugging>False</SilverlightDebugging>
+              <NativeDebugging>False</NativeDebugging>
+              <SQLDebugging>False</SQLDebugging>
+              <ExternalProgram>
+              </ExternalProgram>
+              <StartExternalURL>
+              </StartExternalURL>
+              <StartCmdLineArguments>
+              </StartCmdLineArguments>
+              <StartWorkingDirectory>
+              </StartWorkingDirectory>
+              <EnableENC>False</EnableENC>
+              <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+            </WebProjectProperties>
+          </FlavorProperties>
+        </VisualStudio>
+    </ProjectExtensions>
+</Project>

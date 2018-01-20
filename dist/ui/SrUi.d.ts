@@ -43,5 +43,4 @@ export default class SrUi implements IMessageHandler {
     navigate(appUrl: string, title?: string, data?: any): void;
     showOverlay(): Promise<void>;
     hideOverlay(): Promise<void>;
-    private getAnimatedEntryItem(element, delayStep?, skip?, rebuild?, fromDirection?);
 }

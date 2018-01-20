@@ -43,7 +43,7 @@ export default class TabbedViewer extends UiC {
     tabContent() {
         const tab = this.props.tabs.filter((t) => { return this.isId(t.id); })[0];
         if (tab) {
-            return React.createElement(Animated, { leave: false, direction: "top" },
+            return React.createElement(Animated, { in: true, leave: false, direction: "top" },
                 React.createElement("div", { key: this.props.currentSelection }, tab.content));
         }
         return null;
