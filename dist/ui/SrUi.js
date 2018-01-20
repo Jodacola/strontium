@@ -220,7 +220,6 @@ export default class SrUi {
                 ReactDOM.render(React.createElement("div", { className: "no-view" }), document.getElementById(this.rootElement));
                 return;
             }
-            view.key = this.lastViewId;
             ReactDOM.render(view, document.getElementById(this.rootElement));
         });
     }
