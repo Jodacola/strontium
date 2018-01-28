@@ -62,7 +62,7 @@ export default class TabbedViewer extends UiC<{ tabSelected: (id: string) => voi
     tabContent() {
         const tab = this.props.tabs.filter((t) => { return this.isId(t.id); })[0];
         if (tab) {
-            return <Animated leave={false} direction="top"><div key={this.props.currentSelection}>{tab.content}</div></Animated>;
+            return <Animated in leave={false} direction="top"><div key={this.props.currentSelection}>{tab.content}</div></Animated>;
         }
         return null;
     }

@@ -3,13 +3,14 @@ import UiC from "./SrUiComponent";
 import Log from "../framework/Log";
 import TransitionGroup from "react-transition-group";
 
-export default class Animated extends UiC<{ appear?: boolean, leave?: boolean, enter?: boolean, step?: number, direction?: string }, {}> {
+export default class Animated extends UiC<{in:boolean, appear?: boolean, leave?: boolean, enter?: boolean, step?: number, direction?: string }, {}> {
     performRender() {
         try {
             return (
                 <TransitionGroup.CSSTransition
                     key="animated-entry"
                     classNames="internal-ui"
+                    in={true}
                     appear={this.props.appear === undefined ? true : this.props.appear}
                     exit={this.props.leave === undefined ? true : this.props.leave}
                     enter={this.props.enter === undefined ? true : this.props.enter}

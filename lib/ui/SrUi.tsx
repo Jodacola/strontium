@@ -245,14 +245,10 @@ export default class SrUi implements IMessageHandler {
     public async changeView(view: JSX.Element, onlyQueryUpdated: boolean = false) {
         this.currentView = view;
         if (view == null) {
-            ReactDOM.render(<div />, document.getElementById(this.rootElement));
+            ReactDOM.render(<div className="no-view" />, document.getElementById(this.rootElement));
             return;
         }
-        if (!onlyQueryUpdated) {
-            ReactDOM.render(this.getAnimatedEntryItem(<div />), document.getElementById(this.rootElement));
-            await Utils.delay(320);
-        }
-        ReactDOM.render(this.getAnimatedEntryItem(<div key={this.lastViewId} className="app-view">{view}</div>), document.getElementById(this.rootElement));
+        ReactDOM.render(view, document.getElementById(this.rootElement));
     }
 
     private getDefaultLocation(): string {
@@ -271,32 +267,5 @@ export default class SrUi implements IMessageHandler {
     public async hideOverlay() {
         Log.d(this, "Hiding overlay");
         runtime.messaging.broadcastLocal(CommonMessages.OverlayClosed);
-    }
-
-    private getAnimatedEntryItem(element: JSX.Element, delayStep: number = 0, skip: boolean = false, rebuild: boolean = false, fromDirection: string = "left"): JSX.Element {
-        if (skip) {
-            return element;
-        }
-        if (fromDirection === "random") {
-            var choices = ["left", "right", "top", "bottom"];
-            fromDirection = choices[Math.floor((Math.random() * choices.length))];
-        }
-
-        try {
-            return (
-                <TransitionGroup.CSSTransition
-                    key={rebuild ? uuid.v4() : "animated-entry"}
-                    classNames="internal-ui"
-                    appear={true}
-                    exit={true}
-                    enter={true}
-                    timeout={{ enter: 500 + 200 * delayStep, exit: 300 }}>
-                    {element}
-                </TransitionGroup.CSSTransition>
-            );
-        } catch (exc) {
-            Log.e(this, 'Unable to create react-transition-group animation. Please check your bundler config or included libraries.', { exception: exc });
-            return element;
-        }
     }
 }
