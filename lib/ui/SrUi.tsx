@@ -265,29 +265,12 @@ export default class SrUi implements IMessageHandler {
 
     public async showOverlay() {
         Log.d(this, "Showing overlay");
-        /*
-                srApp.messaging.broadcastLocal(CommonMessages.OverlayOpening);
-                this.overlayVisible = true;
-                this.overlayFading = true;
-                document.getElementById("overlay-container").css("opacity", 0).css("display", "block").animate({ "opacity": 1 }, 100, () => {
-                    this.overlayFading = false;
-                    $('body').css('overflow', 'auto');
-                });
-                */
+        runtime.messaging.broadcastLocal(CommonMessages.OverlayOpening);
     }
 
     public async hideOverlay() {
         Log.d(this, "Hiding overlay");
-        /*
-                this.overlayFading = true;
-                document.getElementById("overlay-container").css("opacity", 1).animate({ "opacity": 0 }, 100, () => {
-                    document.getElementById("overlay-container").css("display", "none");
-                    document.getElementByTagName('body').css('overflow', null);
-                    this.overlayFading = false;
-                    this.overlayVisible = false;
-                    srApp.messaging.broadcastLocal(CommonMessages.OverlayClosed);
-                });
-                */
+        runtime.messaging.broadcastLocal(CommonMessages.OverlayClosed);
     }
 
     private getAnimatedEntryItem(element: JSX.Element, delayStep: number = 0, skip: boolean = false, rebuild: boolean = false, fromDirection: string = "left"): JSX.Element {

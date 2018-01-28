@@ -239,30 +239,13 @@ export default class SrUi {
     showOverlay() {
         return __awaiter(this, void 0, void 0, function* () {
             Log.d(this, "Showing overlay");
-            /*
-                    srApp.messaging.broadcastLocal(CommonMessages.OverlayOpening);
-                    this.overlayVisible = true;
-                    this.overlayFading = true;
-                    document.getElementById("overlay-container").css("opacity", 0).css("display", "block").animate({ "opacity": 1 }, 100, () => {
-                        this.overlayFading = false;
-                        $('body').css('overflow', 'auto');
-                    });
-                    */
+            runtime.messaging.broadcastLocal(CommonMessages.OverlayOpening);
         });
     }
     hideOverlay() {
         return __awaiter(this, void 0, void 0, function* () {
             Log.d(this, "Hiding overlay");
-            /*
-                    this.overlayFading = true;
-                    document.getElementById("overlay-container").css("opacity", 1).animate({ "opacity": 0 }, 100, () => {
-                        document.getElementById("overlay-container").css("display", "none");
-                        document.getElementByTagName('body').css('overflow', null);
-                        this.overlayFading = false;
-                        this.overlayVisible = false;
-                        srApp.messaging.broadcastLocal(CommonMessages.OverlayClosed);
-                    });
-                    */
+            runtime.messaging.broadcastLocal(CommonMessages.OverlayClosed);
         });
     }
     getAnimatedEntryItem(element, delayStep = 0, skip = false, rebuild = false, fromDirection = "left") {
