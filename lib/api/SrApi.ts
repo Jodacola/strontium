@@ -14,7 +14,7 @@ export default class SrApi {
     private pendingRequests: { [id: string]: SrServiceRequest } = {};
 
     constructor() {
-        
+
     }
 
     public initialize(initializer: IApiInitializer): void {
@@ -23,7 +23,8 @@ export default class SrApi {
         }
 
         if (initializer == null) {
-            Log.e(this, "Invalid API initializer supplied.  Cannot initialize API.");
+            Log.w(this, "Invalid API initializer supplied.  Cannot initialize API.  Proceeding without API.");
+            runtime.messaging.broadcastLocal(CommonMessages.ApiInitialized);
             return;
         }
 
@@ -123,7 +124,7 @@ export default class SrApi {
 
     private handleFailedRequest(req: SrServiceRequest, status: number, errors: any): void {
         SrStats.stop(req.requestId, "API send failure", req);
-        
+
         this.removeRequest(req.requestId);
         var resp: SrServiceResponse = new SrServiceResponse();
         resp.status = status;

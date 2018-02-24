@@ -41,7 +41,7 @@ export default class SrUi implements IMessageHandler {
 
         this.resizeHandler = (e: Event) => { this.onWindowResized(e); };
         this.configureUi(uiInit);
-        this.setupInitalUi(uiInit);
+        this.setupInitialUi(uiInit);
         this.setupHandlers(uiInit);
     }
 
@@ -50,10 +50,14 @@ export default class SrUi implements IMessageHandler {
     }
 
     handlesLocal(): string[] {
-        return [CommonMessages.AppReady, CommonMessages.ApiInitializationFailed];
+        return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
 
     receiveMessage(msg: SrAppMessage): void {
+        if (msg.action === CommonMessages.ApiInitialized) {
+            runtime.messaging.broadcastLocal(CommonMessages.AppReady);
+        }
+
         if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
             this.handleInitialization(msg.action === CommonMessages.AppReady);
         }
@@ -76,10 +80,11 @@ export default class SrUi implements IMessageHandler {
     private handleInitialization(success: boolean) {
         Log.t(this, "API initialization callback", { success: success });
         if (success) {
-            this.configurer.setupAppReadyUi();
+            this.configurer.appReady();
             this.loadCurrentUrl();
         } else {
             Log.e(this, "Unable to load proper UI due to API initialization failure.");
+            this.configurer.appInitFailed();
         }
     }
 
@@ -95,9 +100,9 @@ export default class SrUi implements IMessageHandler {
         return path + window.location.search;
     }
 
-    private setupInitalUi(uiInit: IUiInitializer): void {
+    private setupInitialUi(uiInit: IUiInitializer): void {
         Log.t(this, "Setting up initial UI");
-        uiInit.setupInitialUi();
+        uiInit.appInitializing();
     }
 
     private setupHandlers(uiInit: IUiInitializer): void {

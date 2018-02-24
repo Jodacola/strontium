@@ -1,5 +1,5 @@
 import { LogLevel } from "../framework/Log";
-class SrAppConfig {
+export default class SrAppConfig {
     constructor() {
         this.loggingLevel = LogLevel.Trace;
         this.logFilter = [];
@@ -10,5 +10,4 @@ class SrAppConfig {
     postInitialize() { }
     ;
 }
-export default SrAppConfig;
 //# sourceMappingURL=SrAppConfig.js.map

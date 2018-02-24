@@ -41,16 +41,19 @@ export default class SrUi {
         };
         this.resizeHandler = (e) => { this.onWindowResized(e); };
         this.configureUi(uiInit);
-        this.setupInitalUi(uiInit);
+        this.setupInitialUi(uiInit);
         this.setupHandlers(uiInit);
     }
     handles() {
         return [];
     }
     handlesLocal() {
-        return [CommonMessages.AppReady, CommonMessages.ApiInitializationFailed];
+        return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
     receiveMessage(msg) {
+        if (msg.action === CommonMessages.ApiInitialized) {
+            runtime.messaging.broadcastLocal(CommonMessages.AppReady);
+        }
         if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
             this.handleInitialization(msg.action === CommonMessages.AppReady);
         }
@@ -70,11 +73,12 @@ export default class SrUi {
     handleInitialization(success) {
         Log.t(this, "API initialization callback", { success: success });
         if (success) {
-            this.configurer.setupAppReadyUi();
+            this.configurer.appReady();
             this.loadCurrentUrl();
         }
         else {
             Log.e(this, "Unable to load proper UI due to API initialization failure.");
+            this.configurer.appInitFailed();
         }
     }
     loadCurrentUrl() {
@@ -87,9 +91,9 @@ export default class SrUi {
         }
         return path + window.location.search;
     }
-    setupInitalUi(uiInit) {
+    setupInitialUi(uiInit) {
         Log.t(this, "Setting up initial UI");
-        uiInit.setupInitialUi();
+        uiInit.appInitializing();
     }
     setupHandlers(uiInit) {
         var handlers = uiInit.navigationHandlers();

@@ -1,5 +1,4 @@
 import IApiConnection from "../api/IApiConnection";
-interface IApiInitializer {
+export default interface IApiInitializer {
     buildConnection(): IApiConnection;
 }
-export default IApiInitializer;

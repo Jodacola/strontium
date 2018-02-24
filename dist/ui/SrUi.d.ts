@@ -27,7 +27,7 @@ export default class SrUi implements IMessageHandler {
     private handleInitialization(success);
     private loadCurrentUrl();
     private getCurrentLocation(replacePrefix?);
-    private setupInitalUi(uiInit);
+    private setupInitialUi(uiInit);
     private setupHandlers(uiInit);
     private registerHandler(handler);
     private onAppLocationChanged(path, data?, title?, fromPop?);

@@ -3,7 +3,7 @@ import IErrorReporter from "./IErrorReporter";
 import IApiInitializer from "./IApiInitializer";
 import IUiInitializer from "./IUiInitializer";
 
-abstract class SrAppConfig {
+export default abstract class SrAppConfig {
     public loggingLevel: LogLevel = LogLevel.Trace;
     public logFilter: string[] = [];
     public staleApiRequestPeriod: number = 60000;
@@ -15,5 +15,3 @@ abstract class SrAppConfig {
     public abstract apiInitializer(): IApiInitializer;
     public abstract uiInitializer(): IUiInitializer;
 }
-
-export default SrAppConfig;

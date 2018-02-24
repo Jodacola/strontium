@@ -15,7 +15,8 @@ export default class SrApi {
             return;
         }
         if (initializer == null) {
-            Log.e(this, "Invalid API initializer supplied.  Cannot initialize API.");
+            Log.w(this, "Invalid API initializer supplied.  Cannot initialize API.  Proceeding without API.");
+            runtime.messaging.broadcastLocal(CommonMessages.ApiInitialized);
             return;
         }
         this.connection = initializer.buildConnection();

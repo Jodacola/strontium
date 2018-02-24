@@ -2,7 +2,7 @@ import { LogLevel } from "../framework/Log";
 import IErrorReporter from "./IErrorReporter";
 import IApiInitializer from "./IApiInitializer";
 import IUiInitializer from "./IUiInitializer";
-declare abstract class SrAppConfig {
+export default abstract class SrAppConfig {
     loggingLevel: LogLevel;
     logFilter: string[];
     staleApiRequestPeriod: number;
@@ -12,4 +12,3 @@ declare abstract class SrAppConfig {
     abstract apiInitializer(): IApiInitializer;
     abstract uiInitializer(): IUiInitializer;
 }
-export default SrAppConfig;
