@@ -1,8 +1,5 @@
 /// <reference types="react" />
-/// <reference types="jquery" />
-/// <reference types="bootstrap" />
 import * as React from "react";
-import { SrServiceResponse } from "../api/API";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
 declare abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
     private resizeListener;
@@ -13,7 +10,6 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     constructor(props: any);
     protected getRefHandler<T extends HTMLElement>(key: string): (ref: T) => void;
     protected getRef<T extends HTMLElement>(key: string): T;
-    protected getJRef(key: string): JQuery;
     protected cleanUpRefs(): void;
     handles(): string[];
     protected getHandles(): string[];
@@ -42,11 +38,6 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected navigateOptions(navOptions: any): void;
     protected buildNavQuery(navOptions: any): string;
     protected localize(msg: string): string;
-    protected resourceCreate(resource: any, data?: any, handler?: (r: SrServiceResponse) => void): Promise<SrServiceResponse>;
-    protected resourceRead(resource: any, data?: any, handler?: (r: SrServiceResponse) => void): Promise<SrServiceResponse>;
-    protected resourceUpdate(resource: any, data?: any, handler?: (r: SrServiceResponse) => void): Promise<SrServiceResponse>;
-    protected resourceDelete(resource: any, data?: any, handler?: (r: SrServiceResponse) => void): Promise<SrServiceResponse>;
-    private sendRequest(type, resource, data?, handler?);
     protected deferred(func: Function, time?: number, id?: string): void;
     protected set(state: S): void;
     protected setPartial(obj: Partial<S>): void;

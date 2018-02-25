@@ -5,6 +5,6 @@ interface IApiConnection {
     sendRequest(request: SrServiceRequest): void;
     connected(): boolean;
     responseHandler: (resp: SrServiceResponse) => void;
-    failedRequestHandler: (req: SrServiceRequest, status: number, error: string[]) => void;
+    failedRequestHandler: (req: SrServiceRequest, error: any[]) => void;
 }
 export default IApiConnection;

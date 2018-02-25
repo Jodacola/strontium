@@ -9,6 +9,7 @@ export default class SrServiceRequest {
         public type: RequestType,
         public action: string,
         public content: any,
+		public options: any,
         public resendOnFailure: boolean = false,
         public callbackHandler: (resp: SrServiceResponse) => void = null) {
 

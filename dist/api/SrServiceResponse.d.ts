@@ -1,9 +1,8 @@
 export default class SrServiceResponse {
     requestId: string;
     action: string;
-    status: number;
-    errors: string[];
+    good: boolean;
+    errors: any[];
     data: any;
-    isGood(): boolean;
     errorList(prependMessage?: string, appendMessage?: string): string[];
 }

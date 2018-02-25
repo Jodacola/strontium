@@ -3,6 +3,7 @@ import SrServiceResponse from "./SrServiceResponse";
 import IApiConnection from "./IApiConnection";
 import Log from "../framework/Log";
 import RequestType from "./RequestType";
+import ApiError from "./ApiError";
 
 export default class WebApiConnection implements IApiConnection {
     constructor(public resourceBase: string) {
@@ -44,52 +45,70 @@ export default class WebApiConnection implements IApiConnection {
 
         var method = this.getMethod(request);
         var contentType = this.getContentType(request);
-        var processData = this.getProcessData(request);
+        let data = request.content;
+        if (this.getProcessData(request)) {
+            data = JSON.stringify(data);
+        }
 
-        Log.d(this, "Preparing WebAPI Message", { request: request, method: method, contentType: contentType, processData: processData });
-        $.ajax(this.dataPath() + request.action, {
-            async: true,
-            method: method,
-            cache: false,
-            data: request.content,
-            contentType: contentType,
-            processData: processData,
-            success: (data: any, status: string, xhr: JQueryXHR) => {
-                this.handleResponse(data, status, xhr, request);
-            },
-            error: (xhr: JQueryXHR, status: string, error: string) => {
-                this.handleError(error, status, xhr, request);
-            }
-        });
+        Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
+        window.fetch(this.dataPath() + request.action,
+            {
+                method: method,
+                headers: {
+                    'Content-Type': contentType
+                },
+                body: data,
+                credentials: 'same-origin'
+            })
+            .then((resp) => this.checkStatus(resp))
+            .then((resp) => resp.text())
+            .then((body) => this.handleResponse(body, request))
+            .catch((error) => this.handleError(error, request));
+    }
+
+    protected breakCache(request: SrServiceRequest): boolean {
+        return (request.options || { cached: false }).cached === false;
     }
 
     protected getContentType(request: SrServiceRequest): any {
-        return "application/json";
+        return (request.options || { contentType: "application/json" }).contentType;
     }
 
     protected getProcessData(request: SrServiceRequest): boolean {
-        return true;
+        return (request.options || { process: true }).process === true;
     }
 
-    private handleResponse(data: any, status: string, xhr: JQueryXHR, req: SrServiceRequest) {
-        if (this.responseHandler != null) {
-            var resp = new SrServiceResponse();
+    private checkStatus(response: Response) {
+        if (!(response.ok)) {
+            throw new ApiError(response);
+        }
+
+        return response;
+    }
+
+    private handleResponse(response: string, req: SrServiceRequest) {
+        if (this.responseHandler) {
+            let resp = new SrServiceResponse();
             resp.action = req.action;
             resp.requestId = req.requestId;
-            resp.data = data;
-            resp.status = xhr.status;
-            resp.errors = [];
+            resp.data = response;
+            resp.good = true;
             this.responseHandler(resp);
         } else {
-            Log.e(this, "Response received, but no handler available", { request: req, data: data });
+            Log.e(this, "Response received, but no handler available", { request: req, data: response });
         }
     }
 
-    private handleError(status: string, error: string, xhr: JQueryXHR, req: SrServiceRequest) {
+    private handleError(error: any, req: SrServiceRequest) {
         if (this.failedRequestHandler != null) {
-            this.failedRequestHandler(req, xhr.status, (xhr.responseJSON || {}).errors);
+            if (Object.keys(error).indexOf('response') !== -1) {
+                this.failedRequestHandler(req, [error.response.status]);
+            } else {
+                this.failedRequestHandler(req, [JSON.stringify(error)]);
+            }
+
         } else {
-            Log.e(this, "Request failed, but no handler available", { request: req, status: status, error: error, xhr: xhr });
+            Log.e(this, "Request failed, but no handler available", { request: req, error: error });
         }
     }
 
@@ -98,6 +117,6 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     responseHandler: (resp: SrServiceResponse) => void = null;
-    failedRequestHandler: (req: SrServiceRequest, status: number, error: string[]) => void = null;
+    failedRequestHandler: (req: SrServiceRequest, error: any[]) => void = null;
     directHandler: (resp: SrServiceResponse) => void = null;
 }

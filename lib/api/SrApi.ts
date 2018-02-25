@@ -32,8 +32,8 @@ export default class SrApi {
         this.connection.responseHandler = (resp: SrServiceResponse) => {
             this.handleResponse(resp);
         };
-        this.connection.failedRequestHandler = (req: SrServiceRequest, status: number, error: string[]) => {
-            this.handleFailedRequest(req, status, error);
+        this.connection.failedRequestHandler = (req: SrServiceRequest, errors: any[]) => {
+            this.handleFailedRequest(req, errors);
         };
 
         this.connection.initialize((s: boolean) => {
@@ -77,13 +77,14 @@ export default class SrApi {
         type: RequestType,
         action: string,
         content: any,
+        options: any,
         manualCb: (resp: SrServiceResponse) => void = null,
         resendOnFailure: boolean = true): string {
         if (!this.connected()) {
             Log.e(this, "Attempt to send message against unconnected service", { action: action, content: content });
             return;
         }
-        var req: SrServiceRequest = new SrServiceRequest(type, action, content, resendOnFailure, manualCb);
+        var req: SrServiceRequest = new SrServiceRequest(type, action, content, options || {}, resendOnFailure, manualCb);
         this.sendRequest(req);
         return req.requestId;
     }
@@ -113,8 +114,8 @@ export default class SrApi {
 
     private processMessage(req: SrServiceRequest, resp: SrServiceResponse): void {
         SrStats.stop(req.requestId, "API send success", { request: req, response: resp });
-        if (resp.status < 200 || resp.status >= 300) {
-            Log.w(this, "API result not successful", { result: resp.status, request: req, response: resp });
+        if (!resp.good) {
+            Log.w(this, "API result not successful", { request: req, response: resp });
         }
         if (req.callbackHandler != null) {
             req.callbackHandler(resp);
@@ -122,15 +123,15 @@ export default class SrApi {
         runtime.messaging.broadcast(resp.action, resp);
     }
 
-    private handleFailedRequest(req: SrServiceRequest, status: number, errors: any): void {
+    private handleFailedRequest(req: SrServiceRequest, errors: any[]): void {
         SrStats.stop(req.requestId, "API send failure", req);
 
         this.removeRequest(req.requestId);
         var resp: SrServiceResponse = new SrServiceResponse();
-        resp.status = status;
         resp.action = req.action;
         resp.requestId = req.requestId;
         resp.data = null;
+        resp.good = false;
         resp.errors = errors;
 
         Log.e(this, "API send failed", { request: req, response: resp });

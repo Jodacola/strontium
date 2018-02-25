@@ -60,3 +60,4 @@ export { default as StrontiumAppConfigElement } from "./config/StrontiumAppConfi
 export { default as StrontiumUiConfig } from "./config/StrontiumUiConfig";
 export { default as UiConfigElement } from "./config/UiConfigElement";
 export { default as StrontiumApp } from "./framework/StrontiumApp";
+export { default as ApiHelpers } from "./api/ApiHelpers";

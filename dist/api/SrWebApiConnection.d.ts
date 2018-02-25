@@ -10,12 +10,14 @@ export default class WebApiConnection implements IApiConnection {
     protected dataPath(): string;
     protected getMethod(request: SrServiceRequest): string;
     sendRequest(request: SrServiceRequest): void;
+    protected breakCache(request: SrServiceRequest): boolean;
     protected getContentType(request: SrServiceRequest): any;
     protected getProcessData(request: SrServiceRequest): boolean;
-    private handleResponse(data, status, xhr, req);
-    private handleError(status, error, xhr, req);
+    private checkStatus(response);
+    private handleResponse(response, req);
+    private handleError(error, req);
     connected(): boolean;
     responseHandler: (resp: SrServiceResponse) => void;
-    failedRequestHandler: (req: SrServiceRequest, status: number, error: string[]) => void;
+    failedRequestHandler: (req: SrServiceRequest, error: any[]) => void;
     directHandler: (resp: SrServiceResponse) => void;
 }

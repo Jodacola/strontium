@@ -29,13 +29,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         return this.elementRefs[key] as T;
     }
 
-    protected getJRef(key: string): JQuery {
-        if (!EnvUtils.jqueryLoaded()) {
-            return null;
-        }
-        return $(this.elementRefs[key]);
-    }
-
     protected cleanUpRefs(): void {
         for (var key in this.refHandlers) {
             delete this.refHandlers[key];
@@ -201,35 +194,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
     protected localize(msg: string): string {
         return msg;
     };
-
-    /* API Helpers */
-    protected resourceCreate(resource: any, data: any = null, handler: (r: SrServiceResponse) => void = null): Promise<SrServiceResponse> {
-        return this.sendRequest(RequestType.Create, (resource || "").toString(), data, handler);
-    };
-
-    protected resourceRead(resource: any, data: any = null, handler: (r: SrServiceResponse) => void = null): Promise<SrServiceResponse> {
-        return this.sendRequest(RequestType.Read, (resource || "").toString(), data, handler);
-    };
-
-    protected resourceUpdate(resource: any, data: any = null, handler: (r: SrServiceResponse) => void = null): Promise<SrServiceResponse> {
-        return this.sendRequest(RequestType.Update, (resource || "").toString(), data, handler);
-    };
-
-    protected resourceDelete(resource: any, data: any = null, handler: (r: SrServiceResponse) => void = null): Promise<SrServiceResponse> {
-        return this.sendRequest(RequestType.Delete, (resource || "").toString(), data, handler);
-    };
-
-    private sendRequest(type: RequestType, resource: string, data: any = null, handler: (r: SrServiceResponse) => void = null): Promise<SrServiceResponse> {
-        return new Promise<SrServiceResponse>(resolve => {
-            runtime.api.sendMessage(type, resource, data, (r: SrServiceResponse) => {
-                resolve(r);
-                if (handler) {
-                    handler(r);
-                }
-            });
-        });
-    }
-    /* END API Helpers */
 
     protected deferred(func: Function, time: number = 0, id: string = null) {
         this.cancelDeferred(id);

@@ -8,8 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Log, runtime } from "../framework/Framework";
 import * as React from "react";
-import { RequestType } from "../api/API";
-import { EnvironmentUtility as EnvUtils } from "../utils/Utils";
 class SrUiComponent extends React.Component {
     constructor(props) {
         super(props);
@@ -30,12 +28,6 @@ class SrUiComponent extends React.Component {
     }
     getRef(key) {
         return this.elementRefs[key];
-    }
-    getJRef(key) {
-        if (!EnvUtils.jqueryLoaded()) {
-            return null;
-        }
-        return $(this.elementRefs[key]);
     }
     cleanUpRefs() {
         for (var key in this.refHandlers) {
@@ -181,34 +173,6 @@ class SrUiComponent extends React.Component {
         return msg;
     }
     ;
-    /* API Helpers */
-    resourceCreate(resource, data = null, handler = null) {
-        return this.sendRequest(RequestType.Create, (resource || "").toString(), data, handler);
-    }
-    ;
-    resourceRead(resource, data = null, handler = null) {
-        return this.sendRequest(RequestType.Read, (resource || "").toString(), data, handler);
-    }
-    ;
-    resourceUpdate(resource, data = null, handler = null) {
-        return this.sendRequest(RequestType.Update, (resource || "").toString(), data, handler);
-    }
-    ;
-    resourceDelete(resource, data = null, handler = null) {
-        return this.sendRequest(RequestType.Delete, (resource || "").toString(), data, handler);
-    }
-    ;
-    sendRequest(type, resource, data = null, handler = null) {
-        return new Promise(resolve => {
-            runtime.api.sendMessage(type, resource, data, (r) => {
-                resolve(r);
-                if (handler) {
-                    handler(r);
-                }
-            });
-        });
-    }
-    /* END API Helpers */
     deferred(func, time = 0, id = null) {
         this.cancelDeferred(id);
         var handle = window.setTimeout(() => {
