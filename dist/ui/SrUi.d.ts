@@ -20,7 +20,6 @@ export default class SrUi implements IMessageHandler {
     private configurer;
     initialize(uiInit: IUiInitializer): void;
     handles(): string[];
-    handlesLocal(): string[];
     receiveMessage(msg: SrAppMessage): void;
     appBasePath(): string;
     private configureUi(uiInit);

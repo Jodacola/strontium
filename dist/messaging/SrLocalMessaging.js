@@ -3,18 +3,13 @@ import SrAppMessage from "./SrAppMessage";
 export default class SrLocalMessaging {
     constructor() {
         this.serviceHandlers = {};
-        this.localHandlers = {};
         this.messageInterceptors = {};
         Log.d(this, "Initializing new local messaging system");
     }
     registerHandler(handler) {
-        var handlers = this.getHandlers(false);
-        var localHandlers = this.getHandlers(true);
+        var handlers = this.getHandlers();
         (handler.handles() || []).forEach((action) => {
             this.registerHandlerForAction(action, handler, handlers);
-        });
-        (handler.handlesLocal() || []).forEach((action) => {
-            this.registerHandlerForAction(action, handler, localHandlers);
         });
     }
     ;
@@ -29,13 +24,9 @@ export default class SrLocalMessaging {
     }
     ;
     removeHandler(handler) {
-        var handlers = this.getHandlers(false);
-        var localHandlers = this.getHandlers(true);
+        var handlers = this.getHandlers();
         (handler.handles() || []).forEach((action) => {
             this.deregisterHandlerForAction(action, handler, handlers);
-        });
-        (handler.handlesLocal() || []).forEach((action) => {
-            this.deregisterHandlerForAction(action, handler, localHandlers);
         });
     }
     deregisterHandlerForAction(action, handler, handlers) {
@@ -57,19 +48,16 @@ export default class SrLocalMessaging {
             delete this.messageInterceptors[interceptor.action];
         }
     }
-    broadcast(action, data = null, local = false) {
+    broadcast(action, local = true, data = null) {
         var msg = new SrAppMessage(action, data, local);
         if (this.intercepted(msg)) {
             return;
         }
-        var handlers = this.getHandlers(local);
+        var handlers = this.getHandlers();
         this.broadcastMessage(msg, handlers);
     }
-    getHandlers(local) {
-        return (local ? this.localHandlers : this.serviceHandlers);
-    }
-    broadcastLocal(action, data = null) {
-        this.broadcast(action, data, true);
+    getHandlers() {
+        return this.serviceHandlers;
     }
     intercepted(msg) {
         var intercept = this.messageInterceptors[msg.action];

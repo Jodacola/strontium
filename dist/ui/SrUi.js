@@ -45,14 +45,11 @@ export default class SrUi {
         this.setupHandlers(uiInit);
     }
     handles() {
-        return [];
-    }
-    handlesLocal() {
         return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
     receiveMessage(msg) {
         if (msg.action === CommonMessages.ApiInitialized) {
-            runtime.messaging.broadcastLocal(CommonMessages.AppReady);
+            runtime.messaging.broadcast(CommonMessages.AppReady);
         }
         if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
             this.handleInitialization(msg.action === CommonMessages.AppReady);
@@ -236,13 +233,13 @@ export default class SrUi {
     showOverlay() {
         return __awaiter(this, void 0, void 0, function* () {
             Log.d(this, "Showing overlay");
-            runtime.messaging.broadcastLocal(CommonMessages.OverlayOpening);
+            runtime.messaging.broadcast(CommonMessages.OverlayOpening);
         });
     }
     hideOverlay() {
         return __awaiter(this, void 0, void 0, function* () {
             Log.d(this, "Hiding overlay");
-            runtime.messaging.broadcastLocal(CommonMessages.OverlayClosed);
+            runtime.messaging.broadcast(CommonMessages.OverlayClosed);
         });
     }
 }

@@ -16,7 +16,7 @@ export default class SrApi {
         }
         if (initializer == null) {
             Log.w(this, "Invalid API initializer supplied.  Cannot initialize API.  Proceeding without API.");
-            runtime.messaging.broadcastLocal(CommonMessages.ApiInitialized);
+            runtime.messaging.broadcast(CommonMessages.ApiInitialized);
             return;
         }
         this.connection = initializer.buildConnection();
@@ -29,7 +29,7 @@ export default class SrApi {
         this.connection.initialize((s) => {
             Log.d(this, "API Initialization callback", { success: s });
             this.initialized = s;
-            runtime.messaging.broadcastLocal(s ? CommonMessages.ApiInitialized : CommonMessages.ApiInitializationFailed);
+            runtime.messaging.broadcast(s ? CommonMessages.ApiInitialized : CommonMessages.ApiInitializationFailed, true);
         }, false);
     }
     checkApi() {
@@ -95,7 +95,7 @@ export default class SrApi {
         if (req.callbackHandler != null) {
             req.callbackHandler(resp);
         }
-        runtime.messaging.broadcast(resp.action, resp);
+        runtime.messaging.broadcast(resp.action, false, resp);
     }
     handleFailedRequest(req, errors) {
         SrStats.stop(req.requestId, "API send failure", req);

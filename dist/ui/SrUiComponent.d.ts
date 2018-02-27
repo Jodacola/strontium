@@ -2,6 +2,7 @@
 import * as React from "react";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
 declare abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
+    private stateHelpers;
     private resizeListener;
     private componentMounted;
     private deferHandlers;
@@ -13,8 +14,6 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected cleanUpRefs(): void;
     handles(): string[];
     protected getHandles(): string[];
-    handlesLocal(): string[];
-    protected getHandlesLocal(): string[];
     receiveMessage(msg: SrAppMessage): void;
     protected onAppMessage(msg: SrAppMessage): void;
     private registerHandlers();
@@ -29,7 +28,7 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected onComponentMounted(): void;
     protected onComponentWillUnmount(): void;
     abstract performRender(): JSX.Element;
-    protected mounted(): boolean;
+    mounted(): boolean;
     protected onNewProps(props: P): void;
     protected resizeCallback(): () => void;
     protected registerResizeHandler(): void;
@@ -39,10 +38,25 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected buildNavQuery(navOptions: any): string;
     protected localize(msg: string): string;
     protected deferred(func: Function, time?: number, id?: string): void;
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
+     */
     protected set(state: S): void;
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartial(state).
+     */
     protected setPartial(obj: Partial<S>): void;
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
+     */
     protected setAsync(state: S): Promise<S>;
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
+     */
     protected setPartialAsync(obj: Partial<S>): Promise<void>;
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
+     */
     protected copyState(): S;
     protected cancelDeferred(id: string): void;
     protected updateQuery(query: string): void;

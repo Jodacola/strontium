@@ -5,7 +5,6 @@ import IMessageInterceptor from "./IMessageInterceptor";
 
 export default class SrLocalMessaging {
     private serviceHandlers: IHandlerMap = {};
-    private localHandlers: IHandlerMap = {};
     private messageInterceptors: IInterceptorMap = {};
 
     constructor() {
@@ -13,13 +12,9 @@ export default class SrLocalMessaging {
     }
 
     public registerHandler(handler: IMessageHandler): void {
-        var handlers: IHandlerMap = this.getHandlers(false);
-        var localHandlers: IHandlerMap = this.getHandlers(true);
+        var handlers: IHandlerMap = this.getHandlers();
         (handler.handles() || []).forEach((action: string) => {
             this.registerHandlerForAction(action, handler, handlers);
-        });
-        (handler.handlesLocal() || []).forEach((action: string) => {
-            this.registerHandlerForAction(action, handler, localHandlers);
         });
     };
 
@@ -35,13 +30,9 @@ export default class SrLocalMessaging {
     };
 
     public removeHandler(handler: IMessageHandler): void {
-        var handlers: IHandlerMap = this.getHandlers(false);
-        var localHandlers: IHandlerMap = this.getHandlers(true);
+        var handlers: IHandlerMap = this.getHandlers();
         (handler.handles() || []).forEach((action: string) => {
             this.deregisterHandlerForAction(action, handler, handlers);
-        });
-        (handler.handlesLocal() || []).forEach((action: string) => {
-            this.deregisterHandlerForAction(action, handler, localHandlers);
         });
     }
 
@@ -67,21 +58,17 @@ export default class SrLocalMessaging {
         }
     }
 
-    public broadcast(action: string, data: any = null, local: boolean = false): void {
+    public broadcast(action: string, local: boolean = true, data: any = null): void {
         var msg: SrAppMessage = new SrAppMessage(action, data, local);
         if (this.intercepted(msg)) {
             return;
         }
-        var handlers: IHandlerMap = this.getHandlers(local);
+        var handlers: IHandlerMap = this.getHandlers();
         this.broadcastMessage(msg, handlers);
     }
 
-    private getHandlers(local: boolean): IHandlerMap {
-        return (local ? this.localHandlers : this.serviceHandlers);
-    }
-
-    public broadcastLocal(action: string, data: any = null): void {
-        this.broadcast(action, data, true);
+    private getHandlers(): IHandlerMap {
+        return this.serviceHandlers;
     }
 
     private intercepted(msg: SrAppMessage): boolean {

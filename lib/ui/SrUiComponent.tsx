@@ -3,8 +3,10 @@ import * as React from "react";
 import { IApiLoadingState, LoadStates, SrServiceResponse, RequestType } from "../api/API";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
 import { EnvironmentUtility as EnvUtils } from "../utils/Utils";
+import SrComponentStateHelpers from "./SrComponentStateHelpers";
 
 abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
+    private stateHelpers: SrComponentStateHelpers<P, S> = new SrComponentStateHelpers<P, S>(this);
     private resizeListener: EventListener = null;
     private componentMounted = false;
     private deferHandlers: { [id: string]: number } = {};
@@ -48,16 +50,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
     }
 
     protected getHandles(): string[] {
-        return null;
-    }
-
-    handlesLocal(): string[] {
-        var handles = this.getHandlesLocal();
-        Log.t(this, "Returning local handler registrations", { handles: handles });
-        return handles;
-    }
-
-    protected getHandlesLocal(): string[] {
         return null;
     }
 
@@ -124,7 +116,7 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
     abstract performRender(): JSX.Element;
 
     /* Misc helpers */
-    protected mounted(): boolean {
+    public mounted(): boolean {
         return this.componentMounted;
     }
 
@@ -207,56 +199,40 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         }
     };
 
-    /* State Helpers */
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
+     */
     protected set(state: S): void {
-        if (!this.mounted()) {
-            Log.w(this, "State setting while not mounted; ignoring.", state);
-        }
-        Log.t(this, "Setting new state", state);
-        this.setState(state);
+        return this.stateHelpers.set(state);
     }
 
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartial(state).
+     */
     protected setPartial(obj: Partial<S>): void {
-        Log.d(this, "Setting partial data on state", obj);
-        var state = this.copyState();
-        Object.assign(state, obj);
-        this.set(state);
+        return this.stateHelpers.setPartial(obj);
     }
 
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
+     */
     protected setAsync(state: S): Promise<S> {
-        if (!this.mounted()) {
-            Log.w(this, "State setting while not mounted; ignoring.", state);
-        }
-        Log.t(this, "Setting new state", state);
-        return new Promise(resolve => {
-            this.setState(state,
-                () => {
-                    resolve(state);
-                });
-        });
+        return this.stateHelpers.setAsync(state);
     }
 
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
+     */
     protected async setPartialAsync(obj: Partial<S>) {
-        Log.d(this, "Setting partial data on state", obj);
-        var state = this.copyState();
-        Object.assign(state, obj);
-        await this.setAsync(state);
+        return this.stateHelpers.setPartialAsync(obj);
     }
 
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
+     */
     protected copyState(): S {
-        if (!this.state) {
-            return null;
-        }
-        var copy: any = {};
-        for (var key in this.state) {
-            if (this.state.hasOwnProperty(key)) {
-                copy[key] = this.state[key];
-            }
-        }
-        return copy as S;
+        return this.stateHelpers.copyState();
     }
-
-    /* END State Helpers */
 
     protected cancelDeferred(id: string) {
         if (id && this.deferHandlers[id]) {
@@ -302,7 +278,7 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
 
 
     protected broadcast(message: string, data?: any) {
-        runtime.messaging.broadcastLocal(message, data);
+        runtime.messaging.broadcast(message, data);
     }
 }
 

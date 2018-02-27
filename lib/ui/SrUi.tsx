@@ -46,16 +46,12 @@ export default class SrUi implements IMessageHandler {
     }
 
     handles(): string[] {
-        return [];
-    }
-
-    handlesLocal(): string[] {
         return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
 
     receiveMessage(msg: SrAppMessage): void {
         if (msg.action === CommonMessages.ApiInitialized) {
-            runtime.messaging.broadcastLocal(CommonMessages.AppReady);
+            runtime.messaging.broadcast(CommonMessages.AppReady);
         }
 
         if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
@@ -266,11 +262,11 @@ export default class SrUi implements IMessageHandler {
 
     public async showOverlay() {
         Log.d(this, "Showing overlay");
-        runtime.messaging.broadcastLocal(CommonMessages.OverlayOpening);
+        runtime.messaging.broadcast(CommonMessages.OverlayOpening);
     }
 
     public async hideOverlay() {
         Log.d(this, "Hiding overlay");
-        runtime.messaging.broadcastLocal(CommonMessages.OverlayClosed);
+        runtime.messaging.broadcast(CommonMessages.OverlayClosed);
     }
 }

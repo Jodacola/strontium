@@ -8,9 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Log, runtime } from "../framework/Framework";
 import * as React from "react";
+import SrComponentStateHelpers from "./SrComponentStateHelpers";
 class SrUiComponent extends React.Component {
     constructor(props) {
         super(props);
+        this.stateHelpers = new SrComponentStateHelpers(this);
         this.resizeListener = null;
         this.componentMounted = false;
         this.deferHandlers = {};
@@ -44,14 +46,6 @@ class SrUiComponent extends React.Component {
         return handles;
     }
     getHandles() {
-        return null;
-    }
-    handlesLocal() {
-        var handles = this.getHandlesLocal();
-        Log.t(this, "Returning local handler registrations", { handles: handles });
-        return handles;
-    }
-    getHandlesLocal() {
         return null;
     }
     receiveMessage(msg) {
@@ -183,52 +177,38 @@ class SrUiComponent extends React.Component {
         }
     }
     ;
-    /* State Helpers */
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
+     */
     set(state) {
-        if (!this.mounted()) {
-            Log.w(this, "State setting while not mounted; ignoring.", state);
-        }
-        Log.t(this, "Setting new state", state);
-        this.setState(state);
+        return this.stateHelpers.set(state);
     }
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartial(state).
+     */
     setPartial(obj) {
-        Log.d(this, "Setting partial data on state", obj);
-        var state = this.copyState();
-        Object.assign(state, obj);
-        this.set(state);
+        return this.stateHelpers.setPartial(obj);
     }
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
+     */
     setAsync(state) {
-        if (!this.mounted()) {
-            Log.w(this, "State setting while not mounted; ignoring.", state);
-        }
-        Log.t(this, "Setting new state", state);
-        return new Promise(resolve => {
-            this.setState(state, () => {
-                resolve(state);
-            });
-        });
+        return this.stateHelpers.setAsync(state);
     }
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
+     */
     setPartialAsync(obj) {
         return __awaiter(this, void 0, void 0, function* () {
-            Log.d(this, "Setting partial data on state", obj);
-            var state = this.copyState();
-            Object.assign(state, obj);
-            yield this.setAsync(state);
+            return this.stateHelpers.setPartialAsync(obj);
         });
     }
+    /**
+     * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
+     */
     copyState() {
-        if (!this.state) {
-            return null;
-        }
-        var copy = {};
-        for (var key in this.state) {
-            if (this.state.hasOwnProperty(key)) {
-                copy[key] = this.state[key];
-            }
-        }
-        return copy;
+        return this.stateHelpers.copyState();
     }
-    /* END State Helpers */
     cancelDeferred(id) {
         if (id && this.deferHandlers[id]) {
             clearTimeout(this.deferHandlers[id]);
@@ -266,7 +246,7 @@ class SrUiComponent extends React.Component {
         });
     }
     broadcast(message, data) {
-        runtime.messaging.broadcastLocal(message, data);
+        runtime.messaging.broadcast(message, data);
     }
 }
 export default SrUiComponent;

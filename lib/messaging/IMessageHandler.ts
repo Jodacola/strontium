@@ -2,7 +2,6 @@
 
 interface IMessageHandler {
     handles(): string[];
-    handlesLocal(): string[];
     receiveMessage(msg: SrAppMessage): void;
 }
 
