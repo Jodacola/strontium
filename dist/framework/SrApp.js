@@ -3,9 +3,10 @@ import Log from "./Log";
 import SrApi from "../api/SrApi";
 import SrLocalMessaging from "../messaging/SrLocalMessaging";
 import SrUi from "../ui/SrUi";
+import SrServiceContainer from "./SrServiceContainer";
 export class SrApp {
     constructor() {
-        this.services = {};
+        this.services = new SrServiceContainer();
     }
     initialize(config) {
         if (this.initialized) {
@@ -18,6 +19,7 @@ export class SrApp {
             Log.w(this, "Initializing with default configuration");
         }
         this.initializeMessaging();
+        this.config.setupServices();
         this.config.preInitialize();
         this.initializeUi();
         this.initializeApi();
@@ -25,35 +27,18 @@ export class SrApp {
         this.config.postInitialize();
     }
     initializeMessaging() {
+        Log.t(this, 'Initializing Messaging System');
         this.messaging = new SrLocalMessaging();
     }
     initializeUi() {
+        Log.t(this, 'Initializing UI');
         this.ui = new SrUi();
         this.ui.initialize(this.config.uiInitializer());
     }
     initializeApi() {
+        Log.t(this, 'Initializing API');
         this.api = new SrApi();
         this.api.initialize(this.config.apiInitializer());
-    }
-    registerService(svcConstructor, instance = null) {
-        if (instance === null || instance === undefined) {
-            instance = new svcConstructor();
-        }
-        Log.t(this, "Registering service", { serviceId: instance.serviceId() });
-        if (this.services.hasOwnProperty(instance.serviceId())) {
-            Log.e(this, "Service already registered.", { serviceId: instance.serviceId() });
-            return;
-        }
-        this.messaging.registerHandler(instance);
-        this.services[instance.serviceId()] = instance;
-    }
-    getService(svcConstructor) {
-        var instance = new svcConstructor();
-        if (!this.services[instance.serviceId()]) {
-            Log.e(this, "Service not previously registered - initializing and registering", { serviceId: instance.serviceId() });
-            this.registerService(svcConstructor, instance);
-        }
-        return this.services[instance.serviceId()];
     }
 }
 export let runtime = new SrApp();

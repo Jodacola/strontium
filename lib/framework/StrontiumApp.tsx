@@ -75,6 +75,7 @@ export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}
             this.props.errorReporter,
             this.getConfiguredType(ConfigElementTypes.Api),
             this.getConfiguredType(ConfigElementTypes.Ui),
+            this.getConfiguredType(ConfigElementTypes.Services),
             this.props.onPreInit,
             this.props.onPostInit);
         runtime.initialize(cfg);

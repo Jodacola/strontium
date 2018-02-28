@@ -1,7 +1,8 @@
 enum ConfigElementTypes {
     Logger,
     Ui,
-    Api
+    Api,
+    Services
 }
 
 export default ConfigElementTypes;

@@ -6,6 +6,7 @@ export default abstract class SrAppConfig {
     loggingLevel: LogLevel;
     logFilter: string[];
     staleApiRequestPeriod: number;
+    setupServices(): void;
     preInitialize(): void;
     postInitialize(): void;
     abstract errorReporter(): IErrorReporter;

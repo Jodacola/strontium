@@ -4,6 +4,8 @@ import IErrorReporter from "./IErrorReporter";
 import IApiInitializer from "./IApiInitializer";
 import IUiInitializer from "./IUiInitializer";
 import ILoggerConfig from "./ILoggerConfig";
+import IAppService from "../framework/IAppService";
+import { runtime } from "../lib";
 
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter: IErrorReporter;
@@ -11,6 +13,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
     private _uiInitializer: IUiInitializer;
     private _preInit: () => void;
     private _postInit: () => void;
+    private _services: IAppService[];
 
     constructor(
         environment: string,
@@ -18,6 +21,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         errorReporter: IErrorReporter,
         apiInitializer: IApiInitializer,
         uiInitializer: IUiInitializer,
+        services: IAppService[],
         preInit: () => void,
         postInit: () => void) {
         super();
@@ -27,6 +31,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         this._errorReporter = this.errorReporterOrDefault(errorReporter);
         this._apiInitializer = apiInitializer;
         this._uiInitializer = uiInitializer;
+        this._services = services;
         this._preInit = preInit;
         this._postInit = postInit;
     }
@@ -69,6 +74,12 @@ export default class StrontiumAppConfig extends SrAppConfig {
         if (this._preInit) {
             this._preInit();
         }
+    }
+
+    setupServices() {
+        (this._services || []).forEach((svc) => {
+            runtime.services.register(svc);
+        });
     }
 
     postInitialize() {

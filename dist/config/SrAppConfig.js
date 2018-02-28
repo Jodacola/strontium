@@ -5,6 +5,8 @@ export default class SrAppConfig {
         this.logFilter = [];
         this.staleApiRequestPeriod = 60000;
     }
+    setupServices() { }
+    ;
     preInitialize() { }
     ;
     postInitialize() { }

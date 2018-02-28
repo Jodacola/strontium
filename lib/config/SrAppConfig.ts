@@ -8,6 +8,7 @@ export default abstract class SrAppConfig {
     public logFilter: string[] = [];
     public staleApiRequestPeriod: number = 60000;
 
+    public setupServices(): void {};
     public preInitialize(): void {};
     public postInitialize(): void {};
 

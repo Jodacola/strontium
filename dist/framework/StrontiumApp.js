@@ -51,7 +51,7 @@ export default class StrontiumApp extends React.Component {
         return Object.keys(this._awaitingConfigTypes).map((k) => { return this._awaitingConfigTypes[k]; }).filter((v) => { return !v; }).length > 0;
     }
     finalizeConfiguration() {
-        let cfg = new StrontiumAppConfig(this.props.environment, this.getConfiguredType(ConfigElementTypes.Logger), this.props.errorReporter, this.getConfiguredType(ConfigElementTypes.Api), this.getConfiguredType(ConfigElementTypes.Ui), this.props.onPreInit, this.props.onPostInit);
+        let cfg = new StrontiumAppConfig(this.props.environment, this.getConfiguredType(ConfigElementTypes.Logger), this.props.errorReporter, this.getConfiguredType(ConfigElementTypes.Api), this.getConfiguredType(ConfigElementTypes.Ui), this.getConfiguredType(ConfigElementTypes.Services), this.props.onPreInit, this.props.onPostInit);
         runtime.initialize(cfg);
     }
     getConfiguredType(type) {

@@ -6,15 +6,16 @@ import SrLocalMessaging from "../messaging/SrLocalMessaging";
 import SrUi from "../ui/SrUi";
 import CM from "../messaging/CommonMessages";
 import IAppService from "./IAppService";
+import SrServiceContainer from "./SrServiceContainer";
 
 export class SrApp {
     public config: SrAppConfig;
     public api: SrApi;
     public messaging: SrLocalMessaging;
     public ui: SrUi;
+    public services: SrServiceContainer = new SrServiceContainer();
 
     private initialized: boolean;
-    private services: { [key: string]: IAppService } = {};
 
     public initialize(config: SrAppConfig): void {
         if (this.initialized) {
@@ -30,6 +31,7 @@ export class SrApp {
         }
 
         this.initializeMessaging();
+        this.config.setupServices();
 
         this.config.preInitialize();
 
@@ -37,47 +39,25 @@ export class SrApp {
         this.initializeApi();
 
         Log.t(this, "Initialized", { config: this.config });
-        
+
         this.config.postInitialize();
     }
 
     private initializeMessaging(): void {
+        Log.t(this, 'Initializing Messaging System');
         this.messaging = new SrLocalMessaging();
     }
 
     private initializeUi(): void {
+        Log.t(this, 'Initializing UI');
         this.ui = new SrUi();
         this.ui.initialize(this.config.uiInitializer());
     }
 
     private initializeApi(): void {
+        Log.t(this, 'Initializing API');
         this.api = new SrApi();
         this.api.initialize(this.config.apiInitializer());
-    }
-
-    public registerService<TService extends IAppService>(svcConstructor: { new (): TService }, instance: TService = null): void {
-        if (instance === null || instance === undefined) {
-            instance = new svcConstructor();
-        }
-
-        Log.t(this, "Registering service", { serviceId: instance.serviceId() });
-
-        if (this.services.hasOwnProperty(instance.serviceId())) {
-            Log.e(this, "Service already registered.", { serviceId: instance.serviceId() });
-            return;
-        }
-
-        this.messaging.registerHandler(instance);
-        this.services[instance.serviceId()] = instance;
-    }
-
-    public getService<TService extends IAppService>(svcConstructor: { new (): TService }): TService {
-        var instance = new svcConstructor();
-        if (!this.services[instance.serviceId()]) {
-            Log.e(this, "Service not previously registered - initializing and registering", { serviceId: instance.serviceId() });
-            this.registerService(svcConstructor, instance);
-        }
-        return this.services[instance.serviceId()] as TService;
     }
 }
 

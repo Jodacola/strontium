@@ -1,7 +1,8 @@
 import { LogLevel } from "../framework/Log";
 import SrAppConfig from "./SrAppConfig";
+import { runtime } from "../lib";
 export default class StrontiumAppConfig extends SrAppConfig {
-    constructor(environment, logConfig, errorReporter, apiInitializer, uiInitializer, preInit, postInit) {
+    constructor(environment, logConfig, errorReporter, apiInitializer, uiInitializer, services, preInit, postInit) {
         super();
         logConfig = this.defaultLogConfig(logConfig);
         this.loggingLevel = this.getLoggingLevel(environment, logConfig);
@@ -9,6 +10,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         this._errorReporter = this.errorReporterOrDefault(errorReporter);
         this._apiInitializer = apiInitializer;
         this._uiInitializer = uiInitializer;
+        this._services = services;
         this._preInit = preInit;
         this._postInit = postInit;
     }
@@ -48,6 +50,11 @@ export default class StrontiumAppConfig extends SrAppConfig {
         if (this._preInit) {
             this._preInit();
         }
+    }
+    setupServices() {
+        (this._services || []).forEach((svc) => {
+            runtime.services.register(svc);
+        });
     }
     postInitialize() {
         if (this._postInit) {
