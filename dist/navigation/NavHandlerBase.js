@@ -100,7 +100,7 @@ class NavigationHandlerBase {
      *   return <p>{data.parsed.teamId}</p>;
      * */
     parseMatches(format) {
-        var parts = format.split('/');
+        var parts = format.split('/').filter((v) => v.length > 0);
         return parts.map((v, i) => {
             return this.parseMatch(v, i);
         });
