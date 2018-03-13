@@ -124,7 +124,7 @@ abstract class NavigationHandlerBase implements INavigationHandler {
      *   return <p>{data.parsed.teamId}</p>;
      * */
     protected parseMatches(format: string): IMatchItem[] {
-        var parts: string[] = format.split('/');
+        var parts: string[] = format.split('/').filter((v) => v.length > 0);
         return parts.map((v: string, i: number) => {
             return this.parseMatch(v, i);
         });
