@@ -157,7 +157,7 @@ export default class SrUi implements IMessageHandler {
 
     private performNavigation(nav: NavigationTarget, data?: any, title?: string, fromPop?: boolean) {
         Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPop });
-        if (nav == null || nav.paths.length === 0) {
+        if (nav == null) {
             this.navigate(this.getDefaultLocation());
             return;
         }
