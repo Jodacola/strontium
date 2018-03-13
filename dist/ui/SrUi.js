@@ -142,7 +142,7 @@ export default class SrUi {
     }
     performNavigation(nav, data, title, fromPop) {
         Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPop });
-        if (nav == null || nav.paths.length === 0) {
+        if (nav == null) {
             this.navigate(this.getDefaultLocation());
             return;
         }
