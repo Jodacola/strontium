@@ -58,7 +58,8 @@ export default class WebApiConnection implements IApiConnection {
                     'Content-Type': contentType
                 },
                 body: data,
-                credentials: 'same-origin'
+                credentials: 'same-origin',
+                mode: (request.options || {})['cors'] === false ? 'no-cors' : 'cors'
             })
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
