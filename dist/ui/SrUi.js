@@ -101,10 +101,10 @@ export default class SrUi {
     registerHandler(handler) {
         this.navigationHandlers.push(handler);
     }
-    onAppLocationChanged(path, data, title, fromPop) {
-        Log.t(this, "App location changed", { path: path, pop: fromPop });
+    onAppLocationChanged(path, data, title, fromPopOrManual) {
+        Log.t(this, "App location changed", { path: path, pop: fromPopOrManual });
         var nav = this.getNavigationTarget(path, data);
-        this.performNavigation(nav, data, title, fromPop);
+        this.performNavigation(nav, data, title, fromPopOrManual);
     }
     getNavigationTarget(loc, data) {
         var nav = new NavigationTarget();
@@ -140,8 +140,8 @@ export default class SrUi {
     isOverlayOpen() {
         return this.overlayVisible;
     }
-    performNavigation(nav, data, title, fromPop) {
-        Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPop });
+    performNavigation(nav, data, title, fromPopOrManual) {
+        Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPopOrManual });
         if (nav == null) {
             this.navigate(this.getDefaultLocation());
             return;
@@ -168,7 +168,7 @@ export default class SrUi {
         Log.t(this, "View transition", { lastViewType: this.lastViewType, lastViewId: this.lastViewId, newViewType: viewType, newViewId: viewId });
         let query = `?${Object.keys(nav.query || {}).sort((k1, k2) => { return k1.localeCompare(k2); }).map((k) => { return `${k}=${nav.query[k]}`; }).join("&")}}`;
         if (viewType === this.lastViewType && viewId !== this.lastViewId) {
-            this.performNavigationChange(title, view, nav.original, fromPop, true);
+            this.performNavigationChange(title, view, nav.original, fromPopOrManual, true);
             this.setLastViewInfo(viewType, viewId, query);
             return;
         }
@@ -183,7 +183,7 @@ export default class SrUi {
             }
         }
         this.setLastViewInfo(viewType, viewId, query);
-        this.performNavigationChange(title, view, nav.original, fromPop, false, newQuery);
+        this.performNavigationChange(title, view, nav.original, fromPopOrManual, false, newQuery);
     }
     setLastViewInfo(type, id, query) {
         this.lastViewType = type;
@@ -192,18 +192,17 @@ export default class SrUi {
     }
     updateQuery(query) {
         Log.d(this, "Updating query", { query: query, location: window.location.pathname });
-        if (this.configurer.navigateOnQueryChange()) {
-            window.location.search = query;
-            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
-        }
-        else if (this.configurer.urlNavigationEnabled()) {
+        if (this.configurer.urlNavigationEnabled()) {
             history.pushState({}, document.title, window.location.pathname + "?" + query);
         }
+        if (this.configurer.navigateOnQueryChange()) {
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
+        }
     }
-    performNavigationChange(title, view, originalNav, fromPop, isAsyncReplace = false, onlyQueryUpdated = false) {
+    performNavigationChange(title, view, originalNav, fromPopOrManual, isAsyncReplace = false, onlyQueryUpdated = false) {
         var stateTitle = (title != null && title.length > 0 ? title + " - " : "") + this.appTitle;
         document.title = stateTitle;
-        if (!fromPop && this.configurer.urlNavigationEnabled()) {
+        if (!fromPopOrManual && this.configurer.urlNavigationEnabled()) {
             history.pushState({}, stateTitle, originalNav);
         }
         if (isAsyncReplace) {

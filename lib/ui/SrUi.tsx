@@ -112,10 +112,10 @@ export default class SrUi implements IMessageHandler {
         this.navigationHandlers.push(handler);
     }
 
-    private onAppLocationChanged(path: string, data?: any, title?: string, fromPop?: boolean) {
-        Log.t(this, "App location changed", { path: path, pop: fromPop });
+    private onAppLocationChanged(path: string, data?: any, title?: string, fromPopOrManual?: boolean) {
+        Log.t(this, "App location changed", { path: path, pop: fromPopOrManual });
         var nav = this.getNavigationTarget(path, data);
-        this.performNavigation(nav, data, title, fromPop);
+        this.performNavigation(nav, data, title, fromPopOrManual);
     }
 
     private getNavigationTarget(loc: string, data: any): NavigationTarget {
@@ -155,8 +155,8 @@ export default class SrUi implements IMessageHandler {
         return this.overlayVisible;
     }
 
-    private performNavigation(nav: NavigationTarget, data?: any, title?: string, fromPop?: boolean) {
-        Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPop });
+    private performNavigation(nav: NavigationTarget, data?: any, title?: string, fromPopOrManual?: boolean) {
+        Log.d(this, "Performing navigation", { target: nav, data: data, title: title, fromPop: fromPopOrManual });
         if (nav == null) {
             this.navigate(this.getDefaultLocation());
             return;
@@ -190,7 +190,7 @@ export default class SrUi implements IMessageHandler {
         let query = `?${Object.keys(nav.query || {}).sort((k1, k2) => { return k1.localeCompare(k2); }).map((k) => { return `${k}=${nav.query[k]}`; }).join("&")}}`;
 
         if (viewType === this.lastViewType && viewId !== this.lastViewId) {
-            this.performNavigationChange(title, view, nav.original, fromPop, true);
+            this.performNavigationChange(title, view, nav.original, fromPopOrManual, true);
             this.setLastViewInfo(viewType, viewId, query);
             return;
         }
@@ -206,7 +206,7 @@ export default class SrUi implements IMessageHandler {
         }
 
         this.setLastViewInfo(viewType, viewId, query);
-        this.performNavigationChange(title, view, nav.original, fromPop, false, newQuery);
+        this.performNavigationChange(title, view, nav.original, fromPopOrManual, false, newQuery);
     }
 
     private setLastViewInfo(type: string, id: string, query: string) {
@@ -217,19 +217,19 @@ export default class SrUi implements IMessageHandler {
 
     public updateQuery(query: string): void {
         Log.d(this, "Updating query", { query: query, location: window.location.pathname });
-        if (this.configurer.navigateOnQueryChange()) {
-            window.location.search = query;
-            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
-        } else if (this.configurer.urlNavigationEnabled()) {
+        if (this.configurer.urlNavigationEnabled()) {
             history.pushState({}, document.title, window.location.pathname + "?" + query);
+        }
+        if (this.configurer.navigateOnQueryChange()) {
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
         }
     }
 
-    private performNavigationChange(title: string, view: JSX.Element, originalNav: string, fromPop?: boolean, isAsyncReplace: boolean = false, onlyQueryUpdated: boolean = false) {
+    private performNavigationChange(title: string, view: JSX.Element, originalNav: string, fromPopOrManual?: boolean, isAsyncReplace: boolean = false, onlyQueryUpdated: boolean = false) {
         var stateTitle = (title != null && title.length > 0 ? title + " - " : "") + this.appTitle;
         document.title = stateTitle;
 
-        if (!fromPop && this.configurer.urlNavigationEnabled()) {
+        if (!fromPopOrManual && this.configurer.urlNavigationEnabled()) {
             history.pushState({}, stateTitle, originalNav);
         }
 

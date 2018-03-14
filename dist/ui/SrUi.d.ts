@@ -29,14 +29,14 @@ export default class SrUi implements IMessageHandler {
     private setupInitialUi(uiInit);
     private setupHandlers(uiInit);
     private registerHandler(handler);
-    private onAppLocationChanged(path, data?, title?, fromPop?);
+    private onAppLocationChanged(path, data?, title?, fromPopOrManual?);
     private getNavigationTarget(loc, data);
     private onWindowResized(e);
     isOverlayOpen(): boolean;
-    private performNavigation(nav, data?, title?, fromPop?);
+    private performNavigation(nav, data?, title?, fromPopOrManual?);
     private setLastViewInfo(type, id, query);
     updateQuery(query: string): void;
-    private performNavigationChange(title, view, originalNav, fromPop?, isAsyncReplace?, onlyQueryUpdated?);
+    private performNavigationChange(title, view, originalNav, fromPopOrManual?, isAsyncReplace?, onlyQueryUpdated?);
     changeView(view: JSX.Element, onlyQueryUpdated?: boolean): Promise<void>;
     private getDefaultLocation();
     navigate(appUrl: string, title?: string, data?: any): void;
