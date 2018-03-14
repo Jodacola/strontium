@@ -218,6 +218,7 @@ export default class SrUi implements IMessageHandler {
     public updateQuery(query: string): void {
         Log.d(this, "Updating query", { query: query, location: window.location.pathname });
         if (this.configurer.navigateOnQueryChange()) {
+            window.location.search = query;
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
         } else if (this.configurer.urlNavigationEnabled()) {
             history.pushState({}, document.title, window.location.pathname + "?" + query);

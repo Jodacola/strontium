@@ -193,6 +193,7 @@ export default class SrUi {
     updateQuery(query) {
         Log.d(this, "Updating query", { query: query, location: window.location.pathname });
         if (this.configurer.navigateOnQueryChange()) {
+            window.location.search = query;
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
         }
         else if (this.configurer.urlNavigationEnabled()) {
