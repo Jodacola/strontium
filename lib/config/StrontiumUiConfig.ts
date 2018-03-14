@@ -6,6 +6,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _basePath: string;
     private _rootElement: string;
     private _urlNavEnabled: boolean;
+    private _navigateOnQueryChange: boolean;
     private _appTitle: string;
     private _navHandlers: INavigationHandler[] = null;
     private _appReady: () => void;
@@ -17,6 +18,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
         basePath: string,
         rootElement: string,
         urlNavEnabled: boolean,
+        navigateOnQueryChange: boolean,
         appTitle: string,
         appReady: () => void,
         appInitFailed: () => void,
@@ -27,6 +29,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
         this._basePath = basePath;
         this._rootElement = rootElement;
         this._urlNavEnabled = urlNavEnabled === true;
+        this._navigateOnQueryChange = navigateOnQueryChange === true;
         this._appTitle = appTitle;
         this._appReady = appReady;
         this._appInitializing = appInitializing;
@@ -48,6 +51,10 @@ export default class StrontiumUiConfig implements IUiInitializer {
 
     public urlNavigationEnabled(): boolean {
         return this._urlNavEnabled;
+    }
+
+    public navigateOnQueryChange(): boolean {
+        return this._navigateOnQueryChange;
     }
 
     public appInitializing(): void {

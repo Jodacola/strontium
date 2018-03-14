@@ -1,10 +1,11 @@
 export default class StrontiumUiConfig {
-    constructor(defaultLocation, basePath, rootElement, urlNavEnabled, appTitle, appReady, appInitFailed, appInitializing, navHandlers) {
+    constructor(defaultLocation, basePath, rootElement, urlNavEnabled, navigateOnQueryChange, appTitle, appReady, appInitFailed, appInitializing, navHandlers) {
         this._navHandlers = null;
         this._defaultLocation = defaultLocation;
         this._basePath = basePath;
         this._rootElement = rootElement;
         this._urlNavEnabled = urlNavEnabled === true;
+        this._navigateOnQueryChange = navigateOnQueryChange === true;
         this._appTitle = appTitle;
         this._appReady = appReady;
         this._appInitializing = appInitializing;
@@ -22,6 +23,9 @@ export default class StrontiumUiConfig {
     }
     urlNavigationEnabled() {
         return this._urlNavEnabled;
+    }
+    navigateOnQueryChange() {
+        return this._navigateOnQueryChange;
     }
     appInitializing() {
         if (this._appInitializing) {

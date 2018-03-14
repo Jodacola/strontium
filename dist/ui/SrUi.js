@@ -195,6 +195,9 @@ export default class SrUi {
         if (this.configurer.urlNavigationEnabled()) {
             history.pushState({}, document.title, window.location.pathname + "?" + query);
         }
+        if (this.configurer.navigateOnQueryChange()) {
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
+        }
     }
     performNavigationChange(title, view, originalNav, fromPop, isAsyncReplace = false, onlyQueryUpdated = false) {
         var stateTitle = (title != null && title.length > 0 ? title + " - " : "") + this.appTitle;

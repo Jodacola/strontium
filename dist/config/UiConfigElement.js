@@ -5,7 +5,7 @@ import NavHandler from "../navigation/NavHandler";
 import * as React from "react";
 export default class UiConfig extends StrontiumAppConfigElement {
     config() {
-        return new StrontiumUiConfig(this.props.defaultLocation, this.props.basePath, this.props.rootElement, this.props.urlNavigationEnabled, this.props.appTitle, this.props.appInitializing, this.props.appInitFailed, this.props.appReady, this.navigationHandlers());
+        return new StrontiumUiConfig(this.props.defaultLocation, this.props.basePath, this.props.rootElement, this.props.urlNavigationEnabled, this.props.navigateOnQueryChanges, this.props.appTitle, this.props.appInitializing, this.props.appInitFailed, this.props.appReady, this.navigationHandlers());
     }
     navigationHandlers() {
         let navHandlers = [];

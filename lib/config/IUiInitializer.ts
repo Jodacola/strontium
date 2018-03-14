@@ -5,6 +5,7 @@ export default interface IUiInitializer {
     basePath(): string;
     rootElement(): string;
     urlNavigationEnabled(): boolean;
+    navigateOnQueryChange(): boolean;
     appInitializing(): void;
     appReady(): void;
     appInitFailed(): void;

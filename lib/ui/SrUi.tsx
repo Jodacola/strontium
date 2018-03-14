@@ -220,6 +220,9 @@ export default class SrUi implements IMessageHandler {
         if (this.configurer.urlNavigationEnabled()) {
             history.pushState({}, document.title, window.location.pathname + "?" + query);
         }
+        if (this.configurer.navigateOnQueryChange()) {
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
+        }
     }
 
     private performNavigationChange(title: string, view: JSX.Element, originalNav: string, fromPop?: boolean, isAsyncReplace: boolean = false, onlyQueryUpdated: boolean = false) {

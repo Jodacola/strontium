@@ -4,6 +4,7 @@ export interface IUiConfig extends IConfigElement {
     basePath?: string;
     rootElement?: string;
     urlNavigationEnabled?: boolean;
+    navigateOnQueryChanges?: boolean;
     appTitle?: string;
     appReady?: () => void;
     appInitFailed?: () => void;
