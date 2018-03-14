@@ -192,11 +192,11 @@ export default class SrUi {
     }
     updateQuery(query) {
         Log.d(this, "Updating query", { query: query, location: window.location.pathname });
-        if (this.configurer.urlNavigationEnabled()) {
-            history.pushState({}, document.title, window.location.pathname + "?" + query);
-        }
         if (this.configurer.navigateOnQueryChange()) {
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, false);
+        }
+        else if (this.configurer.urlNavigationEnabled()) {
+            history.pushState({}, document.title, window.location.pathname + "?" + query);
         }
     }
     performNavigationChange(title, view, originalNav, fromPop, isAsyncReplace = false, onlyQueryUpdated = false) {
