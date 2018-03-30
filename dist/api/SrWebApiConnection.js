@@ -38,7 +38,7 @@ export default class WebApiConnection {
         var method = this.getMethod(request);
         var contentType = this.getContentType(request);
         let data = request.content;
-        if (this.getProcessData(request)) {
+        if (data && method !== 'GET' && method !== 'HEAD' && this.getProcessData(request)) {
             data = JSON.stringify(data);
         }
         Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
@@ -48,8 +48,7 @@ export default class WebApiConnection {
                 'Content-Type': contentType
             },
             body: data,
-            credentials: 'same-origin',
-            mode: (request.options || {})['cors'] === false ? 'no-cors' : 'cors'
+            credentials: 'same-origin'
         })
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
@@ -85,6 +84,7 @@ export default class WebApiConnection {
         }
     }
     handleError(error, req) {
+        debugger;
         if (this.failedRequestHandler != null) {
             if (Object.keys(error).indexOf('response') !== -1) {
                 this.failedRequestHandler(req, [error.response.status]);

@@ -46,7 +46,7 @@ export default class WebApiConnection implements IApiConnection {
         var method = this.getMethod(request);
         var contentType = this.getContentType(request);
         let data = request.content;
-        if (this.getProcessData(request)) {
+        if (data && method !== 'GET' && method !== 'HEAD' && this.getProcessData(request)) {
             data = JSON.stringify(data);
         }
 
@@ -58,8 +58,7 @@ export default class WebApiConnection implements IApiConnection {
                     'Content-Type': contentType
                 },
                 body: data,
-                credentials: 'same-origin',
-                mode: (request.options || {})['cors'] === false ? 'no-cors' : 'cors'
+                credentials: 'same-origin'
             })
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
@@ -101,6 +100,7 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     private handleError(error: any, req: SrServiceRequest) {
+        debugger;
         if (this.failedRequestHandler != null) {
             if (Object.keys(error).indexOf('response') !== -1) {
                 this.failedRequestHandler(req, [error.response.status]);
