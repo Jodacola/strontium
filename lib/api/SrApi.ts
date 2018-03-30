@@ -84,7 +84,7 @@ export default class SrApi {
             Log.e(this, "Attempt to send message against unconnected service", { action: action, content: content });
             return;
         }
-        var req: SrServiceRequest = new SrServiceRequest(type, action, content, options || {}, resendOnFailure, manualCb);
+        var req: SrServiceRequest = new SrServiceRequest(type, action, content, options, resendOnFailure, manualCb);
         this.sendRequest(req);
         return req.requestId;
     }
