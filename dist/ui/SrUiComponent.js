@@ -246,7 +246,7 @@ class SrUiComponent extends React.Component {
         });
     }
     broadcast(message, data) {
-        runtime.messaging.broadcast(message, data);
+        runtime.messaging.broadcast(message, true, data);
     }
 }
 export default SrUiComponent;

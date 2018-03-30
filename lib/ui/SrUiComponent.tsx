@@ -278,7 +278,7 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
 
 
     protected broadcast(message: string, data?: any) {
-        runtime.messaging.broadcast(message, data);
+        runtime.messaging.broadcast(message, true, data);
     }
 }
 
