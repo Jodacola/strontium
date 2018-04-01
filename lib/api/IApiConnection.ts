@@ -5,8 +5,9 @@ interface IApiConnection {
     initialize(cb: (r: boolean) => void, reinit: boolean): void;
     sendRequest(request: SrServiceRequest): void;
     connected(): boolean;
-    responseHandler: (resp: SrServiceResponse) => void;
-    failedRequestHandler: (req: SrServiceRequest, error: any[]) => void;
+    onResponse: (resp: SrServiceResponse) => void;
+    onFailedRequest: (req: SrServiceRequest, error: any[]) => void;
+    onServerMessage: (resp: SrServiceResponse) => void;
 }
 
 export default IApiConnection;

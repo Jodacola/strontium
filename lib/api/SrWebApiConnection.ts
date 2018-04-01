@@ -11,16 +11,7 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     public initialize(cb: (r: boolean) => void, reinit: boolean): void {
-        this.setupConnection(reinit);
         cb(true);
-    }
-
-    performAuthPing() {
-        return true;
-    }
-
-    protected setupConnection(isReinit: boolean): void {
-
     }
 
     protected dataPath(): string {
@@ -87,13 +78,13 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     private handleResponse(response: string, req: SrServiceRequest) {
-        if (this.responseHandler) {
+        if (this.onResponse) {
             let resp = new SrServiceResponse();
             resp.action = req.action;
             resp.requestId = req.requestId;
             resp.data = response;
             resp.good = true;
-            this.responseHandler(resp);
+            this.onResponse(resp);
         } else {
             Log.e(this, "Response received, but no handler available", { request: req, data: response });
         }
@@ -101,11 +92,11 @@ export default class WebApiConnection implements IApiConnection {
 
     private handleError(error: any, req: SrServiceRequest) {
         debugger;
-        if (this.failedRequestHandler != null) {
+        if (this.onFailedRequest) {
             if (Object.keys(error).indexOf('response') !== -1) {
-                this.failedRequestHandler(req, [error.response.status]);
+                this.onFailedRequest(req, [error.response.status]);
             } else {
-                this.failedRequestHandler(req, [JSON.stringify(error)]);
+                this.onFailedRequest(req, [JSON.stringify(error)]);
             }
 
         } else {
@@ -117,7 +108,7 @@ export default class WebApiConnection implements IApiConnection {
         return true;
     }
 
-    responseHandler: (resp: SrServiceResponse) => void = null;
-    failedRequestHandler: (req: SrServiceRequest, error: any[]) => void = null;
-    directHandler: (resp: SrServiceResponse) => void = null;
+    onResponse: (resp: SrServiceResponse) => void;
+    onFailedRequest: (req: SrServiceRequest, error: any[]) => void;
+    onServerMessage: (resp: SrServiceResponse) => void;
 }

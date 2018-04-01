@@ -5,18 +5,9 @@ import ApiError from "./ApiError";
 export default class WebApiConnection {
     constructor(resourceBase) {
         this.resourceBase = resourceBase;
-        this.responseHandler = null;
-        this.failedRequestHandler = null;
-        this.directHandler = null;
     }
     initialize(cb, reinit) {
-        this.setupConnection(reinit);
         cb(true);
-    }
-    performAuthPing() {
-        return true;
-    }
-    setupConnection(isReinit) {
     }
     dataPath() {
         return this.resourceBase;
@@ -71,13 +62,13 @@ export default class WebApiConnection {
         return response;
     }
     handleResponse(response, req) {
-        if (this.responseHandler) {
+        if (this.onResponse) {
             let resp = new SrServiceResponse();
             resp.action = req.action;
             resp.requestId = req.requestId;
             resp.data = response;
             resp.good = true;
-            this.responseHandler(resp);
+            this.onResponse(resp);
         }
         else {
             Log.e(this, "Response received, but no handler available", { request: req, data: response });
@@ -85,12 +76,12 @@ export default class WebApiConnection {
     }
     handleError(error, req) {
         debugger;
-        if (this.failedRequestHandler != null) {
+        if (this.onFailedRequest) {
             if (Object.keys(error).indexOf('response') !== -1) {
-                this.failedRequestHandler(req, [error.response.status]);
+                this.onFailedRequest(req, [error.response.status]);
             }
             else {
-                this.failedRequestHandler(req, [JSON.stringify(error)]);
+                this.onFailedRequest(req, [JSON.stringify(error)]);
             }
         }
         else {

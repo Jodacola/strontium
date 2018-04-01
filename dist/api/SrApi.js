@@ -20,10 +20,10 @@ export default class SrApi {
             return;
         }
         this.connection = initializer.buildConnection();
-        this.connection.responseHandler = (resp) => {
+        this.connection.onResponse = (resp) => {
             this.handleResponse(resp);
         };
-        this.connection.failedRequestHandler = (req, errors) => {
+        this.connection.onFailedRequest = (req, errors) => {
             this.handleFailedRequest(req, errors);
         };
         this.connection.initialize((s) => {
