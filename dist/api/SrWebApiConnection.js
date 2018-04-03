@@ -63,9 +63,7 @@ export default class WebApiConnection {
     }
     handleResponse(response, req) {
         if (this.onResponse) {
-            let resp = new SrServiceResponse();
-            resp.action = req.action;
-            resp.requestId = req.requestId;
+            let resp = new SrServiceResponse(req);
             resp.data = response;
             resp.good = true;
             this.onResponse(resp);

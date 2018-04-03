@@ -79,9 +79,7 @@ export default class WebApiConnection implements IApiConnection {
 
     private handleResponse(response: string, req: SrServiceRequest) {
         if (this.onResponse) {
-            let resp = new SrServiceResponse();
-            resp.action = req.action;
-            resp.requestId = req.requestId;
+            let resp = new SrServiceResponse(req);
             resp.data = response;
             resp.good = true;
             this.onResponse(resp);

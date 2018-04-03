@@ -1,4 +1,13 @@
-﻿export default class SrServiceResponse {
+﻿import SrServiceRequest from "./SrServiceRequest";
+
+export default class SrServiceResponse {
+    constructor(fromReq?: SrServiceRequest) {
+        if (fromReq) {
+            this.requestId = fromReq.requestId;
+            this.action = fromReq.action;
+        }
+    }
+
     requestId: string;
     action: string;
     good: boolean;

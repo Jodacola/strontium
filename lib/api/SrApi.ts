@@ -29,12 +29,9 @@ export default class SrApi {
         }
 
         this.connection = initializer.buildConnection();
-        this.connection.onResponse = (resp: SrServiceResponse) => {
-            this.handleResponse(resp);
-        };
-        this.connection.onFailedRequest = (req: SrServiceRequest, errors: any[]) => {
-            this.handleFailedRequest(req, errors);
-        };
+        this.connection.onResponse = resp => this.handleResponse(resp);
+        this.connection.onFailedRequest = (req: SrServiceRequest, errors: any[]) => this.handleFailedRequest(req, errors);
+        this.connection.onServerMessage = resp => this.handleDirectMessage(resp);
 
         this.connection.initialize((s: boolean) => {
             Log.d(this, "API Initialization callback", { success: s });
@@ -139,5 +136,9 @@ export default class SrApi {
         if (req.callbackHandler) {
             req.callbackHandler(resp);
         }
+    }
+
+    private handleDirectMessage(resp: SrServiceResponse) {
+        runtime.messaging.broadcast(CommonMessages.RemoteOriginatedMessage, false, resp);
     }
 }

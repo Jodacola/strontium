@@ -3,7 +3,7 @@ export default class CommonMessages {
     static ApiInitializationFailed: string;
     static OverlayOpening: string;
     static OverlayClosed: string;
-    static DashboardInitialized: string;
+    static RemoteOriginatedMessage: string;
     static AppInitialized: string;
     static AppReady: string;
 }

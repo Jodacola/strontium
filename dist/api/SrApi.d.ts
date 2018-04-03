@@ -16,4 +16,5 @@ export default class SrApi {
     private removeRequest(requestId);
     private processMessage(req, resp);
     private handleFailedRequest(req, errors);
+    private handleDirectMessage(resp);
 }

@@ -3,7 +3,7 @@
     public static ApiInitializationFailed: string = "Strontium.CommonMessages.ApiInitializationFailied";
     public static OverlayOpening: string = "Strontium.CommonMessages.OverlayOpening";
     public static OverlayClosed: string = "Strontium.CommonMessages.OverlayClosed";
-    public static DashboardInitialized: string = "Strontium.CommonMessages.DashboardInitialized";
+    public static RemoteOriginatedMessage: string = "Strontium.CommonMessages.RemoteOriginatedMessage";
     public static AppInitialized: string = "Strontium.CommonMessages.AppInitialized";
     public static AppReady: string = "Strontium.CommonMessages.AppReady";
 }

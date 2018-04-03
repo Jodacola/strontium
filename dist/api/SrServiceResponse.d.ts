@@ -1,4 +1,6 @@
+import SrServiceRequest from "./SrServiceRequest";
 export default class SrServiceResponse {
+    constructor(fromReq?: SrServiceRequest);
     requestId: string;
     action: string;
     good: boolean;

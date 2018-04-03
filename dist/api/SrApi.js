@@ -20,12 +20,9 @@ export default class SrApi {
             return;
         }
         this.connection = initializer.buildConnection();
-        this.connection.onResponse = (resp) => {
-            this.handleResponse(resp);
-        };
-        this.connection.onFailedRequest = (req, errors) => {
-            this.handleFailedRequest(req, errors);
-        };
+        this.connection.onResponse = resp => this.handleResponse(resp);
+        this.connection.onFailedRequest = (req, errors) => this.handleFailedRequest(req, errors);
+        this.connection.onServerMessage = resp => this.handleDirectMessage(resp);
         this.connection.initialize((s) => {
             Log.d(this, "API Initialization callback", { success: s });
             this.initialized = s;
@@ -110,6 +107,9 @@ export default class SrApi {
         if (req.callbackHandler) {
             req.callbackHandler(resp);
         }
+    }
+    handleDirectMessage(resp) {
+        runtime.messaging.broadcast(CommonMessages.RemoteOriginatedMessage, false, resp);
     }
 }
 //# sourceMappingURL=SrApi.js.map
