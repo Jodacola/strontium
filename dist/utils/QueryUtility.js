@@ -5,17 +5,18 @@ export default class QueryUtility {
             return queryString;
         }
         else {
-            let obj = {};
-            if (queryString.indexOf('?') === 0) {
-                queryString = queryString.substr(1);
-            }
-            let components = queryString.split('&');
-            components.forEach(c => {
-                let split = c.split('=');
-                obj[split[0]] = split[1];
-            });
-            return obj;
+            return this.asObject(queryString);
         }
+    }
+    static asObject(queryString) {
+        let obj = {};
+        queryString = this.stripDelimiter(queryString || '');
+        let components = queryString.split('&');
+        components.forEach(c => {
+            let split = c.split('=');
+            obj[split[0]] = split[1];
+        });
+        return obj;
     }
     static buildQuery(obj, exclusive = false) {
         let currentQuery = this.current(true);
