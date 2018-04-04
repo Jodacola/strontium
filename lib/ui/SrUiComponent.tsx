@@ -18,27 +18,8 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         this.state = this.initialState();
     }
 
-    protected getRefHandler<T extends HTMLElement>(key: string): (ref: T) => void {
-        if (!this.refHandlers[key]) {
-            this.refHandlers[key] = (ref: T) => {
-                this.elementRefs[key] = ref;
-            }
-        }
-        return this.refHandlers[key];
-    }
-
     protected getRef<T extends HTMLElement>(key: string) {
-        return this.elementRefs[key] as T;
-    }
-
-    protected cleanUpRefs(): void {
-        for (var key in this.refHandlers) {
-            delete this.refHandlers[key];
-        }
-
-        for (var key in this.elementRefs) {
-            delete this.elementRefs[key];
-        }
+        return this.refs[key] as T;
     }
 
     /* IMessageHandler Implementation Details */
@@ -99,11 +80,10 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         this.unregisterResizeHandler();
         this.unregisterHandlers();
         this.onComponentWillUnmount();
-        this.cleanUpRefs();
         this.componentMounted = false;
     };
 
-    render(): JSX.Element {
+    render(): React.ReactNode {
         Log.t(this, "Will render");
         return this.performRender();
     };
@@ -113,7 +93,7 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
     protected onComponentMounted(): void { };
     protected onComponentWillUnmount(): void { };
 
-    abstract performRender(): JSX.Element;
+    abstract performRender(): React.ReactNode;
 
     /* Misc helpers */
     public mounted(): boolean {
@@ -265,17 +245,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         }
         return null;
     }
-
-    /**
-     * Returns a promise that resolves after the provided delay.
-     * @param {Number} milliseconds The delay in milliseconds before the promise is resolved.
-     */
-    protected delay(milliseconds: number): Promise<void> {
-        return new Promise<void>(resolve => {
-            setTimeout(resolve, milliseconds);
-        });
-    }
-
 
     protected broadcast(message: string, data?: any) {
         runtime.messaging.broadcast(message, true, data);

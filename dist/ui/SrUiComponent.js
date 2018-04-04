@@ -20,24 +20,8 @@ class SrUiComponent extends React.Component {
         this.refHandlers = {};
         this.state = this.initialState();
     }
-    getRefHandler(key) {
-        if (!this.refHandlers[key]) {
-            this.refHandlers[key] = (ref) => {
-                this.elementRefs[key] = ref;
-            };
-        }
-        return this.refHandlers[key];
-    }
     getRef(key) {
-        return this.elementRefs[key];
-    }
-    cleanUpRefs() {
-        for (var key in this.refHandlers) {
-            delete this.refHandlers[key];
-        }
-        for (var key in this.elementRefs) {
-            delete this.elementRefs[key];
-        }
+        return this.refs[key];
     }
     /* IMessageHandler Implementation Details */
     handles() {
@@ -88,7 +72,6 @@ class SrUiComponent extends React.Component {
         this.unregisterResizeHandler();
         this.unregisterHandlers();
         this.onComponentWillUnmount();
-        this.cleanUpRefs();
         this.componentMounted = false;
     }
     ;
@@ -235,15 +218,6 @@ class SrUiComponent extends React.Component {
             return className;
         }
         return null;
-    }
-    /**
-     * Returns a promise that resolves after the provided delay.
-     * @param {Number} milliseconds The delay in milliseconds before the promise is resolved.
-     */
-    delay(milliseconds) {
-        return new Promise(resolve => {
-            setTimeout(resolve, milliseconds);
-        });
     }
     broadcast(message, data) {
         runtime.messaging.broadcast(message, true, data);

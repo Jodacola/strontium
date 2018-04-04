@@ -84,6 +84,7 @@
       "<rootDir>/spec/**/*.(js|ts|tsx)"
     ],
     "verbose": true,
+    "testURL": "http://www.roadtonowhere.com/path1/path2/?id=someId&key1=value1&key2=value2",
     "globals": {
       "ts-jest": {
         "tsConfigFile": "tsconfig.json"
