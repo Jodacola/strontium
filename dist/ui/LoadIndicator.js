@@ -4,8 +4,21 @@ import LoadStates from "../api/LoadStates";
 import WaitSpinner from "./WaitSpinner";
 import Alert from "./Alert";
 export default class LoadIndicator extends UiC {
+    initialState() {
+        return {
+            loadState: this.props.state,
+            successMessage: null,
+            errorMessage: this.props.errorMessage,
+            loadingMessage: this.props.loadingMessage
+        };
+    }
     onNewProps(props) {
-        this.set(props.state);
+        this.setState({
+            loadState: props.state,
+            successMessage: null,
+            errorMessage: props.errorMessage,
+            loadingMessage: props.loadingMessage
+        });
     }
     performRender() {
         var content = null;

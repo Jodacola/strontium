@@ -5,9 +5,31 @@ import LoadStates from "../api/LoadStates";
 import WaitSpinner from "./WaitSpinner";
 import Alert from "./Alert";
 
-export default class LoadIndicator extends UiC<{ alertClassName?:string, spinClassName?:string, state: IApiLoadingState }, IApiLoadingState> {
-    onNewProps(props: { state: IApiLoadingState }): void {
-        this.set(props.state);
+export interface ILoadIndicatorProps {
+    alertClassName?: string,
+    spinClassName?: string,
+    state: LoadStates,
+    loadingMessage?: string,
+    errorMessage?: string
+}
+
+export default class LoadIndicator extends UiC<{ alertClassName?: string, spinClassName?: string, state: LoadStates, loadingMessage?: string, errorMessage?: string }, IApiLoadingState> {
+    initialState() {
+        return {
+            loadState: this.props.state,
+            successMessage: null,
+            errorMessage: this.props.errorMessage,
+            loadingMessage: this.props.loadingMessage
+        };
+    }
+
+    onNewProps(props: ILoadIndicatorProps): void {
+        this.setState({
+            loadState: props.state,
+            successMessage: null,
+            errorMessage: props.errorMessage,
+            loadingMessage: props.loadingMessage
+        });
     }
 
     performRender() {
