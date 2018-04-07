@@ -8,7 +8,7 @@
   },
   "types": "dist/lib.d.ts",
   "scripts": {
-    "prepublish": "npm run build",
+    "prepare": "npm run build",
     "build": "tsc && rm -rf ./dist/lib ./dist/sass && cp -r ./lib/sass ./dist/sass",
     "test": "jest --no-cache"
   },
