@@ -4,7 +4,17 @@ import { Popover as BsPopover, OverlayTrigger } from "react-bootstrap";
 import { runtime } from "../framework/SrApp";
 import * as React from "react";
 
-export default class Popover extends UiC<{ id: string, title?: string, content: JSX.Element, placement?: string, preventOverlay?: boolean }, {}> {
+export interface IPopoverProps {
+    id: string,
+    title?: string,
+    content: JSX.Element,
+    placement?: 'top' | 'bottom' | 'left' | 'right',
+    preventOverlay?: boolean,
+    rootClose?: boolean,
+    container?: any
+};
+
+export default class Popover extends UiC<IPopoverProps, {}> {
     performRender() {
         try {
             var popover = (
@@ -16,10 +26,11 @@ export default class Popover extends UiC<{ id: string, title?: string, content: 
                 <OverlayTrigger
                     trigger="click"
                     containerPadding={10}
-                    rootClose
+                    rootClose={this.props.rootClose !== false}
                     onEntering={() => { this.overlayEntering(); }}
                     onExiting={() => { this.overlayExiting(); }}
                     overlay={popover}
+                    container={this.props.container}
                     placement={this.props.placement || "bottom"}>
                     {this.props.children}
                 </OverlayTrigger>
