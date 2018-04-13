@@ -25,6 +25,9 @@ export default class SrUi implements IMessageHandler {
     private urlNavigationEnabled: boolean;
     private appTitle: string;
     private configurer: IUiInitializer;
+    private footerElement: React.ReactNode | React.ReactNode[];
+    private headerElement: React.ReactNode | React.ReactNode[];
+    private containerElement: React.ReactNode;
 
     public initialize(uiInit: IUiInitializer): void {
         if (uiInit == null) {
@@ -70,6 +73,9 @@ export default class SrUi implements IMessageHandler {
         this.rootElement = uiInit.rootElement();
         this.urlNavigationEnabled = uiInit.urlNavigationEnabled();
         this.appTitle = uiInit.appTitle();
+        this.headerElement = uiInit.headerElement();
+        this.footerElement = uiInit.footerElement();
+        this.containerElement = uiInit.containerElement();
         runtime.messaging.registerHandler(this);
     }
 
@@ -252,7 +258,18 @@ export default class SrUi implements IMessageHandler {
             ReactDOM.render(<div className="no-view" />, document.getElementById(this.rootElement));
             return;
         }
-        ReactDOM.render(view, document.getElementById(this.rootElement));
+
+        let viewRender = view;
+        if (React.isValidElement(this.containerElement)) {
+            viewRender = React.cloneElement(this.containerElement, this.containerElement.props, view);
+        }
+
+        let render = <React.Fragment>
+            {this.headerElement}
+            {viewRender}
+            {this.footerElement}
+        </React.Fragment>;
+        ReactDOM.render(render, document.getElementById(this.rootElement));
     }
 
     private getDefaultLocation(): string {

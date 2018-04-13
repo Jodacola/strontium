@@ -1,3 +1,4 @@
+/// <reference types="react" />
 import INavigationHandler from "../navigation/INavigationHandler";
 export default interface IUiInitializer {
     defaultLocation(): string;
@@ -10,4 +11,7 @@ export default interface IUiInitializer {
     appInitFailed(): void;
     navigationHandlers(): INavigationHandler[];
     appTitle(): string;
+    footerElement(): React.ReactNode | React.ReactNode[];
+    headerElement(): React.ReactNode | React.ReactNode[];
+    containerElement(): React.ReactNode;
 }

@@ -1,5 +1,6 @@
 import { IUiInitializer, INavigationHandler } from "../lib";
 import NavigationTarget from "../navigation/NavigationTarget";
+import { FooterElement } from "./UiElements";
 
 export default class StrontiumUiConfig implements IUiInitializer {
     private _defaultLocation: string;
@@ -12,8 +13,11 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _appReady: () => void;
     private _appInitFailed: () => void;
     private _appInitializing: () => void;
+    private _containerElement: React.ReactNode;
+    private _footerElement: React.ReactNode | React.ReactNode[];
+    private _headerElement: React.ReactNode | React.ReactNode[];
 
-    constructor(
+    constructor(options: {
         defaultLocation: string,
         basePath: string,
         rootElement: string,
@@ -23,18 +27,24 @@ export default class StrontiumUiConfig implements IUiInitializer {
         appReady: () => void,
         appInitFailed: () => void,
         appInitializing: () => void,
-        navHandlers: INavigationHandler[]
-    ) {
-        this._defaultLocation = defaultLocation;
-        this._basePath = basePath;
-        this._rootElement = rootElement;
-        this._urlNavEnabled = urlNavEnabled === true;
-        this._navigateOnQueryChange = navigateOnQueryChange === true;
-        this._appTitle = appTitle;
-        this._appReady = appReady;
-        this._appInitializing = appInitializing;
-        this._appInitFailed = appInitFailed;
-        this._navHandlers = navHandlers;
+        navHandlers: INavigationHandler[],
+        headerElement: React.ReactNode | React.ReactNode[],
+        footerElement: React.ReactNode | React.ReactNode[],
+        containerElement: React.ReactNode
+    }) {
+        this._defaultLocation = options.defaultLocation;
+        this._basePath = options.basePath;
+        this._rootElement = options.rootElement;
+        this._urlNavEnabled = options.urlNavEnabled === true;
+        this._navigateOnQueryChange = options.navigateOnQueryChange === true;
+        this._appTitle = options.appTitle;
+        this._appReady = options.appReady;
+        this._appInitializing = options.appInitializing;
+        this._appInitFailed = options.appInitFailed;
+        this._navHandlers = options.navHandlers;
+        this._footerElement = options.footerElement;
+        this._headerElement = options.headerElement;
+        this._containerElement = options.containerElement;
     }
 
     public defaultLocation(): string {
@@ -81,5 +91,17 @@ export default class StrontiumUiConfig implements IUiInitializer {
 
     public appTitle(): string {
         return this._appTitle;
+    }
+
+    public footerElement(): React.ReactNode | React.ReactNode[] {
+        return this._footerElement;
+    }
+
+    public headerElement(): React.ReactNode | React.ReactNode[] {
+        return this._headerElement;
+    }
+
+    public containerElement(): React.ReactNode {
+        return this._containerElement;
     }
 }

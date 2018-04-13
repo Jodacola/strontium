@@ -13,6 +13,7 @@ export interface IUiConfig extends IConfigElement {
 export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
     static defaultProps: IUiConfig;
     config(): any;
+    private uiElementFor(type);
     private navigationHandlers();
     private createRoute(route, title, builder);
 }

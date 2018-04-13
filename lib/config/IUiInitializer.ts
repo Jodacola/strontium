@@ -1,4 +1,5 @@
 ﻿import INavigationHandler from "../navigation/INavigationHandler";
+import { FooterElement } from "./UiElements";
 
 export default interface IUiInitializer {
     defaultLocation(): string;
@@ -11,4 +12,7 @@ export default interface IUiInitializer {
     appInitFailed(): void;
     navigationHandlers(): INavigationHandler[];
     appTitle(): string;
+    footerElement(): React.ReactNode | React.ReactNode[];
+    headerElement(): React.ReactNode | React.ReactNode[];
+    containerElement(): React.ReactNode;
 }

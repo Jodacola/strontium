@@ -25,17 +25,35 @@ export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
 
     config(): any {
         return new StrontiumUiConfig(
-            this.props.defaultLocation,
-            this.props.basePath,
-            this.props.rootElement,
-            this.props.urlNavigationEnabled,
-            this.props.navigateOnQueryChanges,
-            this.props.appTitle,
-            this.props.appInitializing,
-            this.props.appInitFailed,
-            this.props.appReady,
-            this.navigationHandlers()
+            {
+                defaultLocation: this.props.defaultLocation,
+                basePath: this.props.basePath,
+                rootElement: this.props.rootElement,
+                urlNavEnabled: this.props.urlNavigationEnabled,
+                navigateOnQueryChange: this.props.navigateOnQueryChanges,
+                appTitle: this.props.appTitle,
+                appInitializing: this.props.appInitializing,
+                appInitFailed: this.props.appInitFailed,
+                appReady: this.props.appReady,
+                navHandlers: this.navigationHandlers(),
+                headerElement: this.uiElementFor('header'),
+                footerElement: this.uiElementFor('footer'),
+                containerElement: this.uiElementFor('container')
+            }
         );
+    }
+
+    private uiElementFor(type: string) {
+        let element: React.ReactNode | React.ReactNode[] = undefined;
+        React.Children.forEach(this.props.children, (child, index) => {
+            if (React.isValidElement(child)) {
+                let props = child.props;
+                if (props['uiElementType'] === type) {
+                    element = props['children'];
+                }
+            }
+        });
+        return element;
     }
 
     private navigationHandlers(): INavigationHandler[] {
@@ -43,7 +61,9 @@ export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
         React.Children.forEach(this.props.children, (child, index) => {
             if (React.isValidElement(child)) {
                 let props = child.props;
-                navHandlers.push(this.createRoute(props['route'], props['title'], props['view']));
+                if (Object.keys(props).indexOf('uiElementType') === -1) {
+                    navHandlers.push(this.createRoute(props['route'], props['title'], props['view']));
+                }
             }
         });
         return navHandlers;

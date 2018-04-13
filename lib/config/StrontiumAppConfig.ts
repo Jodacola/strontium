@@ -15,7 +15,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
     private _postInit: () => void;
     private _services: IAppService[];
 
-    constructor(
+    constructor(options: {
         environment: string,
         logConfig: ILoggerConfig,
         errorReporter: IErrorReporter,
@@ -23,17 +23,18 @@ export default class StrontiumAppConfig extends SrAppConfig {
         uiInitializer: IUiInitializer,
         services: IAppService[],
         preInit: () => void,
-        postInit: () => void) {
+        postInit: () => void
+    }) {
         super();
-        logConfig = this.defaultLogConfig(logConfig);
-        this.loggingLevel = this.getLoggingLevel(environment, logConfig);
-        this.logFilter = this.getLogFilters(logConfig);
-        this._errorReporter = this.errorReporterOrDefault(errorReporter);
-        this._apiInitializer = apiInitializer;
-        this._uiInitializer = uiInitializer;
-        this._services = services;
-        this._preInit = preInit;
-        this._postInit = postInit;
+        options.logConfig = this.defaultLogConfig(options.logConfig);
+        this.loggingLevel = this.getLoggingLevel(options.environment, options.logConfig);
+        this.logFilter = this.getLogFilters(options.logConfig);
+        this._errorReporter = this.errorReporterOrDefault(options.errorReporter);
+        this._apiInitializer = options.apiInitializer;
+        this._uiInitializer = options.uiInitializer;
+        this._services = options.services;
+        this._preInit = options.preInit;
+        this._postInit = options.postInit;
     }
 
     private defaultLogConfig(config: ILoggerConfig): ILoggerConfig {

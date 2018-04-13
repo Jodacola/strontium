@@ -65,6 +65,9 @@ export default class SrUi {
         this.rootElement = uiInit.rootElement();
         this.urlNavigationEnabled = uiInit.urlNavigationEnabled();
         this.appTitle = uiInit.appTitle();
+        this.headerElement = uiInit.headerElement();
+        this.footerElement = uiInit.footerElement();
+        this.containerElement = uiInit.containerElement();
         runtime.messaging.registerHandler(this);
     }
     handleInitialization(success) {
@@ -224,7 +227,15 @@ export default class SrUi {
                 ReactDOM.render(React.createElement("div", { className: "no-view" }), document.getElementById(this.rootElement));
                 return;
             }
-            ReactDOM.render(view, document.getElementById(this.rootElement));
+            let viewRender = view;
+            if (React.isValidElement(this.containerElement)) {
+                viewRender = React.cloneElement(this.containerElement, this.containerElement.props, view);
+            }
+            let render = React.createElement(React.Fragment, null,
+                this.headerElement,
+                viewRender,
+                this.footerElement);
+            ReactDOM.render(render, document.getElementById(this.rootElement));
         });
     }
     getDefaultLocation() {

@@ -1,16 +1,19 @@
 export default class StrontiumUiConfig {
-    constructor(defaultLocation, basePath, rootElement, urlNavEnabled, navigateOnQueryChange, appTitle, appReady, appInitFailed, appInitializing, navHandlers) {
+    constructor(options) {
         this._navHandlers = null;
-        this._defaultLocation = defaultLocation;
-        this._basePath = basePath;
-        this._rootElement = rootElement;
-        this._urlNavEnabled = urlNavEnabled === true;
-        this._navigateOnQueryChange = navigateOnQueryChange === true;
-        this._appTitle = appTitle;
-        this._appReady = appReady;
-        this._appInitializing = appInitializing;
-        this._appInitFailed = appInitFailed;
-        this._navHandlers = navHandlers;
+        this._defaultLocation = options.defaultLocation;
+        this._basePath = options.basePath;
+        this._rootElement = options.rootElement;
+        this._urlNavEnabled = options.urlNavEnabled === true;
+        this._navigateOnQueryChange = options.navigateOnQueryChange === true;
+        this._appTitle = options.appTitle;
+        this._appReady = options.appReady;
+        this._appInitializing = options.appInitializing;
+        this._appInitFailed = options.appInitFailed;
+        this._navHandlers = options.navHandlers;
+        this._footerElement = options.footerElement;
+        this._headerElement = options.headerElement;
+        this._containerElement = options.containerElement;
     }
     defaultLocation() {
         return this._defaultLocation;
@@ -47,6 +50,15 @@ export default class StrontiumUiConfig {
     }
     appTitle() {
         return this._appTitle;
+    }
+    footerElement() {
+        return this._footerElement;
+    }
+    headerElement() {
+        return this._headerElement;
+    }
+    containerElement() {
+        return this._containerElement;
     }
 }
 //# sourceMappingURL=StrontiumUiConfig.js.map

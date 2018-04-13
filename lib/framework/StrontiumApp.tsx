@@ -70,14 +70,16 @@ export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}
 
     finalizeConfiguration() {
         let cfg = new StrontiumAppConfig(
-            this.props.environment,
-            this.getConfiguredType(ConfigElementTypes.Logger),
-            this.props.errorReporter,
-            this.getConfiguredType(ConfigElementTypes.Api),
-            this.getConfiguredType(ConfigElementTypes.Ui),
-            this.getConfiguredType(ConfigElementTypes.Services),
-            this.props.onPreInit,
-            this.props.onPostInit);
+            {
+                environment: this.props.environment,
+                logConfig: this.getConfiguredType(ConfigElementTypes.Logger),
+                errorReporter: this.props.errorReporter,
+                apiInitializer: this.getConfiguredType(ConfigElementTypes.Api),
+                uiInitializer: this.getConfiguredType(ConfigElementTypes.Ui),
+                services: this.getConfiguredType(ConfigElementTypes.Services),
+                preInit: this.props.onPreInit,
+                postInit: this.props.onPostInit
+            });
         runtime.initialize(cfg);
     }
 
