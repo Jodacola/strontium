@@ -8,7 +8,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         this.loggingLevel = this.getLoggingLevel(options.environment, options.logConfig);
         this.logFilter = this.getLogFilters(options.logConfig);
         this._errorReporter = this.errorReporterOrDefault(options.errorReporter);
-        this._apiInitializer = options.apiInitializer;
+        this.apiConnections = options.apiConnections;
         this._uiInitializer = options.uiInitializer;
         this._services = options.services;
         this._preInit = options.preInit;
@@ -36,10 +36,6 @@ export default class StrontiumAppConfig extends SrAppConfig {
     }
     errorReporter() {
         return this._errorReporter;
-    }
-    ;
-    apiInitializer() {
-        return this._apiInitializer;
     }
     ;
     uiInitializer() {

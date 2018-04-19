@@ -1,9 +1,9 @@
 import { StrontiumAppConfigElement, IConfigElement } from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 import { IApiConnection } from "../lib";
-import StrontiumApiConfig from "./StrontiumApiConfig";
 
 export interface IApiConfig extends IConfigElement {
+    name?: string,
     connection?: IApiConnection
 }
 
@@ -13,6 +13,8 @@ export default class ApiConfigElement extends StrontiumAppConfigElement<IApiConf
     };
 
     config(): any {
-        return new StrontiumApiConfig(this.props.connection);
+        let conn = this.props.connection;
+        conn.name = this.props.name;
+        return conn;
     }
 }

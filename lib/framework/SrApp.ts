@@ -7,13 +7,14 @@ import SrUi from "../ui/SrUi";
 import CM from "../messaging/CommonMessages";
 import IAppService from "./IAppService";
 import SrServiceContainer from "./SrServiceContainer";
+import ApiContainer from "../api/ApiContainer";
 
 export class SrApp {
     public config: SrAppConfig;
-    public api: SrApi;
     public messaging: SrLocalMessaging;
     public ui: SrUi;
     public services: SrServiceContainer = new SrServiceContainer();
+    public apis: ApiContainer;
 
     private initialized: boolean;
 
@@ -36,7 +37,7 @@ export class SrApp {
         this.config.preInitialize();
 
         this.initializeUi();
-        this.initializeApi();
+        this.initializeApis();
 
         Log.t(this, "Initialized", { config: this.config });
 
@@ -54,10 +55,16 @@ export class SrApp {
         this.ui.initialize(this.config.uiInitializer());
     }
 
-    private initializeApi(): void {
+    private initializeApis(): void {
         Log.t(this, 'Initializing API');
-        this.api = new SrApi();
-        this.api.initialize(this.config.apiInitializer());
+        this.apis = new ApiContainer(this.messaging);
+        this.services.register(this.apis);
+        (this.config.apiConnections || []).forEach(conn => {
+            let name = conn.name || 'default';
+            let api = new SrApi(this.messaging);
+            this.apis.register(name, api, conn);
+        });
+        this.apis.initializeApis();
     }
 }
 

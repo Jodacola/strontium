@@ -6,3 +6,4 @@ export { default as SrApi } from "./SrApi";
 export { default as SrServiceRequest } from "./SrServiceRequest";
 export { default as SrServiceResponse } from "./SrServiceResponse";
 export { default as SrWebApiConnection } from "./SrWebApiConnection";
+export { default as ApiContainer } from "./ApiContainer";

@@ -1,9 +1,10 @@
 import { StrontiumAppConfigElement } from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
-import StrontiumApiConfig from "./StrontiumApiConfig";
 export default class ApiConfigElement extends StrontiumAppConfigElement {
     config() {
-        return new StrontiumApiConfig(this.props.connection);
+        let conn = this.props.connection;
+        conn.name = this.props.name;
+        return conn;
     }
 }
 ApiConfigElement.defaultProps = {

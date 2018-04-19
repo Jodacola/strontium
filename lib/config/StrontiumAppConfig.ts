@@ -1,15 +1,13 @@
 import Log, { LogLevel } from "../framework/Log";
 import SrAppConfig from "./SrAppConfig";
 import IErrorReporter from "./IErrorReporter";
-import IApiInitializer from "./IApiInitializer";
 import IUiInitializer from "./IUiInitializer";
 import ILoggerConfig from "./ILoggerConfig";
 import IAppService from "../framework/IAppService";
-import { runtime } from "../lib";
+import { runtime, IApiConnection } from "../lib";
 
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter: IErrorReporter;
-    private _apiInitializer: IApiInitializer;
     private _uiInitializer: IUiInitializer;
     private _preInit: () => void;
     private _postInit: () => void;
@@ -19,7 +17,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         environment: string,
         logConfig: ILoggerConfig,
         errorReporter: IErrorReporter,
-        apiInitializer: IApiInitializer,
+        apiConnections: IApiConnection[],
         uiInitializer: IUiInitializer,
         services: IAppService[],
         preInit: () => void,
@@ -30,7 +28,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         this.loggingLevel = this.getLoggingLevel(options.environment, options.logConfig);
         this.logFilter = this.getLogFilters(options.logConfig);
         this._errorReporter = this.errorReporterOrDefault(options.errorReporter);
-        this._apiInitializer = options.apiInitializer;
+        this.apiConnections = options.apiConnections;
         this._uiInitializer = options.uiInitializer;
         this._services = options.services;
         this._preInit = options.preInit;
@@ -64,9 +62,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
     public errorReporter(): IErrorReporter {
         return this._errorReporter;
     };
-    public apiInitializer(): IApiInitializer {
-        return this._apiInitializer;
-    };
+
     public uiInitializer(): IUiInitializer {
         return this._uiInitializer;
     };

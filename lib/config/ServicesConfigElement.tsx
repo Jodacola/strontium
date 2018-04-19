@@ -1,7 +1,6 @@
 import { StrontiumAppConfigElement, IConfigElement } from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 import { IApiConnection } from "../lib";
-import StrontiumApiConfig from "./StrontiumApiConfig";
 import IAppService from "../framework/IAppService";
 import * as React from "react";
 

@@ -1,6 +1,7 @@
 import IMessageHandler from "./IMessageHandler";
 import IMessageInterceptor from "./IMessageInterceptor";
-export default class SrLocalMessaging {
+import IAppMessaging from "./IAppMessaging";
+export default class SrLocalMessaging implements IAppMessaging {
     private serviceHandlers;
     private messageInterceptors;
     constructor();

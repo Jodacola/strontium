@@ -1,12 +1,11 @@
 import SrAppConfig from "./SrAppConfig";
 import IErrorReporter from "./IErrorReporter";
-import IApiInitializer from "./IApiInitializer";
 import IUiInitializer from "./IUiInitializer";
 import ILoggerConfig from "./ILoggerConfig";
 import IAppService from "../framework/IAppService";
+import { IApiConnection } from "../lib";
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter;
-    private _apiInitializer;
     private _uiInitializer;
     private _preInit;
     private _postInit;
@@ -15,7 +14,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         environment: string;
         logConfig: ILoggerConfig;
         errorReporter: IErrorReporter;
-        apiInitializer: IApiInitializer;
+        apiConnections: IApiConnection[];
         uiInitializer: IUiInitializer;
         services: IAppService[];
         preInit: () => void;
@@ -26,7 +25,6 @@ export default class StrontiumAppConfig extends SrAppConfig {
     private getLogFilters(config);
     private errorReporterOrDefault(reporter);
     errorReporter(): IErrorReporter;
-    apiInitializer(): IApiInitializer;
     uiInitializer(): IUiInitializer;
     preInitialize(): void;
     setupServices(): void;

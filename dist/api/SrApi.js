@@ -2,65 +2,54 @@ import Log from "../framework/Log";
 import SrServiceRequest from "./SrServiceRequest";
 import SrServiceResponse from "./SrServiceResponse";
 import SrStats from "../framework/SrStats";
-import { runtime } from "../framework/SrApp";
 import CommonMessages from "../messaging/CommonMessages";
 export default class SrApi {
-    constructor() {
-        this.initialized = false;
-        this.connection = null;
-        this.pendingRequests = {};
+    constructor(messaging) {
+        this._initialized = false;
+        this._connection = null;
+        this._pendingRequests = {};
+        this._messaging = messaging;
     }
-    initialize(initializer) {
-        if (this.initialized) {
+    initialize(conn) {
+        if (this._initialized || !this.checkConnection(conn)) {
             return;
         }
-        if (initializer == null) {
-            Log.w(this, "Invalid API initializer supplied.  Cannot initialize API.  Proceeding without API.");
-            runtime.messaging.broadcast(CommonMessages.ApiInitialized);
-            return;
-        }
-        this.connection = initializer.buildConnection();
-        this.connection.onResponse = resp => this.handleResponse(resp);
-        this.connection.onFailedRequest = (req, errors) => this.handleFailedRequest(req, errors);
-        this.connection.onServerMessage = resp => this.handleDirectMessage(resp);
-        this.connection.initialize((s) => {
-            Log.d(this, "API Initialization callback", { success: s });
-            this.initialized = s;
-            runtime.messaging.broadcast(s ? CommonMessages.ApiInitialized : CommonMessages.ApiInitializationFailed, true);
-        }, false);
+        this._connection = conn;
+        this.attachConnection(conn);
+        this.initializeConnection(conn);
     }
-    checkApi() {
-        Log.t(this, "Checking API");
-        var cutoff = new Date().getTime() - runtime.config.staleApiRequestPeriod;
-        var staleRequests = [];
-        for (var id in this.pendingRequests) {
-            if (this.pendingRequests.hasOwnProperty(id)) {
-                var req = this.pendingRequests[id];
-                if (SrStats.getStartTime(req.requestId) <= cutoff) {
-                    Log.d(this, "Pending request timed out", req);
-                    staleRequests.push(req);
-                }
-            }
-        }
-        staleRequests.forEach((r) => {
-            this.handleStaleRequest(r);
-        });
-    }
-    handleStaleRequest(req) {
-        this.sendRequest(req);
-    }
-    connected() {
-        if (!this.initialized) {
+    checkConnection(conn) {
+        if (!conn) {
+            Log.w(this, "Invalid API connection supplied.  Cannot initialize API.  Proceeding without API.");
+            this._messaging.broadcast(CommonMessages.ApiInitialized, true, { connection: conn.name || 'default' });
             return false;
         }
-        return this.connection.connected();
+        return true;
     }
-    sendMessage(type, action, content, options, manualCb = null, resendOnFailure = true) {
+    initializeConnection(conn) {
+        conn.initialize((s) => {
+            Log.d(this, "API Initialization callback", { success: s });
+            this._initialized = s;
+            this._messaging.broadcast(s ? CommonMessages.ApiInitialized : CommonMessages.ApiInitializationFailed, true, { connection: conn.name || 'default' });
+        }, false);
+    }
+    attachConnection(conn) {
+        conn.onResponse = resp => this.handleResponse(resp);
+        conn.onFailedRequest = (req, errors) => this.handleFailedRequest(req, errors);
+        conn.onServerMessage = resp => this.handleDirectMessage(resp);
+    }
+    connected() {
+        if (!this._initialized) {
+            return false;
+        }
+        return this._connection.connected();
+    }
+    sendMessage(type, action, content, options, manualCb = null) {
         if (!this.connected()) {
             Log.e(this, "Attempt to send message against unconnected service", { action: action, content: content });
             return;
         }
-        var req = new SrServiceRequest(type, action, content, options, resendOnFailure, manualCb);
+        var req = new SrServiceRequest(type, action, content, options, manualCb);
         this.sendRequest(req);
         return req.requestId;
     }
@@ -68,20 +57,19 @@ export default class SrApi {
         if (req.requestId == null) {
             req.requestId = SrStats.start();
         }
-        req.sendAttempts++;
-        this.pendingRequests[req.requestId] = req;
-        this.connection.sendRequest(req);
+        this._pendingRequests[req.requestId] = req;
+        this._connection.sendRequest(req);
     }
     handleResponse(resp) {
         Log.d(this, "API Response", { response: resp });
-        if (this.pendingRequests[resp.requestId]) {
+        if (this._pendingRequests[resp.requestId]) {
             var req = this.removeRequest(resp.requestId);
             this.processMessage(req, resp);
         }
     }
     removeRequest(requestId) {
-        var origReq = this.pendingRequests[requestId];
-        delete this.pendingRequests[requestId];
+        var origReq = this._pendingRequests[requestId];
+        delete this._pendingRequests[requestId];
         return origReq;
     }
     processMessage(req, resp) {
@@ -92,7 +80,7 @@ export default class SrApi {
         if (req.callbackHandler != null) {
             req.callbackHandler(resp);
         }
-        runtime.messaging.broadcast(resp.action, false, resp);
+        this._messaging.broadcast(resp.action, false, resp);
     }
     handleFailedRequest(req, errors) {
         SrStats.stop(req.requestId, "API send failure", req);
@@ -109,7 +97,7 @@ export default class SrApi {
         }
     }
     handleDirectMessage(resp) {
-        runtime.messaging.broadcast(CommonMessages.RemoteOriginatedMessage, false, resp);
+        this._messaging.broadcast(CommonMessages.RemoteOriginatedMessage, false, resp);
     }
 }
 //# sourceMappingURL=SrApi.js.map

@@ -53,7 +53,7 @@ export default class SrUi implements IMessageHandler {
     }
 
     receiveMessage(msg: SrAppMessage): void {
-        if (msg.action === CommonMessages.ApiInitialized) {
+        if (msg.action === CommonMessages.ApiInitialized && !msg.data) {
             runtime.messaging.broadcast(CommonMessages.AppReady);
         }
 

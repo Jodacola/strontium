@@ -6,11 +6,6 @@ export default class DefaultAppConfig extends SrAppConfig {
         return null;
     }
     ;
-    apiInitializer() {
-        Log.w(this, "No API initializer defined for default app configuration, which shouldn't be used.");
-        return null;
-    }
-    ;
     uiInitializer() {
         Log.w(this, "No UI initializer defined for default app configuration, which shouldn't be used.");
         return null;

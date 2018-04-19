@@ -48,7 +48,7 @@ export default class SrUi {
         return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
     receiveMessage(msg) {
-        if (msg.action === CommonMessages.ApiInitialized) {
+        if (msg.action === CommonMessages.ApiInitialized && !msg.data) {
             runtime.messaging.broadcast(CommonMessages.AppReady);
         }
         if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {

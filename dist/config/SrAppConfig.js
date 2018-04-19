@@ -3,7 +3,7 @@ export default class SrAppConfig {
     constructor() {
         this.loggingLevel = LogLevel.Trace;
         this.logFilter = [];
-        this.staleApiRequestPeriod = 60000;
+        this.apiConnections = [];
     }
     setupServices() { }
     ;

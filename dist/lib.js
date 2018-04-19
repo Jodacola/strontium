@@ -43,7 +43,6 @@ export { default as ApiConfigElement } from "./config/ApiConfigElement";
 export { default as ConfigElementTypes } from "./config/ConfigElementTypes";
 export { default as LoggerConfigElement } from "./config/LoggerConfigElement";
 export { default as RouteConfigElement } from "./config/RouteConfigElement";
-export { default as StrontiumApiConfig } from "./config/StrontiumApiConfig";
 export { default as StrontiumAppConfig } from "./config/StrontiumAppConfig";
 export { default as StrontiumAppConfigElement } from "./config/StrontiumAppConfigElement";
 export { default as StrontiumUiConfig } from "./config/StrontiumUiConfig";
@@ -55,4 +54,5 @@ export { default as ServiceConfigElement } from "./config/ServiceConfigElement";
 export { default as SrServiceContainer } from "./framework/SrServiceContainer";
 export { default as QueryUtility } from "./utils/QueryUtility";
 export { default as AppOverlay } from "./ui/AppOverlay";
+export { default as ApiContainer } from "./api/ApiContainer";
 //# sourceMappingURL=lib.js.map

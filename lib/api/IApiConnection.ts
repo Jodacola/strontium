@@ -2,6 +2,7 @@
 import SrServiceResponse from "./SrServiceResponse";
 
 interface IApiConnection {
+    name?: string;
     initialize(cb: (r: boolean) => void, reinit: boolean): void;
     sendRequest(request: SrServiceRequest): void;
     connected(): boolean;
