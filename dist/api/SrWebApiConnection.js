@@ -73,7 +73,6 @@ export default class WebApiConnection {
         }
     }
     handleError(error, req) {
-        debugger;
         if (this.onFailedRequest) {
             if (Object.keys(error).indexOf('response') !== -1) {
                 this.onFailedRequest(req, [error.response.status]);

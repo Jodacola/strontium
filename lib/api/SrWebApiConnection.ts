@@ -89,7 +89,6 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     private handleError(error: any, req: SrServiceRequest) {
-        debugger;
         if (this.onFailedRequest) {
             if (Object.keys(error).indexOf('response') !== -1) {
                 this.onFailedRequest(req, [error.response.status]);
