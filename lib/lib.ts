@@ -64,6 +64,7 @@ export { default as ServiceConfigElement } from "./config/ServiceConfigElement";
 export { default as SrServiceContainer } from "./framework/SrServiceContainer";
 export { default as IAppService } from "./framework/IAppService";
 export { default as QueryUtility } from "./utils/QueryUtility";
+export { default as GeneralUtility } from "./utils/GeneralUtility";
 export { default as AppOverlay } from "./ui/AppOverlay";
 export { default as IAppMessaging } from "./messaging/IAppMessaging";
 export { default as ApiContainer } from "./api/ApiContainer";

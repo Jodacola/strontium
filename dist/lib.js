@@ -53,6 +53,7 @@ export { default as ServicesConfigElement } from "./config/ServicesConfigElement
 export { default as ServiceConfigElement } from "./config/ServiceConfigElement";
 export { default as SrServiceContainer } from "./framework/SrServiceContainer";
 export { default as QueryUtility } from "./utils/QueryUtility";
+export { default as GeneralUtility } from "./utils/GeneralUtility";
 export { default as AppOverlay } from "./ui/AppOverlay";
 export { default as ApiContainer } from "./api/ApiContainer";
 //# sourceMappingURL=lib.js.map
