@@ -1,11 +1,8 @@
 /// <reference types="react" />
 import UiC from "./SrUiComponent";
-import IApiLoadingState from "../api/IApiLoadingState";
+import LoadStates from "../api/LoadStates";
 export default class LoadMask extends UiC<{
-    state: IApiLoadingState;
-}, IApiLoadingState> {
-    onNewProps(props: {
-        state: IApiLoadingState;
-    }): void;
+    state: LoadStates;
+}, {}> {
     performRender(): JSX.Element;
 }
