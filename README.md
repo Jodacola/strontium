@@ -20,6 +20,6 @@ Some notes, which will change over time as this project progresses and matures:
 
 ## Project Use
 
-This package isn't currently published to npm, and won't be until it reaches a stabler point.  In the meantime, inclusion in your packages via git links will work well, and this project will be versioned and tagged appropriately, allowing for specific tagged versions to be used in your projects.
+This package is currently deployed to npm as *react-strontium* package.  APIs have changed significantly between tagged alpha versions, and will continue changing until stabilized at v1.
 
 More to come later, on actual usage.
