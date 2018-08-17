@@ -1,4 +1,4 @@
-import { LogLevel } from "../framework/Log";
+import LogLevel from "../framework/LogLevel";
 export default class SrAppConfig {
     constructor() {
         this.loggingLevel = LogLevel.Trace;

@@ -1,5 +1,5 @@
 ﻿export { default as Log } from "./Log";
-export { LogLevel } from "./Log";
+export { default as LogLevel } from "./LogLevel";
 export { SrApp, runtime } from "./SrApp";
 export { default as SrStats } from "./SrStats";
 export { default as StrontiumApp } from "./StrontiumApp";

@@ -1,6 +1,6 @@
-import { LogLevel } from "../framework/Log";
 import SrAppConfig from "./SrAppConfig";
 import { runtime } from "../lib";
+import LogLevel from "../framework/LogLevel";
 export default class StrontiumAppConfig extends SrAppConfig {
     constructor(options) {
         super();

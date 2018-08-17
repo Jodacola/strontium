@@ -1,10 +1,10 @@
-import Log, { LogLevel } from "../framework/Log";
 import SrAppConfig from "./SrAppConfig";
 import IErrorReporter from "./IErrorReporter";
 import IUiInitializer from "./IUiInitializer";
 import ILoggerConfig from "./ILoggerConfig";
 import IAppService from "../framework/IAppService";
 import { runtime, IApiConnection } from "../lib";
+import LogLevel from "../framework/LogLevel";
 
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter: IErrorReporter;

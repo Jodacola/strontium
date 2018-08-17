@@ -1,7 +1,7 @@
-﻿import { LogLevel } from "../framework/Log";
-import IErrorReporter from "./IErrorReporter";
+﻿import IErrorReporter from "./IErrorReporter";
 import IUiInitializer from "./IUiInitializer";
 import { IApiConnection } from "../lib";
+import LogLevel from "../framework/LogLevel";
 
 export default abstract class SrAppConfig {
     public loggingLevel: LogLevel = LogLevel.Trace;
