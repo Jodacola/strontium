@@ -16,6 +16,7 @@ export default class WaitSpinner extends UiC {
             width: 2,
             radius: 6,
             corners: 1,
+            trail: 52,
             rotate: 0,
             direction: 1,
             color: this.props.color || 'rgba(0,0,0,0.5)',
