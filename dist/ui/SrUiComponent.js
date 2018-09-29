@@ -213,12 +213,6 @@ class SrUiComponent extends React.Component {
     classes(...classes) {
         return (classes || []).filter((c) => { return !!c; }).join(" ");
     }
-    if(condition, className) {
-        if (condition) {
-            return className;
-        }
-        return null;
-    }
     broadcast(message, data) {
         runtime.messaging.broadcast(message, true, data);
     }

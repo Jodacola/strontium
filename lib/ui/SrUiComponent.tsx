@@ -239,13 +239,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         return (classes || []).filter((c) => { return !!c; }).join(" ");
     }
 
-    protected if(condition: boolean, className: string): string {
-        if (condition) {
-            return className;
-        }
-        return null;
-    }
-
     protected broadcast(message: string, data?: any) {
         runtime.messaging.broadcast(message, true, data);
     }

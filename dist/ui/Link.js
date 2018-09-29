@@ -9,7 +9,7 @@ export default class Link extends UiC {
                 if (this.props.navTo) {
                     this.navigate(this.props.navTo);
                 }
-            }, className: this.classes("app-link interactable", this.if(this.props.alert, "alert-link"), this.props.className) }, this.props.text || this.props.children));
+            }, className: this.classes("app-link interactable", (this.props.alert ? "alert-link" : null), this.props.className) }, this.props.text || this.props.children));
     }
 }
 //# sourceMappingURL=Link.js.map

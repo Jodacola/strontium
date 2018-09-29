@@ -60,7 +60,6 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected updateQuery(query: string): void;
     protected addQueryItem(query: string, key: string, value: string): string;
     protected classes(...classes: string[]): string;
-    protected if(condition: boolean, className: string): string;
     protected broadcast(message: string, data?: any): void;
 }
 export default SrUiComponent;
