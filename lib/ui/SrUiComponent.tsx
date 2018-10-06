@@ -77,6 +77,7 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
 
     componentWillUnmount() {
         Log.t(this, "Will unmount");
+        this.cancelAllDeferrals();
         this.unregisterResizeHandler();
         this.unregisterHandlers();
         this.onComponentWillUnmount();
@@ -212,6 +213,10 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
      */
     protected copyState(): S {
         return this.stateHelpers.copyState();
+    }
+
+    protected cancelAllDeferrals() {
+        Object.keys(this.deferHandlers).forEach(k => this.cancelDeferred(k));
     }
 
     protected cancelDeferred(id: string) {

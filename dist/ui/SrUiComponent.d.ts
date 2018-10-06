@@ -56,6 +56,7 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
      * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
      */
     protected copyState(): S;
+    protected cancelAllDeferrals(): void;
     protected cancelDeferred(id: string): void;
     protected updateQuery(query: string): void;
     protected addQueryItem(query: string, key: string, value: string): string;

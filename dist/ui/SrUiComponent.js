@@ -69,6 +69,7 @@ class SrUiComponent extends React.Component {
     }
     componentWillUnmount() {
         Log.t(this, "Will unmount");
+        this.cancelAllDeferrals();
         this.unregisterResizeHandler();
         this.unregisterHandlers();
         this.onComponentWillUnmount();
@@ -191,6 +192,9 @@ class SrUiComponent extends React.Component {
      */
     copyState() {
         return this.stateHelpers.copyState();
+    }
+    cancelAllDeferrals() {
+        Object.keys(this.deferHandlers).forEach(k => this.cancelDeferred(k));
     }
     cancelDeferred(id) {
         if (id && this.deferHandlers[id]) {
