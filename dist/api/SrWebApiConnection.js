@@ -25,7 +25,6 @@ export default class WebApiConnection {
         }
     }
     sendRequest(request) {
-        var v;
         var method = this.getMethod(request);
         var contentType = this.getContentType(request);
         let data = request.content;

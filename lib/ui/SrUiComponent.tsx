@@ -1,8 +1,6 @@
 ﻿import { Log, runtime } from "../framework/Framework";
 import * as React from "react";
-import { IApiLoadingState, LoadStates, SrServiceResponse, RequestType } from "../api/API";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
-import { EnvironmentUtility as EnvUtils } from "../utils/Utils";
 import SrComponentStateHelpers from "./SrComponentStateHelpers";
 
 abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
@@ -10,8 +8,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
     private resizeListener: EventListener = null;
     private componentMounted = false;
     private deferHandlers: { [id: string]: number } = {};
-    private elementRefs: { [id: string]: HTMLElement } = {};
-    private refHandlers: { [id: string]: (ref: HTMLElement) => void } = {};
 
     constructor(props: any) {
         super(props);

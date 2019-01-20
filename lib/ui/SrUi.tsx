@@ -4,16 +4,10 @@ import { Log, LogLevel, runtime } from "../framework/Framework";
 import { IUiInitializer } from "../config/Config";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import { GeneralUtility as Utils } from "../utils/Utils";
-import uuid from "uuid";
-import TransitionGroup from "react-transition-group";
 
 export default class SrUi implements IMessageHandler {
-    private resizeHandler: EventListener = null;
     private overlayVisible = false;
-    private initialized: boolean = false;
     private currentView: JSX.Element = null;
-    private overlayFading: boolean = false;
     private navigationHandlers: INavigationHandler[] = [];
     private lastViewType: string = null;
     private lastViewId: string = null;
@@ -42,7 +36,6 @@ export default class SrUi implements IMessageHandler {
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
         };
 
-        this.resizeHandler = (e: Event) => { this.onWindowResized(e); };
         this.configureUi(uiInit);
         this.setupInitialUi(uiInit);
         this.setupHandlers(uiInit);

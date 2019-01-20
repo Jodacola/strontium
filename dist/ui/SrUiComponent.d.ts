@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import * as React from "react";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
 declare abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
@@ -6,16 +5,14 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     private resizeListener;
     private componentMounted;
     private deferHandlers;
-    private elementRefs;
-    private refHandlers;
     constructor(props: any);
     protected getRef<T extends HTMLElement>(key: string): T;
     handles(): string[];
     protected getHandles(): string[];
     receiveMessage(msg: SrAppMessage): void;
     protected onAppMessage(msg: SrAppMessage): void;
-    private registerHandlers();
-    private unregisterHandlers();
+    private registerHandlers;
+    private unregisterHandlers;
     protected initialState(): S;
     componentWillMount(): void;
     componentDidMount(): void;

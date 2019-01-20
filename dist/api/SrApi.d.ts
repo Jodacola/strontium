@@ -14,10 +14,10 @@ export default class SrApi {
     attachConnection(conn: IApiConnection): void;
     connected(): boolean;
     sendMessage(type: RequestType, action: string, content: any, options: any, manualCb?: (resp: SrServiceResponse) => void): string;
-    private sendRequest(req);
-    private handleResponse(resp);
-    private removeRequest(requestId);
-    private processMessage(req, resp);
-    private handleFailedRequest(req, errors);
-    private handleDirectMessage(resp);
+    private sendRequest;
+    private handleResponse;
+    private removeRequest;
+    private processMessage;
+    private handleFailedRequest;
+    private handleDirectMessage;
 }

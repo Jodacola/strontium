@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import * as React from "react";
 import NavigationTarget from "../navigation/NavigationTarget";
 export interface IRouteConfig {

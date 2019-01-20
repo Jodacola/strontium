@@ -1,5 +1,5 @@
 import { runtime } from "./SrApp";
-import CircularJson from "circular-json";
+import { stringify } from "circular-json";
 import LogLevel from "./LogLevel";
 export default class Logger {
     constructor(level, logFilter, reporter) {
@@ -80,7 +80,7 @@ export default class Logger {
     }
     buildMessage(time, level, data, context, msg) {
         var ts = `[${time}]`;
-        var obj = (!data ? null : CircularJson.stringify(data));
+        var obj = (!data ? null : stringify(data));
         var msgData = [context, msg, obj];
         return [`[${LogLevel[level].toUpperCase()}]`, ts, msgData.filter(m => !!m).join(" - ")].filter(m => !!m).join(' ');
     }

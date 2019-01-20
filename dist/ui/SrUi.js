@@ -13,11 +13,8 @@ import * as ReactDOM from "react-dom";
 import * as React from "react";
 export default class SrUi {
     constructor() {
-        this.resizeHandler = null;
         this.overlayVisible = false;
-        this.initialized = false;
         this.currentView = null;
-        this.overlayFading = false;
         this.navigationHandlers = [];
         this.lastViewType = null;
         this.lastViewId = null;
@@ -39,7 +36,6 @@ export default class SrUi {
             Log.t(this, "State popped");
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
         };
-        this.resizeHandler = (e) => { this.onWindowResized(e); };
         this.configureUi(uiInit);
         this.setupInitialUi(uiInit);
         this.setupHandlers(uiInit);

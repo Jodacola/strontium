@@ -16,8 +16,6 @@ class SrUiComponent extends React.Component {
         this.resizeListener = null;
         this.componentMounted = false;
         this.deferHandlers = {};
-        this.elementRefs = {};
-        this.refHandlers = {};
         this.state = this.initialState();
     }
     getRef(key) {

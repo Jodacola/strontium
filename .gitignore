@@ -68,4 +68,5 @@ webpack*.js
 gulpfile*
 wwwroot
 server.js
-tsconfig.testing.json
+tsconfig.test.json
+dist/lib

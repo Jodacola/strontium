@@ -4,6 +4,6 @@ declare enum LogLevel {
     Info = 2,
     Warn = 3,
     Error = 4,
-    None = 5,
+    None = 5
 }
 export default LogLevel;

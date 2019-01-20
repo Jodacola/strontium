@@ -1,7 +1,7 @@
 /// <reference types="react" />
 import NavigationTarget from "./NavigationTarget";
 import IMatchItem from "./IMatchItem";
-interface INavigationHandler {
+export default interface INavigationHandler {
     handlesType(data: NavigationTarget): boolean;
     matchPattern(): IMatchItem[];
     typeIdentifier(): string;
@@ -9,4 +9,3 @@ interface INavigationHandler {
     buildElement(data: NavigationTarget): JSX.Element;
     getTitle(data: NavigationTarget): string;
 }
-export default INavigationHandler;

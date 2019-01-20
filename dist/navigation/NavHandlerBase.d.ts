@@ -11,11 +11,11 @@ declare abstract class NavigationHandlerBase implements INavigationHandler {
     abstract getMatchPattern(): IMatchItem[];
     private matches;
     matchPattern(): IMatchItem[];
-    private maxPatternIndex(withOptionals?);
+    private maxPatternIndex;
     handlesType(data: NavigationTarget): boolean;
-    private checkLengths(data);
-    private compareMatch(path, match);
-    private parsedValue(value, match);
+    private checkLengths;
+    private compareMatch;
+    private parsedValue;
     protected parseMatches(format: string): IMatchItem[];
     protected parseMatch(item: string, index: number): IMatchItem;
     protected exact(position: number, value: string, format?: string): IMatchItem;

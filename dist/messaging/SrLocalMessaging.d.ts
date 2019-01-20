@@ -6,13 +6,13 @@ export default class SrLocalMessaging implements IAppMessaging {
     private messageInterceptors;
     constructor();
     registerHandler(handler: IMessageHandler): void;
-    private registerHandlerForAction(action, handler, handlers);
+    private registerHandlerForAction;
     removeHandler(handler: IMessageHandler): void;
-    private deregisterHandlerForAction(action, handler, handlers);
+    private deregisterHandlerForAction;
     setInterceptor(interceptor: IMessageInterceptor): void;
     removeInterceptor(interceptor: IMessageInterceptor): void;
     broadcast(action: string, local?: boolean, data?: any): void;
-    private getHandlers();
-    private intercepted(msg);
-    private broadcastMessage(msg, handlers);
+    private getHandlers;
+    private intercepted;
+    private broadcastMessage;
 }
