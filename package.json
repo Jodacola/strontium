@@ -1,6 +1,6 @@
 {
   "name": "react-strontium",
-  "version": "0.2.8",
+  "version": "0.5.0",
   "description": "",
   "main": "dist/lib.js",
   "directories": {
@@ -69,7 +69,6 @@
     "transform": {
       "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
     },
-
     "modulePaths": [
       "<rootDir>/node_modules",
       "<rootDir>/lib"
