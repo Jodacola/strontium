@@ -1,6 +1,6 @@
 import * as React from "react";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
-declare abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
+export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
     private stateHelpers;
     private resizeListener;
     private componentMounted;
@@ -31,7 +31,6 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected navigate(url: string, title?: string, data?: any, navOptions?: any): void;
     protected navigateOptions(navOptions: any): void;
     protected buildNavQuery(navOptions: any): string;
-    protected localize(msg: string): string;
     protected deferred(func: Function, time?: number, id?: string): void;
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
@@ -60,4 +59,3 @@ declare abstract class SrUiComponent<P, S> extends React.Component<P, S> impleme
     protected classes(...classes: string[]): string;
     protected broadcast(message: string, data?: any): void;
 }
-export default SrUiComponent;

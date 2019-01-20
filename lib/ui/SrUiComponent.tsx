@@ -3,7 +3,7 @@ import * as React from "react";
 import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
 import SrComponentStateHelpers from "./SrComponentStateHelpers";
 
-abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
+export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
     private stateHelpers: SrComponentStateHelpers<P, S> = new SrComponentStateHelpers<P, S>(this);
     private resizeListener: EventListener = null;
     private componentMounted = false;
@@ -160,10 +160,6 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         return "";
     }
 
-    protected localize(msg: string): string {
-        return msg;
-    };
-
     protected deferred(func: Function, time: number = 0, id: string = null) {
         this.cancelDeferred(id);
 
@@ -244,5 +240,3 @@ abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMes
         runtime.messaging.broadcast(message, true, data);
     }
 }
-
-export default SrUiComponent;
