@@ -62,14 +62,24 @@ export default class SrLocalMessaging {
     intercepted(msg) {
         var intercept = this.messageInterceptors[msg.action];
         if (intercept && intercept.receiveMessage) {
-            intercept.receiveMessage(msg);
+            try {
+                intercept.receiveMessage(msg);
+            }
+            catch (err) {
+                Log.e(this, 'Error while interceptor processed message', { message: msg });
+            }
             return !intercept.passthrough;
         }
         return false;
     }
     broadcastMessage(msg, handlers) {
         (handlers[msg.action] || []).concat(handlers["*"] || []).forEach((h) => {
-            h.receiveMessage(msg);
+            try {
+                h.receiveMessage(msg);
+            }
+            catch (err) {
+                Log.e(this, 'Error while message handler processed message', { message: msg });
+            }
         });
     }
 }

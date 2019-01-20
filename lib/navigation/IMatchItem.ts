@@ -1,10 +1,8 @@
 ﻿import MatchByTypes from "./MatchByTypes";
 
-interface IMatchItem {
+export default interface IMatchItem {
     position: number;
     matchBy: MatchByTypes;
     value: string;
     parseFormat?: string;
 }
-
-export default IMatchItem;

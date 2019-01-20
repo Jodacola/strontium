@@ -1,23 +1,3 @@
 export { default as SrUiComponent } from "./SrUiComponent";
-export { default as SrApiUiComponent } from "./SrApiUiComponent";
 export { default as SrUi } from "./SrUi";
-export { default as Alert } from "./Alert";
-export { default as Animated } from "./Animated";
-export { default as Button } from "./Button";
-export { default as Checkbox } from "./Checkbox";
-export { default as Glyph } from "./Glyph";
-export { default as Header } from "./Header";
-export { default as HeaderSection } from "./HeaderSection";
-export { default as Link } from "./Link";
-export { default as LinkButton } from "./LinkButton";
-export { default as LoadIndicator } from "./LoadIndicator";
-export { default as LoadMask } from "./LoadMask";
-export { default as TabbedViewer } from "./TabbedViewer";
-export { default as Textbox } from "./Textbox";
-export { default as Title } from "./Title";
-export { default as TitleSection } from "./TitleSection";
-export { default as WaitSpinner } from "./WaitSpinner";
-export { default as Popover } from "./Popover";
-export { default as Modal } from "./Modal";
-export { default as ErrorBoundary } from "./ErrorBoundary";
 //# sourceMappingURL=UI.js.map

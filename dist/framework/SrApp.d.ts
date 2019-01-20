@@ -11,8 +11,8 @@ export declare class SrApp {
     apis: ApiContainer;
     private initialized;
     initialize(config: SrAppConfig): void;
-    private initializeMessaging();
-    private initializeUi();
-    private initializeApis();
+    private initializeMessaging;
+    private initializeUi;
+    private initializeApis;
 }
 export declare let runtime: SrApp;

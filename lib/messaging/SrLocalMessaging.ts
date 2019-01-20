@@ -75,7 +75,12 @@ export default class SrLocalMessaging implements IAppMessaging {
     private intercepted(msg: SrAppMessage): boolean {
         var intercept: IMessageInterceptor = this.messageInterceptors[msg.action];
         if (intercept && intercept.receiveMessage) {
-            intercept.receiveMessage(msg);
+            try {
+                intercept.receiveMessage(msg);
+            }
+            catch (err) {
+                Log.e(this, 'Error while interceptor processed message', { message: msg });
+            }
             return !intercept.passthrough;
         }
         return false;
@@ -83,7 +88,12 @@ export default class SrLocalMessaging implements IAppMessaging {
 
     private broadcastMessage(msg: SrAppMessage, handlers: IHandlerMap): void {
         (handlers[msg.action] || []).concat(handlers["*"] || []).forEach((h: IMessageHandler) => {
-            h.receiveMessage(msg);
+            try {
+                h.receiveMessage(msg);
+            }
+            catch (err) {
+                Log.e(this, 'Error while message handler processed message', { message: msg });
+            }
         });
     }
 }

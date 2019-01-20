@@ -20,10 +20,10 @@ export default class StrontiumAppConfig extends SrAppConfig {
         preInit: () => void;
         postInit: () => void;
     });
-    private defaultLogConfig(config);
-    private getLoggingLevel(environment, config);
-    private getLogFilters(config);
-    private errorReporterOrDefault(reporter);
+    private defaultLogConfig;
+    private getLoggingLevel;
+    private getLogFilters;
+    private errorReporterOrDefault;
     errorReporter(): IErrorReporter;
     uiInitializer(): IUiInitializer;
     preInitialize(): void;

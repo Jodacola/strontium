@@ -1,4 +1,3 @@
-/// <reference types="react" />
 import * as React from "react";
 import IAppService from "../framework/IAppService";
 export interface IServiceConfig {

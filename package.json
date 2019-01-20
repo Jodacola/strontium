@@ -9,8 +9,9 @@
   "types": "dist/lib.d.ts",
   "scripts": {
     "prepare": "npm run build",
-    "build": "tsc && rm -rf ./dist/lib ./dist/sass && cp -r ./lib/sass ./dist/sass",
-    "test": "jest --no-cache"
+    "build": "rm -rf dist && tsc",
+    "test": "jest --no-cache",
+    "clean": "rm -rf node_modules yarn.lock && yarn install"
   },
   "repository": {
     "type": "git",
@@ -29,49 +30,34 @@
   "homepage": "https://github.com/Jodacola/strontium#readme",
   "license": "MIT",
   "devDependencies": {
-    "@types/enzyme": "^3.1.6",
-    "@types/enzyme-adapter-react-16": "^1.0.1",
-    "@types/jest": "^22.0.1",
-    "@types/react-test-renderer": "^16.0.0",
-    "awesome-typescript-loader": "^3.4.1",
-    "babel-core": "^6.26.0",
-    "babel-jest": "^22.0.4",
-    "babel-loader": "^7.1.5",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
-    "babel-preset-react": "^6.24.1",
-    "connect": "^3.6.6",
-    "enzyme": "^3.3.0",
-    "enzyme-adapter-react-16": "^1.1.1",
-    "gulp": "^3.9.1",
-    "gulp-run": "^1.7.1",
-    "gulp-sass": "^3.1.0",
-    "jest": "^22.0.5",
-    "react": "^16.2.0",
-    "react-bootstrap": "^0.31.5",
-    "react-dom": "^16.2.0",
-    "react-test-renderer": "^16.2.0",
-    "react-transition-group": "^2.4.0",
-    "run-sequence": "^2.2.1",
-    "serve-static": "^1.13.2",
-    "ts-jest": "^22.0.1",
-    "typescript": "^2.6.2",
-    "webpack": "^4.16.5",
-    "webpack-stream": "^4.0.0"
+    "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
+    "@babel/plugin-proposal-object-rest-spread": "^7.2.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
+    "@babel/polyfill": "^7.2.5",
+    "@babel/preset-env": "^7.2.3",
+    "@babel/preset-react": "^7.0.0",
+    "@babel/preset-typescript": "^7.1.0",
+    "@types/enzyme": "^3.1.15",
+    "@types/enzyme-adapter-react-16": "^1.0.3",
+    "@types/jest": "^23.3.13",
+    "@types/react": "^16.7.20",
+    "@types/react-dom": "^16.0.11",
+    "@types/react-test-renderer": "^16.0.3",
+    "@types/uuid": "^3.4.4",
+    "babel-core": "7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.7.1",
+    "jest": "^23.6.0",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-test-renderer": "^16.7.0",
+    "typescript": "^3.2.4"
   },
   "dependencies": {
-    "@types/bootstrap": "^3.3.36",
-    "@types/circular-json": "^0.4.0",
-    "@types/jquery": "^3.2.17",
-    "@types/react": "^16.0.32",
-    "@types/react-bootstrap": "0.31.6",
-    "@types/react-dom": "^16.0.3",
-    "@types/react-transition-group": "^2.0.6",
-    "@types/uuid": "^3.4.3",
-    "circular-json": "^0.5.1",
-    "spin.js": "^3.1.0",
-    "uuid": "^3.1.0"
+    "circular-json": "^0.5.9",
+    "uuid": "^3.3.2"
   },
   "jest": {
     "moduleFileExtensions": [
@@ -81,12 +67,9 @@
       "tsx"
     ],
     "transform": {
-      "^.+\\.(js|jsx)$": "babel-jest",
-      "^.+\\.(ts|tsx)$": "ts-jest"
+      "^.+\\.(js|jsx|ts|tsx)$": "babel-jest"
     },
-    "transformIgnorePatterns": [
-      "<rootDir>/node_modules/(?!spin.js)"
-    ],
+
     "modulePaths": [
       "<rootDir>/node_modules",
       "<rootDir>/lib"

@@ -11,9 +11,9 @@ export default class WebApiConnection implements IApiConnection {
     protected breakCache(request: SrServiceRequest): boolean;
     protected getContentType(request: SrServiceRequest): any;
     protected getProcessData(request: SrServiceRequest): boolean;
-    private checkStatus(response);
-    private handleResponse(response, req);
-    private handleError(error, req);
+    private checkStatus;
+    private handleResponse;
+    private handleError;
     connected(): boolean;
     onResponse: (resp: SrServiceResponse) => void;
     onFailedRequest: (req: SrServiceRequest, error: any[]) => void;

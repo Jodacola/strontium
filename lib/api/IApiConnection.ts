@@ -1,7 +1,7 @@
 ﻿import SrServiceRequest from "./SrServiceRequest";
 import SrServiceResponse from "./SrServiceResponse";
 
-interface IApiConnection {
+export default interface IApiConnection {
     name?: string;
     initialize(cb: (r: boolean) => void, reinit: boolean): void;
     sendRequest(request: SrServiceRequest): void;
@@ -10,5 +10,3 @@ interface IApiConnection {
     onFailedRequest: (req: SrServiceRequest, error: any[]) => void;
     onServerMessage: (resp: SrServiceResponse) => void;
 }
-
-export default IApiConnection;

@@ -32,8 +32,6 @@ export default class WebApiConnection implements IApiConnection {
     }
 
     sendRequest(request: SrServiceRequest): void {
-        var v: JQueryAjaxSettings;
-
         var method = this.getMethod(request);
         var contentType = this.getContentType(request);
         let data = request.content;

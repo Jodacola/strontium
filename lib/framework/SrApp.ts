@@ -4,8 +4,6 @@ import Log from "./Log";
 import SrApi from "../api/SrApi";
 import SrLocalMessaging from "../messaging/SrLocalMessaging";
 import SrUi from "../ui/SrUi";
-import CM from "../messaging/CommonMessages";
-import IAppService from "./IAppService";
 import SrServiceContainer from "./SrServiceContainer";
 import ApiContainer from "../api/ApiContainer";
 

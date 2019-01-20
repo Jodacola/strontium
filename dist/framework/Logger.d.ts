@@ -2,11 +2,11 @@ import { IErrorReporter } from "../config/Config";
 import LogLevel from "./LogLevel";
 export default class Logger {
     level: LogLevel;
-    logFilter: string[];
-    reporter: IErrorReporter;
+    logFilter?: string[];
+    reporter?: IErrorReporter;
     private static _logger;
     static getLogger(): Logger;
-    private static runtimeReady();
+    private static runtimeReady;
     constructor(level: LogLevel, logFilter?: string[], reporter?: IErrorReporter);
     error(ctx: any, msg: string, data?: any): void;
     e(ctx: any, msg: string, data?: any): void;
@@ -19,10 +19,10 @@ export default class Logger {
     trace(ctx: any, msg: string, data?: any): void;
     t(ctx: any, msg: string, data?: any): void;
     log(level: LogLevel, ctx: any, msg: string, data: any): void;
-    private logMessage(level, data, context, msg);
-    private buildMessage(time, level, data, context, msg);
-    private reportError(context, msg, data);
-    private shouldLog(level, context);
-    private isContextFilteredOut(ctx);
-    private getContextName(obj);
+    private logMessage;
+    private buildMessage;
+    private reportError;
+    private shouldLog;
+    private isContextFilteredOut;
+    private getContextName;
 }

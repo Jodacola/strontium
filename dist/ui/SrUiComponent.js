@@ -9,15 +9,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Log, runtime } from "../framework/Framework";
 import * as React from "react";
 import SrComponentStateHelpers from "./SrComponentStateHelpers";
-class SrUiComponent extends React.Component {
+export default class SrUiComponent extends React.Component {
     constructor(props) {
         super(props);
         this.stateHelpers = new SrComponentStateHelpers(this);
         this.resizeListener = null;
         this.componentMounted = false;
         this.deferHandlers = {};
-        this.elementRefs = {};
-        this.refHandlers = {};
         this.state = this.initialState();
     }
     getRef(key) {
@@ -147,10 +145,6 @@ class SrUiComponent extends React.Component {
         }
         return "";
     }
-    localize(msg) {
-        return msg;
-    }
-    ;
     deferred(func, time = 0, id = null) {
         this.cancelDeferred(id);
         var handle = window.setTimeout(() => {
@@ -221,5 +215,4 @@ class SrUiComponent extends React.Component {
         runtime.messaging.broadcast(message, true, data);
     }
 }
-export default SrUiComponent;
 //# sourceMappingURL=SrUiComponent.js.map
