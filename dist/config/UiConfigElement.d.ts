@@ -1,4 +1,5 @@
 import StrontiumAppConfigElement, { IConfigElement } from "./StrontiumAppConfigElement";
+import * as React from "react";
 export interface IUiConfig extends IConfigElement {
     defaultLocation?: string;
     basePath?: string;
@@ -9,6 +10,7 @@ export interface IUiConfig extends IConfigElement {
     appReady?: () => void;
     appInitFailed?: () => void;
     appInitializing?: () => void;
+    viewRenderer?: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
 }
 export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
     static defaultProps: IUiConfig;

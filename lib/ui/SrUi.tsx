@@ -22,6 +22,7 @@ export default class SrUi implements IMessageHandler {
     private footerElement: React.ReactNode | React.ReactNode[];
     private headerElement: React.ReactNode | React.ReactNode[];
     private containerElement: React.ReactNode;
+    private viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
 
     public initialize(uiInit: IUiInitializer): void {
         if (uiInit == null) {
@@ -67,6 +68,7 @@ export default class SrUi implements IMessageHandler {
         this.urlNavigationEnabled = uiInit.urlNavigationEnabled();
         this.appTitle = uiInit.appTitle();
         this.headerElement = uiInit.headerElement();
+        this.viewRenderer = uiInit.viewRenderer();
         this.footerElement = uiInit.footerElement();
         this.containerElement = uiInit.containerElement();
         runtime.messaging.registerHandler(this);
@@ -257,11 +259,16 @@ export default class SrUi implements IMessageHandler {
             viewRender = React.cloneElement(this.containerElement, this.containerElement.props, view);
         }
 
-        let render = <React.Fragment>
-            {this.headerElement}
-            {viewRender}
-            {this.footerElement}
-        </React.Fragment>;
+        let render: React.ReactElement<any>;
+        if (this.viewRenderer) {
+            render = this.viewRenderer(this.headerElement, viewRender, this.footerElement);
+        } else {
+            render = <React.Fragment>
+                {this.headerElement}
+                {viewRender}
+                {this.footerElement}
+            </React.Fragment>;
+        }
         ReactDOM.render(render, document.getElementById(this.rootElement));
     }
 

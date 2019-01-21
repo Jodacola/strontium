@@ -18,6 +18,7 @@ export default class SrUi implements IMessageHandler {
     private footerElement;
     private headerElement;
     private containerElement;
+    private viewRenderer;
     initialize(uiInit: IUiInitializer): void;
     handles(): string[];
     receiveMessage(msg: SrAppMessage): void;

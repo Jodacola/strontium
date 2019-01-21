@@ -14,6 +14,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _containerElement;
     private _footerElement;
     private _headerElement;
+    private _viewRenderer;
     constructor(options: {
         defaultLocation: string;
         basePath: string;
@@ -27,6 +28,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
         navHandlers: INavigationHandler[];
         headerElement: React.ReactNode | React.ReactNode[];
         footerElement: React.ReactNode | React.ReactNode[];
+        viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
         containerElement: React.ReactNode;
     });
     defaultLocation(): string;
@@ -42,4 +44,5 @@ export default class StrontiumUiConfig implements IUiInitializer {
     footerElement(): React.ReactNode | React.ReactNode[];
     headerElement(): React.ReactNode | React.ReactNode[];
     containerElement(): React.ReactNode;
+    viewRenderer(): (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
 }

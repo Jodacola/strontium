@@ -18,6 +18,7 @@ export default class UiConfig extends StrontiumAppConfigElement {
             navHandlers: this.navigationHandlers(),
             headerElement: this.uiElementFor('header'),
             footerElement: this.uiElementFor('footer'),
+            viewRenderer: this.props.viewRenderer,
             containerElement: this.uiElementFor('container')
         });
     }

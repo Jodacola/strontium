@@ -62,6 +62,7 @@ export default class SrUi {
         this.urlNavigationEnabled = uiInit.urlNavigationEnabled();
         this.appTitle = uiInit.appTitle();
         this.headerElement = uiInit.headerElement();
+        this.viewRenderer = uiInit.viewRenderer();
         this.footerElement = uiInit.footerElement();
         this.containerElement = uiInit.containerElement();
         runtime.messaging.registerHandler(this);
@@ -227,10 +228,16 @@ export default class SrUi {
             if (React.isValidElement(this.containerElement)) {
                 viewRender = React.cloneElement(this.containerElement, this.containerElement.props, view);
             }
-            let render = React.createElement(React.Fragment, null,
-                this.headerElement,
-                viewRender,
-                this.footerElement);
+            let render;
+            if (this.viewRenderer) {
+                render = this.viewRenderer(this.headerElement, viewRender, this.footerElement);
+            }
+            else {
+                render = React.createElement(React.Fragment, null,
+                    this.headerElement,
+                    viewRender,
+                    this.footerElement);
+            }
             ReactDOM.render(render, document.getElementById(this.rootElement));
         });
     }

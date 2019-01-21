@@ -15,7 +15,8 @@ export interface IUiConfig extends IConfigElement {
     appTitle?: string,
     appReady?: () => void,
     appInitFailed?: () => void,
-    appInitializing?: () => void
+    appInitializing?: () => void,
+    viewRenderer?: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
 }
 
 export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
@@ -38,6 +39,7 @@ export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
                 navHandlers: this.navigationHandlers(),
                 headerElement: this.uiElementFor('header'),
                 footerElement: this.uiElementFor('footer'),
+                viewRenderer: this.props.viewRenderer,
                 containerElement: this.uiElementFor('container')
             }
         );
