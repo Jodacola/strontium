@@ -32,18 +32,21 @@ export default class WebApiConnection {
             data = JSON.stringify(data);
         }
         Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
-        window.fetch(this.dataPath() + request.action, {
+        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data))
+            .then((resp) => this.checkStatus(resp))
+            .then((resp) => resp.text())
+            .then((body) => this.handleResponse(body, request))
+            .catch((error) => this.handleError(error, request));
+    }
+    fetchInit(method, contentType, data) {
+        return {
             method: method,
             headers: {
                 'Content-Type': contentType
             },
             body: data,
             credentials: 'same-origin'
-        })
-            .then((resp) => this.checkStatus(resp))
-            .then((resp) => resp.text())
-            .then((body) => this.handleResponse(body, request))
-            .catch((error) => this.handleError(error, request));
+        };
     }
     breakCache(request) {
         return (request.options || { cached: false }).cached === false;

@@ -40,19 +40,22 @@ export default class WebApiConnection implements IApiConnection {
         }
 
         Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
-        window.fetch(this.dataPath() + request.action,
-            {
-                method: method,
-                headers: {
-                    'Content-Type': contentType
-                },
-                body: data,
-                credentials: 'same-origin'
-            })
+        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data))
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
             .then((body) => this.handleResponse(body, request))
             .catch((error) => this.handleError(error, request));
+    }
+
+    protected fetchInit(method: string, contentType: string, data: string): RequestInit {
+        return {
+            method: method,
+            headers: {
+                'Content-Type': contentType
+            },
+            body: data,
+            credentials: 'same-origin'
+        };
     }
 
     protected breakCache(request: SrServiceRequest): boolean {
@@ -67,7 +70,7 @@ export default class WebApiConnection implements IApiConnection {
         return (request.options || { process: true }).process === true;
     }
 
-    private checkStatus(response: Response) {
+    protected checkStatus(response: Response) {
         if (!(response.ok)) {
             throw new ApiError(response);
         }
@@ -75,7 +78,7 @@ export default class WebApiConnection implements IApiConnection {
         return response;
     }
 
-    private handleResponse(response: string, req: SrServiceRequest) {
+    protected handleResponse(response: string, req: SrServiceRequest) {
         if (this.onResponse) {
             let resp = new SrServiceResponse(req);
             resp.data = response;
@@ -86,7 +89,7 @@ export default class WebApiConnection implements IApiConnection {
         }
     }
 
-    private handleError(error: any, req: SrServiceRequest) {
+    protected handleError(error: any, req: SrServiceRequest) {
         if (this.onFailedRequest) {
             if (Object.keys(error).indexOf('response') !== -1) {
                 this.onFailedRequest(req, [error.response.status]);
