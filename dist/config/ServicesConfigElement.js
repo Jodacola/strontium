@@ -1,4 +1,4 @@
-import { StrontiumAppConfigElement } from "./StrontiumAppConfigElement";
+import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 import * as React from "react";
 export default class ServicesConfigElement extends StrontiumAppConfigElement {

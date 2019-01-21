@@ -1,4 +1,4 @@
-import { StrontiumAppConfigElement } from "./StrontiumAppConfigElement";
+import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ILoggerConfig from "./ILoggerConfig";
 import ConfigElementTypes from "./ConfigElementTypes";
 

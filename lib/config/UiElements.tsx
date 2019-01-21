@@ -1,5 +1,4 @@
 import * as React from "react";
-import NavigationTarget from "../navigation/NavigationTarget";
 
 export interface UiElementProps {
     uiElementType?: string

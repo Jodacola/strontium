@@ -4,7 +4,7 @@ export interface IConfigElement {
     srConfigElementType?: ConfigElementTypes;
     configure?: (type: ConfigElementTypes, config: any) => void;
 }
-export declare abstract class StrontiumAppConfigElement<P extends IConfigElement> extends React.Component<P, {}> {
+export default abstract class StrontiumAppConfigElement<P extends IConfigElement> extends React.Component<P, {}> {
     constructor(props: P);
     abstract config(): any;
     componentDidMount(): void;

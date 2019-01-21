@@ -1,4 +1,4 @@
-import { StrontiumAppConfigElement, IConfigElement } from "./StrontiumAppConfigElement";
+import StrontiumAppConfigElement, { IConfigElement } from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 import { IApiConnection } from "../lib";
 

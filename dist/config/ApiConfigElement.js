@@ -1,4 +1,4 @@
-import { StrontiumAppConfigElement } from "./StrontiumAppConfigElement";
+import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 export default class ApiConfigElement extends StrontiumAppConfigElement {
     config() {

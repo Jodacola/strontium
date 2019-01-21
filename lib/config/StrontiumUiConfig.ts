@@ -1,6 +1,4 @@
 import { IUiInitializer, INavigationHandler } from "../lib";
-import NavigationTarget from "../navigation/NavigationTarget";
-import { FooterElement } from "./UiElements";
 
 export default class StrontiumUiConfig implements IUiInitializer {
     private _defaultLocation: string;

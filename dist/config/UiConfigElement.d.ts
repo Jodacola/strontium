@@ -1,4 +1,4 @@
-import { StrontiumAppConfigElement, IConfigElement } from "./StrontiumAppConfigElement";
+import StrontiumAppConfigElement, { IConfigElement } from "./StrontiumAppConfigElement";
 export interface IUiConfig extends IConfigElement {
     defaultLocation?: string;
     basePath?: string;

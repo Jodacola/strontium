@@ -1,5 +1,5 @@
 import * as React from "react";
-export class StrontiumAppConfigElement extends React.Component {
+export default class StrontiumAppConfigElement extends React.Component {
     constructor(props) {
         super(props);
     }
