@@ -261,7 +261,7 @@ export default class SrUi implements IMessageHandler {
 
         let render: React.ReactElement<any>;
         if (this.viewRenderer) {
-            render = this.viewRenderer(this.headerElement, viewRender, this.footerElement);
+            render = this.viewRenderer(viewRender, this.headerElement, this.footerElement);
         } else {
             render = <React.Fragment>
                 {this.headerElement}
