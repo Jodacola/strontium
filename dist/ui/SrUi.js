@@ -168,7 +168,7 @@ export default class SrUi {
         Log.t(this, "View transition", { lastViewType: this.lastViewType, lastViewId: this.lastViewId, newViewType: viewType, newViewId: viewId });
         let query = `?${Object.keys(nav.query || {}).sort((k1, k2) => { return k1.localeCompare(k2); }).map((k) => { return `${k}=${nav.query[k]}`; }).join("&")}}`;
         if (viewType === this.lastViewType && viewId !== this.lastViewId) {
-            this.performNavigationChange(title, view, nav.original, fromPopOrManual, true);
+            this.performNavigationChange(title, view, nav.original, fromPopOrManual);
             this.setLastViewInfo(viewType, viewId, query);
             return;
         }
@@ -183,7 +183,7 @@ export default class SrUi {
             }
         }
         this.setLastViewInfo(viewType, viewId, query);
-        this.performNavigationChange(title, view, nav.original, fromPopOrManual, false, newQuery);
+        this.performNavigationChange(title, view, nav.original, fromPopOrManual, newQuery);
     }
     setLastViewInfo(type, id, query) {
         this.lastViewType = type;
@@ -199,21 +199,11 @@ export default class SrUi {
             this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
         }
     }
-    performNavigationChange(title, view, originalNav, fromPopOrManual, isAsyncReplace = false, onlyQueryUpdated = false) {
+    performNavigationChange(title, view, originalNav, fromPopOrManual, onlyQueryUpdated = false) {
         var stateTitle = (title != null && title.length > 0 ? title + " - " : "") + this.appTitle;
         document.title = stateTitle;
         if (!fromPopOrManual && this.configurer.urlNavigationEnabled()) {
             history.pushState({}, stateTitle, originalNav);
-        }
-        if (isAsyncReplace) {
-            this.changeView(null);
-            if (this.asyncTimeout != null) {
-                clearTimeout(this.asyncTimeout);
-            }
-            this.asyncTimeout = window.setTimeout(() => {
-                this.changeView(view);
-            }, 100);
-            return;
         }
         this.changeView(view, onlyQueryUpdated);
     }
@@ -230,7 +220,7 @@ export default class SrUi {
             }
             let render;
             if (this.viewRenderer) {
-                render = this.viewRenderer(this.headerElement, viewRender, this.footerElement);
+                render = this.viewRenderer(viewRender, this.headerElement, this.footerElement);
             }
             else {
                 render = React.createElement(React.Fragment, null,

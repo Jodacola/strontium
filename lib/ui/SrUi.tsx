@@ -191,7 +191,7 @@ export default class SrUi implements IMessageHandler {
         let query = `?${Object.keys(nav.query || {}).sort((k1, k2) => { return k1.localeCompare(k2); }).map((k) => { return `${k}=${nav.query[k]}`; }).join("&")}}`;
 
         if (viewType === this.lastViewType && viewId !== this.lastViewId) {
-            this.performNavigationChange(title, view, nav.original, fromPopOrManual, true);
+            this.performNavigationChange(title, view, nav.original, fromPopOrManual);
             this.setLastViewInfo(viewType, viewId, query);
             return;
         }
@@ -207,7 +207,7 @@ export default class SrUi implements IMessageHandler {
         }
 
         this.setLastViewInfo(viewType, viewId, query);
-        this.performNavigationChange(title, view, nav.original, fromPopOrManual, false, newQuery);
+        this.performNavigationChange(title, view, nav.original, fromPopOrManual, newQuery);
     }
 
     private setLastViewInfo(type: string, id: string, query: string) {
@@ -226,7 +226,7 @@ export default class SrUi implements IMessageHandler {
         }
     }
 
-    private performNavigationChange(title: string, view: JSX.Element, originalNav: string, fromPopOrManual?: boolean, isAsyncReplace: boolean = false, onlyQueryUpdated: boolean = false) {
+    private performNavigationChange(title: string, view: JSX.Element, originalNav: string, fromPopOrManual?: boolean, onlyQueryUpdated: boolean = false) {
         var stateTitle = (title != null && title.length > 0 ? title + " - " : "") + this.appTitle;
         document.title = stateTitle;
 
@@ -234,16 +234,6 @@ export default class SrUi implements IMessageHandler {
             history.pushState({}, stateTitle, originalNav);
         }
 
-        if (isAsyncReplace) {
-            this.changeView(null);
-            if (this.asyncTimeout != null) {
-                clearTimeout(this.asyncTimeout);
-            }
-            this.asyncTimeout = window.setTimeout(() => {
-                this.changeView(view);
-            }, 100);
-            return;
-        }
         this.changeView(view, onlyQueryUpdated);
     }
 
