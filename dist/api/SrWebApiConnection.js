@@ -3,8 +3,14 @@ import Log from "../framework/Log";
 import RequestType from "./RequestType";
 import ApiError from "./ApiError";
 export default class WebApiConnection {
-    constructor(resourceBase) {
+    constructor(resourceBase, defaults = {
+        contentType: 'application/json',
+        cached: false,
+        process: true,
+        credentials: 'same-origin'
+    }) {
         this.resourceBase = resourceBase;
+        this.defaults = defaults;
     }
     initialize(cb, reinit) {
         cb(true);
@@ -32,30 +38,40 @@ export default class WebApiConnection {
             data = JSON.stringify(data);
         }
         Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
-        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data))
+        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data, request))
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
             .then((body) => this.handleResponse(body, request))
             .catch((error) => this.handleError(error, request));
     }
-    fetchInit(method, contentType, data) {
-        return {
+    fetchInit(method, contentType, data, request) {
+        let credentials = this.optionOrDefault('credentials', request);
+        let reqInit = {
             method: method,
-            headers: {
-                'Content-Type': contentType
-            },
             body: data,
-            credentials: 'same-origin'
+            credentials: credentials
         };
+        if (contentType) {
+            reqInit.headers = {
+                'Content-Type': contentType
+            };
+        }
+        return reqInit;
     }
     breakCache(request) {
-        return (request.options || { cached: false }).cached === false;
+        return !this.optionOrDefault('cached', request);
     }
     getContentType(request) {
-        return (request.options || { contentType: "application/json" }).contentType;
+        return this.optionOrDefault('contentType', request);
     }
     getProcessData(request) {
-        return (request.options || { process: true }).process === true;
+        return this.optionOrDefault('process', request) === true;
+    }
+    optionOrDefault(key, request) {
+        if (request.options && Object.keys(request.options).indexOf(key) !== -1) {
+            return request.options[key];
+        }
+        return (this.defaults || {})[key];
     }
     checkStatus(response) {
         if (!(response.ok)) {
