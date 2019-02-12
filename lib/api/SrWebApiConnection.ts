@@ -5,8 +5,20 @@ import Log from "../framework/Log";
 import RequestType from "./RequestType";
 import ApiError from "./ApiError";
 
+interface IWebApiConnectionDefaults {
+    contentType: string,
+    cached: boolean,
+    process: boolean,
+    credentials: RequestCredentials
+}
+
 export default class WebApiConnection implements IApiConnection {
-    constructor(public resourceBase: string) {
+    constructor(public resourceBase: string, public defaults: IWebApiConnectionDefaults = {
+        contentType: 'application/json',
+        cached: false,
+        process: true,
+        credentials: 'same-origin'
+    }) {
 
     }
 
@@ -40,34 +52,49 @@ export default class WebApiConnection implements IApiConnection {
         }
 
         Log.d(this, "Preparing HTTP API Message", { request: request, method: method, contentType: contentType, data: data });
-        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data))
+        window.fetch(this.dataPath() + request.action, this.fetchInit(method, contentType, data, request))
             .then((resp) => this.checkStatus(resp))
             .then((resp) => resp.text())
             .then((body) => this.handleResponse(body, request))
             .catch((error) => this.handleError(error, request));
     }
 
-    protected fetchInit(method: string, contentType: string, data: string): RequestInit {
-        return {
+    protected fetchInit(method: string, contentType: string, data: string, request: SrServiceRequest): RequestInit {
+        let credentials = this.optionOrDefault<RequestCredentials>('credentials', request);
+
+        let reqInit: RequestInit = {
             method: method,
-            headers: {
-                'Content-Type': contentType
-            },
             body: data,
-            credentials: 'same-origin'
+            credentials: credentials
         };
+
+        if (contentType) {
+            reqInit.headers = {
+                'Content-Type': contentType
+            };
+        }
+
+        return reqInit;
     }
 
     protected breakCache(request: SrServiceRequest): boolean {
-        return (request.options || { cached: false }).cached === false;
+        return !this.optionOrDefault('cached', request);
     }
 
     protected getContentType(request: SrServiceRequest): any {
-        return (request.options || { contentType: "application/json" }).contentType;
+        return this.optionOrDefault('contentType', request);
     }
 
     protected getProcessData(request: SrServiceRequest): boolean {
-        return (request.options || { process: true }).process === true;
+        return this.optionOrDefault('process', request) === true;
+    }
+
+    protected optionOrDefault<T>(key: keyof IWebApiConnectionDefaults, request: SrServiceRequest): T {
+        if (request.options && Object.keys(request.options).indexOf(key) !== -1) {
+            return request.options[key];
+        }
+
+        return (this.defaults || {})[key];
     }
 
     protected checkStatus(response: Response) {
