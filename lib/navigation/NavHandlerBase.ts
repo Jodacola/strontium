@@ -84,6 +84,10 @@ abstract class NavigationHandlerBase implements INavigationHandler {
     }
 
     private compareMatch(path: string, match: IMatchItem): boolean {
+        if (match.parseFormat === 'int' && isNaN(parseInt(path))) {
+            return false;
+        }
+
         if (match.matchBy === MatchByTypes.Present && (path || "").trim().length > 0) {
             return true;
         }

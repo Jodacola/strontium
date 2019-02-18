@@ -65,6 +65,9 @@ class NavigationHandlerBase {
         return false;
     }
     compareMatch(path, match) {
+        if (match.parseFormat === 'int' && isNaN(parseInt(path))) {
+            return false;
+        }
         if (match.matchBy === MatchByTypes.Present && (path || "").trim().length > 0) {
             return true;
         }
