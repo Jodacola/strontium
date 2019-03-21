@@ -7,10 +7,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { CommonMessages } from "../messaging/Messaging";
-import { NavigationTarget } from "../navigation/Navigation";
-import { Log, LogLevel, runtime } from "../framework/Framework";
+import { Log, runtime } from "../framework/Framework";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
+import { buildNavigationTarget } from "../navigation/NavHandlerUtils";
 export default class SrUi {
     constructor() {
         this.overlayVisible = false;
@@ -19,7 +19,6 @@ export default class SrUi {
         this.lastViewType = null;
         this.lastViewId = null;
         this.lastQuery = null;
-        this.asyncTimeout = null;
         this.defaultLocation = null;
         this.basePath = null;
         this.rootElement = null;
@@ -103,39 +102,8 @@ export default class SrUi {
     }
     onAppLocationChanged(path, data, title, fromPopOrManual) {
         Log.t(this, "App location changed", { path: path, pop: fromPopOrManual });
-        var nav = this.getNavigationTarget(path, data);
+        var nav = buildNavigationTarget(path, data, this.basePath);
         this.performNavigation(nav, data, title, fromPopOrManual);
-    }
-    getNavigationTarget(loc, data) {
-        var nav = new NavigationTarget();
-        nav.original = loc;
-        nav.data = data;
-        loc = loc.replace("/" + this.basePath + "/", "").replace("/" + this.basePath, "").replace("#!", "");
-        Log.d(this, "Navigation target location", { location: loc });
-        var queryIdx = loc.indexOf("?");
-        var query = null;
-        if (queryIdx !== -1) {
-            query = loc.substr(queryIdx + 1);
-            loc = loc.substr(0, loc.length - (loc.length - queryIdx));
-            Log.d(this, "Nav query", { query: query, newLocation: loc });
-        }
-        var targets = loc.split("/").filter((s) => { return ((s || "").trim().length > 0); });
-        nav.paths = targets;
-        if (query !== null) {
-            var options = query.split("&");
-            options.forEach((op) => {
-                var kvp = op.split("=");
-                if (kvp.length === 2) {
-                    nav.query[kvp[0]] = decodeURIComponent((kvp[1] || "").toString());
-                }
-            });
-        }
-        return nav;
-    }
-    onWindowResized(e) {
-        if (runtime.config.loggingLevel <= LogLevel.Trace) {
-            Log.t(this, "Window resized", { width: window.innerWidth, height: window.innerHeight });
-        }
     }
     isOverlayOpen() {
         return this.overlayVisible;

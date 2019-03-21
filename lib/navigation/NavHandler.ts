@@ -1,11 +1,13 @@
-﻿import NavHandlerBase from "./NavHandlerBase";
-import NavigationTarget from "./NavigationTarget";
+﻿import NavigationTarget from "./NavigationTarget";
 import IMatchItem from "./IMatchItem";
-import * as React from "react";
+import { parseMatches } from "./NavHandlerUtils";
+import { sortedAndFilledPattern, navTargetMatchesPattern, parsePathValues, dataFitsPattern } from "./NavHandlerUtils";
+import { INavigationHandler } from "./Navigation";
 
-export default class NavHandler extends NavHandlerBase {
+export default class NavHandler implements INavigationHandler {
+    private matches: IMatchItem[] = null;
+
     constructor(public route: string, public title: string, public builder: (data: NavigationTarget, routeValues: any) => JSX.Element) {
-        super();
     }
 
     public typeIdentifier(): string {
@@ -20,11 +22,29 @@ export default class NavHandler extends NavHandlerBase {
         return this.builder(data, data.parsed);
     }
 
-    public getTitle(data: NavigationTarget): string {
+    public getTitle(): string {
         return this.title;
     }
 
     public getMatchPattern(): IMatchItem[] {
-        return this.parseMatches(this.route);
+        return parseMatches(this.route);
+    }
+
+    public matchPattern(): IMatchItem[] {
+        if (this.matches === null) {
+            this.matches = sortedAndFilledPattern(this.getMatchPattern());
+        }
+        return this.matches;
+    }
+
+    public handlesType(data: NavigationTarget): boolean {
+        const pattern = this.matchPattern();
+
+        if (navTargetMatchesPattern(data, pattern)) {
+            data.parsed = parsePathValues(data, pattern);
+            return true;
+        }
+
+        return false;
     }
 }

@@ -8,7 +8,6 @@ export default class SrUi implements IMessageHandler {
     private lastViewType;
     private lastViewId;
     private lastQuery;
-    private asyncTimeout;
     private defaultLocation;
     private basePath;
     private rootElement;
@@ -31,8 +30,6 @@ export default class SrUi implements IMessageHandler {
     private setupHandlers;
     private registerHandler;
     private onAppLocationChanged;
-    private getNavigationTarget;
-    private onWindowResized;
     isOverlayOpen(): boolean;
     private performNavigation;
     private setLastViewInfo;

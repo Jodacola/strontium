@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "rm -rf dist && tsc",
-    "test": "jest --no-cache",
+    "test": "jest --no-cache --verbose false",
     "clean": "rm -rf node_modules yarn.lock && yarn install"
   },
   "repository": {

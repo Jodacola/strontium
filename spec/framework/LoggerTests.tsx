@@ -1,6 +1,6 @@
 import { Logger, LogLevel, IErrorReporter, runtime } from '../../lib/lib';
 
-describe('logger', () => {
+describe('Logger', () => {
     test('generates default logger', () => {
         const logger = Logger.getLogger();
         expect(logger.level).toBe(LogLevel.Error);

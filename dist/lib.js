@@ -16,7 +16,6 @@ export { default as SrAppMessage } from "./messaging/SrAppMessage";
 export { default as SrLocalMessaging } from "./messaging/SrLocalMessaging";
 export { default as MatchByTypes } from "./navigation/MatchByTypes";
 export { default as NavHandler } from "./navigation/NavHandler";
-export { default as NavHandlerBase } from "./navigation/NavHandlerBase";
 export { default as NavigationTarget } from "./navigation/NavigationTarget";
 export { default as SrUiComponent } from "./ui/SrUiComponent";
 export { default as SrUi } from "./ui/SrUi";
