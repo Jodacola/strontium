@@ -10,7 +10,7 @@
   "scripts": {
     "prepare": "npm run build",
     "build": "rm -rf dist && tsc",
-    "test": "jest --no-cache --verbose false",
+    "test": "jest --no-cache --coverage",
     "clean": "rm -rf node_modules yarn.lock && yarn install"
   },
   "repository": {
@@ -86,6 +86,11 @@
         "useBabelrc": true,
         "tsConfigFile": "tsconfig.json"
       }
-    }
+    },
+    "collectCoverageFrom": [
+      "lib/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!**/vendor/**"
+    ]
   }
 }
