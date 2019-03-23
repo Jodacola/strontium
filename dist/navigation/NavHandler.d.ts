@@ -1,18 +1,16 @@
 /// <reference types="react" />
 import NavigationTarget from "./NavigationTarget";
 import IMatchItem from "./IMatchItem";
-import { INavigationHandler } from "./Navigation";
+import INavigationHandler from "./INavigationHandler";
 export default class NavHandler implements INavigationHandler {
-    route: string;
-    title: string;
-    builder: (data: NavigationTarget, routeValues: any) => JSX.Element;
-    private matches;
+    private _matches;
+    private _route;
+    private _title;
+    private _builder;
     constructor(route: string, title: string, builder: (data: NavigationTarget, routeValues: any) => JSX.Element);
     typeIdentifier(): string;
-    dataIdentifier(data: NavigationTarget): string;
     buildElement(data: NavigationTarget): JSX.Element;
     getTitle(): string;
-    getMatchPattern(): IMatchItem[];
     matchPattern(): IMatchItem[];
     handlesType(data: NavigationTarget): boolean;
 }

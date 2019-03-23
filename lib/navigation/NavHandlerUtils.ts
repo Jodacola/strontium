@@ -112,17 +112,6 @@ export function parsedPath(value: string, match: IMatchItem): any {
     return value;
 }
 
-export function buildNavigationTarget(originalPath: string, data: any, basePath: string): NavigationTarget {
-    const nav = new NavigationTarget(originalPath, data);
-    originalPath = cleanPath(originalPath, basePath);
-    Log.d(this, "Navigation target location", { path: originalPath });
-    const { path, query } = splitPathAndQuery(originalPath);
-    const targets: string[] = path.split("/").filter((s) => { return ((s || "").trim().length > 0); });
-    nav.paths = targets;
-    nav.query = QueryUtility.asObject(query);
-    return nav;
-}
-
 export function cleanPath(path: string, basePath: string) {
     let pathSearches = [`/${basePath}/`, `/${basePath}`];
     for (const pathSearch of pathSearches) {
@@ -180,18 +169,28 @@ export function maxPatternIndex(pattern: IMatchItem[], withOptionals: boolean = 
     }
 
     if (!withOptionals) {
-        const nonOptional = pattern.filter((p) => {
+        const filteredPatterns = pattern.filter((p) => {
             return p.matchBy !== MatchByTypes.Optional;
-        }).reduce((a, b) => {
-            return (!a ? b : (a.position > b.position ? a : b));
-        }, null);
+        });
+
+        let nonOptional = filteredPatterns.reduce(maxPatternReduce, null);
 
         return (nonOptional ? nonOptional.position : -1);
     }
 
-    const optional = pattern.reduce((a, b) => {
-        return (!a ? b : (a.position > b.position ? a : b));
-    }, null);
+    const optional = pattern.reduce(maxPatternReduce, null);
 
-    return (optional ? optional.position : -1);
+    return optional.position;
+}
+
+export function maxPatternReduce(a: IMatchItem, b: IMatchItem) {
+    if (!a) {
+        return b;
+    }
+
+    if (a.position > b.position) {
+        return a;
+    }
+
+    return b;
 }

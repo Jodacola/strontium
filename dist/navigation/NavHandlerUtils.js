@@ -1,7 +1,4 @@
 import MatchByTypes from "./MatchByTypes";
-import NavigationTarget from "./NavigationTarget";
-import { Log } from "../lib";
-import { QueryUtility } from "../utils/Utils";
 /* Allows a path to be parsed for building matches.
     * For example:
     *   teams/:teamId/users/:userId/?selection
@@ -97,16 +94,6 @@ export function parsedPath(value, match) {
     }
     return value;
 }
-export function buildNavigationTarget(originalPath, data, basePath) {
-    const nav = new NavigationTarget(originalPath, data);
-    originalPath = cleanPath(originalPath, basePath);
-    Log.d(this, "Navigation target location", { path: originalPath });
-    const { path, query } = splitPathAndQuery(originalPath);
-    const targets = path.split("/").filter((s) => { return ((s || "").trim().length > 0); });
-    nav.paths = targets;
-    nav.query = QueryUtility.asObject(query);
-    return nav;
-}
 export function cleanPath(path, basePath) {
     let pathSearches = [`/${basePath}/`, `/${basePath}`];
     for (const pathSearch of pathSearches) {
@@ -155,16 +142,22 @@ export function maxPatternIndex(pattern, withOptionals = true) {
         return -1;
     }
     if (!withOptionals) {
-        const nonOptional = pattern.filter((p) => {
+        const filteredPatterns = pattern.filter((p) => {
             return p.matchBy !== MatchByTypes.Optional;
-        }).reduce((a, b) => {
-            return (!a ? b : (a.position > b.position ? a : b));
-        }, null);
+        });
+        let nonOptional = filteredPatterns.reduce(maxPatternReduce, null);
         return (nonOptional ? nonOptional.position : -1);
     }
-    const optional = pattern.reduce((a, b) => {
-        return (!a ? b : (a.position > b.position ? a : b));
-    }, null);
-    return (optional ? optional.position : -1);
+    const optional = pattern.reduce(maxPatternReduce, null);
+    return optional.position;
+}
+export function maxPatternReduce(a, b) {
+    if (!a) {
+        return b;
+    }
+    if (a.position > b.position) {
+        return a;
+    }
+    return b;
 }
 //# sourceMappingURL=NavHandlerUtils.js.map

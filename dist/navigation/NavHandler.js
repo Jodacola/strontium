@@ -2,31 +2,25 @@ import { parseMatches } from "./NavHandlerUtils";
 import { sortedAndFilledPattern, navTargetMatchesPattern, parsePathValues } from "./NavHandlerUtils";
 export default class NavHandler {
     constructor(route, title, builder) {
-        this.route = route;
-        this.title = title;
-        this.builder = builder;
-        this.matches = null;
+        this._matches = null;
+        this._route = route;
+        this._title = title;
+        this._builder = builder;
     }
     typeIdentifier() {
-        return this.title;
-    }
-    dataIdentifier(data) {
-        return data.paths.join(":");
+        return this._title;
     }
     buildElement(data) {
-        return this.builder(data, data.parsed);
+        return this._builder(data, data.parsed);
     }
     getTitle() {
-        return this.title;
-    }
-    getMatchPattern() {
-        return parseMatches(this.route);
+        return this._title;
     }
     matchPattern() {
-        if (this.matches === null) {
-            this.matches = sortedAndFilledPattern(this.getMatchPattern());
+        if (this._matches === null) {
+            this._matches = sortedAndFilledPattern(parseMatches(this._route));
         }
-        return this.matches;
+        return this._matches;
     }
     handlesType(data) {
         const pattern = this.matchPattern();

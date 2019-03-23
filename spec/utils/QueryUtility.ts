@@ -7,6 +7,17 @@ describe('QueryUtility', () => {
         expect(current).toBe(expected);
     });
 
+    it('returns current query string in string form', () => {
+        let originalLocation = window.location;
+        delete (global as any).window.location;
+        (global as any).window.location = {};
+        let expected = "";
+        let current = QueryUtility.current();
+        delete (global as any).window.location;
+        (global as any).window.location = originalLocation;
+        expect(current).toBe(expected);
+    });
+
     it('returns current query string in object form', () => {
         let current = QueryUtility.current(true);
         expect(typeof current).toBe('object');
@@ -60,5 +71,20 @@ describe('QueryUtility', () => {
         let newQuery = QueryUtility.buildQuery({ jsonKey: { key: 'value' }, arrayKey: [1, 2, 3, 4, 5] });
         expect(newQuery.indexOf('jsonKey=%7B%22key%22%3A%22value%22%7D')).toBeGreaterThan(-1);
         expect(newQuery.indexOf('arrayKey=%5B1%2C2%2C3%2C4%2C5%5D')).toBeGreaterThan(-1);
+    });
+
+    it('builds a new query string from null incoming object', () => {
+        let newQuery = QueryUtility.buildQuery(null, true);
+        expect(newQuery).toBe('');
+    });
+
+    it('preserves and overwrites existing values when building new query', () => {
+        // "http://www.roadtonowhere.com/path1/path2/?id=someId&key1=value1&key2=value2"
+        let newQuery = QueryUtility.buildQuery({ key3: 'value3', key4: 'value4', key2: 'value2r', keyNull: null });
+        expect(newQuery.indexOf('key3=value3')).toBeGreaterThan(-1);
+        expect(newQuery.indexOf('key4=value4')).toBeGreaterThan(-1);
+        expect(newQuery.indexOf('key1=value1')).toBeGreaterThan(-1);
+        expect(newQuery.indexOf('key2=value2r')).toBeGreaterThan(-1);
+        expect(newQuery.indexOf('keyNull')).toEqual(-1);
     });
 });

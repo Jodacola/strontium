@@ -11,7 +11,6 @@ export declare function compareMatch(segment: string, match: IMatchItem): boolea
 export declare function checkNumericMatch(segment: string, match: IMatchItem): boolean;
 export declare function sortedAndFilledPattern(newMatches: IMatchItem[]): IMatchItem[];
 export declare function parsedPath(value: string, match: IMatchItem): any;
-export declare function buildNavigationTarget(originalPath: string, data: any, basePath: string): NavigationTarget;
 export declare function cleanPath(path: string, basePath: string): string;
 export declare function splitPathAndQuery(path: string): {
     path: string;
@@ -23,3 +22,4 @@ export declare function parsePathValues(target: NavigationTarget, pattern: IMatc
 };
 export declare function dataFitsPattern(target: NavigationTarget, pattern: IMatchItem[]): boolean;
 export declare function maxPatternIndex(pattern: IMatchItem[], withOptionals?: boolean): number;
+export declare function maxPatternReduce(a: IMatchItem, b: IMatchItem): IMatchItem;

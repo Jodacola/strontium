@@ -10,7 +10,7 @@ import { CommonMessages } from "../messaging/Messaging";
 import { Log, runtime } from "../framework/Framework";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import { buildNavigationTarget } from "../navigation/NavHandlerUtils";
+import NavigationTarget from "../navigation/NavigationTarget";
 export default class SrUi {
     constructor() {
         this.overlayVisible = false;
@@ -102,7 +102,7 @@ export default class SrUi {
     }
     onAppLocationChanged(path, data, title, fromPopOrManual) {
         Log.t(this, "App location changed", { path: path, pop: fromPopOrManual });
-        var nav = buildNavigationTarget(path, data, this.basePath);
+        var nav = new NavigationTarget(path, data, this.basePath);
         this.performNavigation(nav, data, title, fromPopOrManual);
     }
     isOverlayOpen() {
@@ -121,7 +121,7 @@ export default class SrUi {
                 view = h.buildElement(nav);
                 title = h.getTitle(nav);
                 viewType = h.typeIdentifier();
-                viewId = h.dataIdentifier(nav);
+                viewId = nav.dataIdentifier();
             }
         });
         if (view == null) {

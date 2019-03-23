@@ -1,10 +1,10 @@
 ﻿import { IMessageHandler, CommonMessages, SrAppMessage } from "../messaging/Messaging";
-import { NavigationTarget, INavigationHandler } from "../navigation/Navigation";
 import { Log, runtime } from "../framework/Framework";
 import { IUiInitializer } from "../config/Config";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
-import { buildNavigationTarget } from "../navigation/NavHandlerUtils";
+import INavigationHandler from "../navigation/INavigationHandler";
+import NavigationTarget from "../navigation/NavigationTarget";
 
 export default class SrUi implements IMessageHandler {
     private overlayVisible = false;
@@ -115,7 +115,7 @@ export default class SrUi implements IMessageHandler {
 
     private onAppLocationChanged(path: string, data?: any, title?: string, fromPopOrManual?: boolean) {
         Log.t(this, "App location changed", { path: path, pop: fromPopOrManual });
-        var nav = buildNavigationTarget(path, data, this.basePath);
+        var nav = new NavigationTarget(path, data, this.basePath);
         this.performNavigation(nav, data, title, fromPopOrManual);
     }
 
@@ -138,7 +138,7 @@ export default class SrUi implements IMessageHandler {
                 view = h.buildElement(nav);
                 title = h.getTitle(nav);
                 viewType = h.typeIdentifier();
-                viewId = h.dataIdentifier(nav);
+                viewId = nav.dataIdentifier();
             }
         });
 

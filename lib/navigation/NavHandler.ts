@@ -1,40 +1,39 @@
 ﻿import NavigationTarget from "./NavigationTarget";
 import IMatchItem from "./IMatchItem";
 import { parseMatches } from "./NavHandlerUtils";
-import { sortedAndFilledPattern, navTargetMatchesPattern, parsePathValues, dataFitsPattern } from "./NavHandlerUtils";
-import { INavigationHandler } from "./Navigation";
+import { sortedAndFilledPattern, navTargetMatchesPattern, parsePathValues } from "./NavHandlerUtils";
+import INavigationHandler from "./INavigationHandler";
 
 export default class NavHandler implements INavigationHandler {
-    private matches: IMatchItem[] = null;
+    private _matches: IMatchItem[] = null;
+    private _route: string;
+    private _title: string;
+    private _builder: (data: NavigationTarget, routeValues: any) => JSX.Element;
 
-    constructor(public route: string, public title: string, public builder: (data: NavigationTarget, routeValues: any) => JSX.Element) {
+    constructor(route: string, title: string, builder: (data: NavigationTarget, routeValues: any) => JSX.Element) {
+        this._route = route;
+        this._title = title;
+        this._builder = builder;
     }
 
     public typeIdentifier(): string {
-        return this.title;
-    }
-
-    public dataIdentifier(data: NavigationTarget): string {
-        return data.paths.join(":");
+        return this._title;
     }
 
     public buildElement(data: NavigationTarget): JSX.Element {
-        return this.builder(data, data.parsed);
+        return this._builder(data, data.parsed);
     }
 
     public getTitle(): string {
-        return this.title;
-    }
-
-    public getMatchPattern(): IMatchItem[] {
-        return parseMatches(this.route);
+        return this._title;
     }
 
     public matchPattern(): IMatchItem[] {
-        if (this.matches === null) {
-            this.matches = sortedAndFilledPattern(this.getMatchPattern());
+        if (this._matches === null) {
+            this._matches = sortedAndFilledPattern(parseMatches(this._route));
         }
-        return this.matches;
+
+        return this._matches;
     }
 
     public handlesType(data: NavigationTarget): boolean {

@@ -1,5 +1,5 @@
 export default class NavigationTarget {
-    constructor(original: string, data: any);
+    constructor(original: string, data: any, basePath: string);
     paths: string[];
     query: {
         [key: string]: string;
@@ -7,4 +7,7 @@ export default class NavigationTarget {
     original: string;
     data: any;
     parsed: any;
+    basePath: string;
+    dataIdentifier(): string;
+    private populate;
 }
