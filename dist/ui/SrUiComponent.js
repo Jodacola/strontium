@@ -16,10 +16,30 @@ export default class SrUiComponent extends React.Component {
         this.resizeListener = null;
         this.componentMounted = false;
         this.deferHandlers = {};
+        this.refHandlers = {};
+        this.refHandles = {};
         this.state = this.initialState();
     }
+    /* Reference helpers */
+    setRef(key) {
+        if (!this.refHandlers[key]) {
+            this.refHandlers[key] = (ref) => this.assignRef(key, ref);
+        }
+        return this.refHandlers[key];
+    }
+    assignRef(key, ref) {
+        Log.t(this, "Assigning ref", { key, refPresent: !!ref });
+        this.refHandles[key] = ref;
+    }
     getRef(key) {
-        return this.refs[key];
+        return this.refHandles[key];
+    }
+    cleanUpRefs() {
+        Log.t(this, "Cleaning up refs");
+        for (var key of Object.keys(this.refHandlers)) {
+            delete this.refHandlers[key];
+            delete this.refHandles[key];
+        }
     }
     /* IMessageHandler Implementation Details */
     handles() {
@@ -72,6 +92,7 @@ export default class SrUiComponent extends React.Component {
         this.unregisterHandlers();
         this.onComponentWillUnmount();
         this.componentMounted = false;
+        this.cleanUpRefs();
     }
     ;
     render() {
@@ -188,12 +209,15 @@ export default class SrUiComponent extends React.Component {
         return this.stateHelpers.copyState();
     }
     cancelAllDeferrals() {
-        Object.keys(this.deferHandlers).forEach(k => this.cancelDeferred(k));
+        for (var key of Object.keys(this.deferHandlers)) {
+            this.cancelDeferred(key);
+        }
     }
     cancelDeferred(id) {
         if (id && this.deferHandlers[id]) {
             clearTimeout(this.deferHandlers[id]);
         }
+        delete this.deferHandlers[id];
     }
     updateQuery(query) {
         if (!this.mounted()) {

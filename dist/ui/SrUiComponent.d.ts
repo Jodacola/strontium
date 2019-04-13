@@ -5,8 +5,13 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     private resizeListener;
     private componentMounted;
     private deferHandlers;
+    private refHandlers;
+    private refHandles;
     constructor(props: any);
-    protected getRef<T extends HTMLElement>(key: string): T;
+    protected setRef(key: string): (ref: any) => void;
+    private assignRef;
+    protected getRef<T>(key: string): T;
+    private cleanUpRefs;
     handles(): string[];
     protected getHandles(): string[];
     receiveMessage(msg: SrAppMessage): void;

@@ -8,14 +8,39 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     private resizeListener: EventListener = null;
     private componentMounted = false;
     private deferHandlers: { [id: string]: number } = {};
+    private refHandlers: { [id: string]: (ref: any) => void } = {};
+    private refHandles: { [id: string]: any } = {};
 
     constructor(props: any) {
         super(props);
         this.state = this.initialState();
     }
 
-    protected getRef<T extends HTMLElement>(key: string) {
-        return this.refs[key] as T;
+    /* Reference helpers */
+
+    protected setRef(key: string): (ref: any) => void {
+        if (!this.refHandlers[key]) {
+            this.refHandlers[key] = (ref) => this.assignRef(key, ref);
+        }
+
+        return this.refHandlers[key];
+    }
+
+    private assignRef(key: string, ref: any) {
+        Log.t(this, "Assigning ref", { key, refPresent: !!ref });
+        this.refHandles[key] = ref;
+    }
+
+    protected getRef<T>(key: string) {
+        return this.refHandles[key] as T;
+    }
+
+    private cleanUpRefs() {
+        Log.t(this, "Cleaning up refs");
+        for (var key of Object.keys(this.refHandlers)) {
+            delete this.refHandlers[key];
+            delete this.refHandles[key];
+        }
     }
 
     /* IMessageHandler Implementation Details */
@@ -78,6 +103,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         this.unregisterHandlers();
         this.onComponentWillUnmount();
         this.componentMounted = false;
+        this.cleanUpRefs();
     };
 
     render(): React.ReactNode {
@@ -208,13 +234,17 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     }
 
     protected cancelAllDeferrals() {
-        Object.keys(this.deferHandlers).forEach(k => this.cancelDeferred(k));
+        for (var key of Object.keys(this.deferHandlers)) {
+            this.cancelDeferred(key);
+        }
     }
 
     protected cancelDeferred(id: string) {
         if (id && this.deferHandlers[id]) {
             clearTimeout(this.deferHandlers[id]);
         }
+
+        delete this.deferHandlers[id];
     }
 
     protected updateQuery(query: string) {
