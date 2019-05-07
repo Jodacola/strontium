@@ -23,6 +23,12 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     componentDidMount(): void;
     componentWillReceiveProps(props: P): void;
     componentWillUnmount(): void;
+    private cleanUp;
+    /**
+     * Implement to clean up component resources at the end of a component's lifecycle.
+     * Do not modify state or issue deferrals when implementing.
+     */
+    protected onCleanUp(): void;
     render(): React.ReactNode;
     protected onComponentWillMount(): void;
     protected onComponentMounted(): void;

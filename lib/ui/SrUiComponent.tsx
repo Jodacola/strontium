@@ -104,7 +104,22 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         this.onComponentWillUnmount();
         this.componentMounted = false;
         this.cleanUpRefs();
+        this.cleanUp();
     };
+
+    private cleanUp(): void {
+        this.stateHelpers = null;
+        this.deferHandlers = null;
+        this.refHandlers = null;
+        this.refHandles = null;
+        this.onCleanUp();
+    }
+
+    /**
+     * Implement to clean up component resources at the end of a component's lifecycle.
+     * Do not modify state or issue deferrals when implementing.
+     */
+    protected onCleanUp(): void { };
 
     render(): React.ReactNode {
         Log.t(this, "Will render");
@@ -234,7 +249,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     }
 
     protected cancelAllDeferrals() {
-        for (var key of Object.keys(this.deferHandlers)) {
+        for (const key of Object.keys(this.deferHandlers)) {
             this.cancelDeferred(key);
         }
     }
