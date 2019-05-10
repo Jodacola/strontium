@@ -4,3 +4,4 @@ export default class QueryUtility {
     static buildQuery(obj: object, exclusive?: boolean): string;
     static stripDelimiter(queryString: string): string;
 }
+export declare function updateQuery(query: string): void;

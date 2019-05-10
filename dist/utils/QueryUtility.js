@@ -1,3 +1,4 @@
+import { runtime } from "../framework/SrApp";
 export default class QueryUtility {
     static current(asObject = false) {
         let queryString = window.location.search || '';
@@ -43,5 +44,8 @@ export default class QueryUtility {
         }
         return queryString;
     }
+}
+export function updateQuery(query) {
+    runtime.ui.updateQuery(query);
 }
 //# sourceMappingURL=QueryUtility.js.map

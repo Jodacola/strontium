@@ -11,6 +11,7 @@ export interface IUiConfig extends IConfigElement {
     appInitFailed?: () => void;
     appInitializing?: () => void;
     viewRenderer?: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
+    internalRenderer?: (element: React.ReactElement<any>) => void;
 }
 export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
     static defaultProps: IUiConfig;

@@ -18,9 +18,12 @@ export default class SrUi implements IMessageHandler {
     private headerElement;
     private containerElement;
     private viewRenderer;
+    private renderer;
+    private _initialized;
     initialize(uiInit: IUiInitializer): void;
     handles(): string[];
     receiveMessage(msg: SrAppMessage): void;
+    initialized(): boolean;
     appBasePath(): string;
     private configureUi;
     private handleInitialization;
@@ -36,6 +39,7 @@ export default class SrUi implements IMessageHandler {
     updateQuery(query: string): void;
     private performNavigationChange;
     changeView(view: JSX.Element, onlyQueryUpdated?: boolean): Promise<void>;
+    private render;
     private getDefaultLocation;
     navigate(appUrl: string, title?: string, data?: any): void;
     showOverlay(): Promise<void>;

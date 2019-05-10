@@ -29,7 +29,9 @@ export default class SrUiComponent extends React.Component {
     }
     assignRef(key, ref) {
         Log.t(this, "Assigning ref", { key, refPresent: !!ref });
-        this.refHandles[key] = ref;
+        if (this.refHandlers && this.refHandlers[key]) {
+            this.refHandles[key] = ref;
+        }
     }
     getRef(key) {
         return this.refHandles[key];
@@ -69,16 +71,8 @@ export default class SrUiComponent extends React.Component {
         return {};
     }
     ;
-    componentWillMount() {
-        Log.t(this, "Will mount");
-    }
-    ;
     componentDidMount() {
-        Log.t(this, "Mounted");
-        this.componentMounted = true;
-        this.registerHandlers();
-        this.registerResizeHandler();
-        this.onComponentMounted();
+        this.doComponentDidMount();
     }
     ;
     componentWillReceiveProps(props) {
@@ -86,6 +80,18 @@ export default class SrUiComponent extends React.Component {
         this.onNewProps(props);
     }
     componentWillUnmount() {
+        this.doComponentWillUnmount();
+    }
+    ;
+    doComponentDidMount() {
+        Log.t(this, "Mounted");
+        this.componentMounted = true;
+        this.registerHandlers();
+        this.registerResizeHandler();
+        this.onComponentMounted();
+    }
+    ;
+    doComponentWillUnmount() {
         Log.t(this, "Will unmount");
         this.cancelAllDeferrals();
         this.unregisterResizeHandler();
@@ -103,6 +109,7 @@ export default class SrUiComponent extends React.Component {
         this.refHandles = null;
         this.onCleanUp();
     }
+    ;
     /**
      * Implement to clean up component resources at the end of a component's lifecycle.
      * Do not modify state or issue deferrals when implementing.
@@ -115,8 +122,6 @@ export default class SrUiComponent extends React.Component {
     }
     ;
     /* React-triggered Functions */
-    onComponentWillMount() { }
-    ;
     onComponentMounted() { }
     ;
     onComponentWillUnmount() { }
@@ -152,34 +157,6 @@ export default class SrUiComponent extends React.Component {
     }
     ;
     /* Utility Functions */
-    navigate(url, title, data, navOptions) {
-        var query = this.buildNavQuery(navOptions);
-        Log.d(this, "Navigating from element", { url: url, title: title, data: data, query: query });
-        runtime.ui.navigate(url + query, title, data);
-    }
-    ;
-    navigateOptions(navOptions) {
-        Log.d(this, "Navigating with options", navOptions);
-        var path = document.location.pathname.replace(`/${runtime.ui.appBasePath()}/`, "");
-        var title = document.title;
-        this.navigate(path, title, null, navOptions);
-    }
-    buildNavQuery(navOptions) {
-        if (navOptions == null) {
-            return "";
-        }
-        var query = "";
-        Object.keys(navOptions).forEach((k) => {
-            var value = (navOptions[k] || "").toString();
-            if (value.length) {
-                query = this.addQueryItem(query, k, value.toString());
-            }
-        });
-        if (query.length) {
-            return `?${query}`;
-        }
-        return "";
-    }
     deferred(func, time = 0, id = null) {
         this.cancelDeferred(id);
         var handle = window.setTimeout(() => {
@@ -190,6 +167,17 @@ export default class SrUiComponent extends React.Component {
         }
     }
     ;
+    cancelAllDeferrals() {
+        for (const key of Object.keys(this.deferHandlers)) {
+            this.cancelDeferred(key);
+        }
+    }
+    cancelDeferred(id) {
+        if (id && this.deferHandlers[id]) {
+            clearTimeout(this.deferHandlers[id]);
+        }
+        delete this.deferHandlers[id];
+    }
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
      */
@@ -221,36 +209,6 @@ export default class SrUiComponent extends React.Component {
      */
     copyState() {
         return this.stateHelpers.copyState();
-    }
-    cancelAllDeferrals() {
-        for (const key of Object.keys(this.deferHandlers)) {
-            this.cancelDeferred(key);
-        }
-    }
-    cancelDeferred(id) {
-        if (id && this.deferHandlers[id]) {
-            clearTimeout(this.deferHandlers[id]);
-        }
-        delete this.deferHandlers[id];
-    }
-    updateQuery(query) {
-        if (!this.mounted()) {
-            return;
-        }
-        runtime.ui.updateQuery(query);
-    }
-    addQueryItem(query, key, value) {
-        if (query.length != 0) {
-            query += "&";
-        }
-        query += key + "=" + encodeURIComponent(value);
-        return query;
-    }
-    classes(...classes) {
-        return (classes || []).filter((c) => { return !!c; }).join(" ");
-    }
-    broadcast(message, data) {
-        runtime.messaging.broadcast(message, true, data);
     }
 }
 //# sourceMappingURL=SrUiComponent.js.map

@@ -15,4 +15,5 @@ export default interface IUiInitializer {
     headerElement(): React.ReactNode | React.ReactNode[];
     containerElement(): React.ReactNode;
     viewRenderer(): (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
+    internalRenderer(): (element: React.ReactElement<any>) => void;
 }

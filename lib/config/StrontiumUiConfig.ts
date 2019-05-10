@@ -15,6 +15,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _footerElement: React.ReactNode | React.ReactNode[];
     private _headerElement: React.ReactNode | React.ReactNode[];
     private _viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
+    private _internalRenderer: (element: React.ReactElement<any>) => void;
 
     constructor(options: {
         defaultLocation: string,
@@ -30,7 +31,8 @@ export default class StrontiumUiConfig implements IUiInitializer {
         headerElement: React.ReactNode | React.ReactNode[],
         footerElement: React.ReactNode | React.ReactNode[],
         viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>,
-        containerElement: React.ReactNode
+        containerElement: React.ReactNode,
+        internalRenderer?: (element: React.ReactElement<any>) => void
     }) {
         this._defaultLocation = options.defaultLocation;
         this._basePath = options.basePath;
@@ -46,6 +48,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
         this._headerElement = options.headerElement;
         this._viewRenderer = options.viewRenderer;
         this._containerElement = options.containerElement;
+        this._internalRenderer = options.internalRenderer;
     }
 
     public defaultLocation(): string {
@@ -108,5 +111,9 @@ export default class StrontiumUiConfig implements IUiInitializer {
 
     public viewRenderer(): (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any> {
         return this._viewRenderer;
+    }
+
+    public internalRenderer(): (element: React.ReactElement<any>) => void {
+        return this._internalRenderer;
     }
 }

@@ -28,7 +28,9 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
 
     private assignRef(key: string, ref: any) {
         Log.t(this, "Assigning ref", { key, refPresent: !!ref });
-        this.refHandles[key] = ref;
+        if (this.refHandlers && this.refHandlers[key]) {
+            this.refHandles[key] = ref;
+        }
     }
 
     protected getRef<T>(key: string) {
@@ -79,16 +81,8 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         return {} as S;
     };
 
-    componentWillMount() {
-        Log.t(this, "Will mount");
-    };
-
     componentDidMount() {
-        Log.t(this, "Mounted");
-        this.componentMounted = true;
-        this.registerHandlers();
-        this.registerResizeHandler();
-        this.onComponentMounted();
+        this.doComponentDidMount();
     };
 
     componentWillReceiveProps(props: P) {
@@ -97,6 +91,18 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     }
 
     componentWillUnmount() {
+        this.doComponentWillUnmount();
+    };
+
+    private doComponentDidMount() {
+        Log.t(this, "Mounted");
+        this.componentMounted = true;
+        this.registerHandlers();
+        this.registerResizeHandler();
+        this.onComponentMounted();
+    };
+
+    private doComponentWillUnmount() {
         Log.t(this, "Will unmount");
         this.cancelAllDeferrals();
         this.unregisterResizeHandler();
@@ -113,7 +119,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         this.refHandlers = null;
         this.refHandles = null;
         this.onCleanUp();
-    }
+    };
 
     /**
      * Implement to clean up component resources at the end of a component's lifecycle.
@@ -127,7 +133,6 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     };
 
     /* React-triggered Functions */
-    protected onComponentWillMount(): void { };
     protected onComponentMounted(): void { };
     protected onComponentWillUnmount(): void { };
 
@@ -170,37 +175,6 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     };
 
     /* Utility Functions */
-    protected navigate(url: string, title?: string, data?: any, navOptions?: any): void {
-        var query = this.buildNavQuery(navOptions);
-        Log.d(this, "Navigating from element", { url: url, title: title, data: data, query: query });
-        runtime.ui.navigate(url + query, title, data);
-    };
-
-    protected navigateOptions(navOptions: any) {
-        Log.d(this, "Navigating with options", navOptions);
-        var path = document.location.pathname.replace(`/${runtime.ui.appBasePath()}/`, "");
-        var title = document.title;
-        this.navigate(path, title, null, navOptions);
-    }
-
-    protected buildNavQuery(navOptions: any) {
-        if (navOptions == null) {
-            return "";
-        }
-
-        var query = "";
-        Object.keys(navOptions).forEach((k) => {
-            var value: any = (navOptions[k] || "").toString();
-            if (value.length) {
-                query = this.addQueryItem(query, k, value.toString());
-            }
-        });
-        if (query.length) {
-            return `?${query}`;
-        }
-        return "";
-    }
-
     protected deferred(func: Function, time: number = 0, id: string = null) {
         this.cancelDeferred(id);
 
@@ -212,6 +186,20 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
             this.deferHandlers[id] = handle;
         }
     };
+
+    protected cancelAllDeferrals() {
+        for (const key of Object.keys(this.deferHandlers)) {
+            this.cancelDeferred(key);
+        }
+    }
+
+    protected cancelDeferred(id: string) {
+        if (id && this.deferHandlers[id]) {
+            clearTimeout(this.deferHandlers[id]);
+        }
+
+        delete this.deferHandlers[id];
+    }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
@@ -246,42 +234,5 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
      */
     protected copyState(): S {
         return this.stateHelpers.copyState();
-    }
-
-    protected cancelAllDeferrals() {
-        for (const key of Object.keys(this.deferHandlers)) {
-            this.cancelDeferred(key);
-        }
-    }
-
-    protected cancelDeferred(id: string) {
-        if (id && this.deferHandlers[id]) {
-            clearTimeout(this.deferHandlers[id]);
-        }
-
-        delete this.deferHandlers[id];
-    }
-
-    protected updateQuery(query: string) {
-        if (!this.mounted()) {
-            return;
-        }
-        runtime.ui.updateQuery(query);
-    }
-
-    protected addQueryItem(query: string, key: string, value: string): string {
-        if (query.length != 0) {
-            query += "&";
-        }
-        query += key + "=" + encodeURIComponent(value);
-        return query;
-    }
-
-    protected classes(...classes: string[]): string {
-        return (classes || []).filter((c) => { return !!c; }).join(" ");
-    }
-
-    protected broadcast(message: string, data?: any) {
-        runtime.messaging.broadcast(message, true, data);
     }
 }

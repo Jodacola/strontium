@@ -15,6 +15,7 @@ export default class StrontiumUiConfig {
         this._headerElement = options.headerElement;
         this._viewRenderer = options.viewRenderer;
         this._containerElement = options.containerElement;
+        this._internalRenderer = options.internalRenderer;
     }
     defaultLocation() {
         return this._defaultLocation;
@@ -63,6 +64,9 @@ export default class StrontiumUiConfig {
     }
     viewRenderer() {
         return this._viewRenderer;
+    }
+    internalRenderer() {
+        return this._internalRenderer;
     }
 }
 //# sourceMappingURL=StrontiumUiConfig.js.map

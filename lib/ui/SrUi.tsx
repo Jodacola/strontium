@@ -23,6 +23,8 @@ export default class SrUi implements IMessageHandler {
     private headerElement: React.ReactNode | React.ReactNode[];
     private containerElement: React.ReactNode;
     private viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
+    private renderer: (element: React.ReactElement<any>) => void = undefined;
+    private _initialized: boolean = false;
 
     public initialize(uiInit: IUiInitializer): void {
         if (uiInit == null) {
@@ -56,6 +58,10 @@ export default class SrUi implements IMessageHandler {
         }
     }
 
+    public initialized() {
+        return this._initialized;
+    }
+
     public appBasePath() {
         return this.basePath;
     }
@@ -71,6 +77,7 @@ export default class SrUi implements IMessageHandler {
         this.viewRenderer = uiInit.viewRenderer();
         this.footerElement = uiInit.footerElement();
         this.containerElement = uiInit.containerElement();
+        this.renderer = uiInit.internalRenderer();
         runtime.messaging.registerHandler(this);
     }
 
@@ -79,6 +86,7 @@ export default class SrUi implements IMessageHandler {
         if (success) {
             this.configurer.appReady();
             this.loadCurrentUrl();
+            this._initialized = true;
         } else {
             Log.e(this, "Unable to load proper UI due to API initialization failure.");
             this.configurer.appInitFailed();
@@ -207,7 +215,7 @@ export default class SrUi implements IMessageHandler {
     public async changeView(view: JSX.Element, onlyQueryUpdated: boolean = false) {
         this.currentView = view;
         if (view == null) {
-            ReactDOM.render(<div className="no-view" />, document.getElementById(this.rootElement));
+            this.render(<div className="no-view" />);
             return;
         }
 
@@ -226,7 +234,15 @@ export default class SrUi implements IMessageHandler {
                 {this.footerElement}
             </React.Fragment>;
         }
-        ReactDOM.render(render, document.getElementById(this.rootElement));
+        this.render(render);
+    }
+
+    private render(element: React.ReactElement<any>) {
+        if (this.renderer) {
+            this.renderer(element);
+        } else {
+            ReactDOM.render(element, document.getElementById(this.rootElement));
+        }
     }
 
     private getDefaultLocation(): string {

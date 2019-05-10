@@ -22,6 +22,8 @@ export default class SrUi {
         this.defaultLocation = null;
         this.basePath = null;
         this.rootElement = null;
+        this.renderer = undefined;
+        this._initialized = false;
     }
     initialize(uiInit) {
         if (uiInit == null) {
@@ -50,6 +52,9 @@ export default class SrUi {
             this.handleInitialization(msg.action === CommonMessages.AppReady);
         }
     }
+    initialized() {
+        return this._initialized;
+    }
     appBasePath() {
         return this.basePath;
     }
@@ -64,6 +69,7 @@ export default class SrUi {
         this.viewRenderer = uiInit.viewRenderer();
         this.footerElement = uiInit.footerElement();
         this.containerElement = uiInit.containerElement();
+        this.renderer = uiInit.internalRenderer();
         runtime.messaging.registerHandler(this);
     }
     handleInitialization(success) {
@@ -71,6 +77,7 @@ export default class SrUi {
         if (success) {
             this.configurer.appReady();
             this.loadCurrentUrl();
+            this._initialized = true;
         }
         else {
             Log.e(this, "Unable to load proper UI due to API initialization failure.");
@@ -179,7 +186,7 @@ export default class SrUi {
         return __awaiter(this, void 0, void 0, function* () {
             this.currentView = view;
             if (view == null) {
-                ReactDOM.render(React.createElement("div", { className: "no-view" }), document.getElementById(this.rootElement));
+                this.render(React.createElement("div", { className: "no-view" }));
                 return;
             }
             let viewRender = view;
@@ -196,8 +203,16 @@ export default class SrUi {
                     viewRender,
                     this.footerElement);
             }
-            ReactDOM.render(render, document.getElementById(this.rootElement));
+            this.render(render);
         });
+    }
+    render(element) {
+        if (this.renderer) {
+            this.renderer(element);
+        }
+        else {
+            ReactDOM.render(element, document.getElementById(this.rootElement));
+        }
     }
     getDefaultLocation() {
         return this.defaultLocation;

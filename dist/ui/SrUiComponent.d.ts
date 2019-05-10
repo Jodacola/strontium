@@ -19,10 +19,11 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     private registerHandlers;
     private unregisterHandlers;
     protected initialState(): S;
-    componentWillMount(): void;
     componentDidMount(): void;
     componentWillReceiveProps(props: P): void;
     componentWillUnmount(): void;
+    private doComponentDidMount;
+    private doComponentWillUnmount;
     private cleanUp;
     /**
      * Implement to clean up component resources at the end of a component's lifecycle.
@@ -30,7 +31,6 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
      */
     protected onCleanUp(): void;
     render(): React.ReactNode;
-    protected onComponentWillMount(): void;
     protected onComponentMounted(): void;
     protected onComponentWillUnmount(): void;
     abstract performRender(): React.ReactNode;
@@ -39,10 +39,9 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     protected resizeCallback(): () => void;
     protected registerResizeHandler(): void;
     protected unregisterResizeHandler(): void;
-    protected navigate(url: string, title?: string, data?: any, navOptions?: any): void;
-    protected navigateOptions(navOptions: any): void;
-    protected buildNavQuery(navOptions: any): string;
     protected deferred(func: Function, time?: number, id?: string): void;
+    protected cancelAllDeferrals(): void;
+    protected cancelDeferred(id: string): void;
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
      */
@@ -63,10 +62,4 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
      * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
      */
     protected copyState(): S;
-    protected cancelAllDeferrals(): void;
-    protected cancelDeferred(id: string): void;
-    protected updateQuery(query: string): void;
-    protected addQueryItem(query: string, key: string, value: string): string;
-    protected classes(...classes: string[]): string;
-    protected broadcast(message: string, data?: any): void;
 }

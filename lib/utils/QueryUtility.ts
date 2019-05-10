@@ -1,3 +1,5 @@
+import { runtime } from "../framework/SrApp";
+
 export default class QueryUtility {
     public static current(asObject: boolean = false): string | any {
         let queryString = window.location.search || '';
@@ -50,4 +52,8 @@ export default class QueryUtility {
 
         return queryString;
     }
+}
+
+export function updateQuery(query: string) {
+    runtime.ui.updateQuery(query);
 }
