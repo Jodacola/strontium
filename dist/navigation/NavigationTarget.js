@@ -1,6 +1,6 @@
 import Log from "../framework/Log";
 import { cleanPath, splitPathAndQuery } from "./NavHandlerUtils";
-import QueryUtility from "../utils/QueryUtility";
+import { asObject } from "../utils/QueryUtility";
 export default class NavigationTarget {
     constructor(original, data, basePath) {
         this.paths = [];
@@ -20,7 +20,7 @@ export default class NavigationTarget {
         const { path, query } = splitPathAndQuery(originalPath);
         const targets = path.split("/").filter((s) => { return ((s || "").trim().length > 0); });
         this.paths = targets;
-        this.query = QueryUtility.asObject(query);
+        this.query = asObject(query);
     }
 }
 //# sourceMappingURL=NavigationTarget.js.map

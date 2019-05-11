@@ -1,84 +1,12 @@
 import React from "react";
 import Enzyme, { mount } from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
-import { StrontiumApp, LoggerConfigElement, LogLevel, ServicesConfigElement, UiConfigElement, RouteConfigElement, runtime, SrUiComponent, SrAppMessage } from "../../lib/lib";
-import { JSDOM } from "jsdom";
-
-const origTimeout = window.setTimeout;
-const origAddEventListener = window.addEventListener;
+import { runtime, SrAppMessage } from "../../lib/lib";
+import { setupRuntime, WithInitialStateComp, BareComp, WithHandlesComp, origAddEventListener, origTimeout, delay } from "../test_utils/UiUtils";
 
 Enzyme.configure({ adapter: new Adapter() });
 
-class BareComp extends SrUiComponent<{}, {}>{
-    performRender() {
-        return <div className="test-component">
-        </div>;
-    }
-}
-
-class WithInitialStateComp extends SrUiComponent<{ numProp: number, strProp: string }, { numState: number, strState: string }>{
-    initialState() {
-        return { numState: this.props.numProp, strState: this.props.strProp };
-    }
-
-    performRender() {
-        return <div className="test-component">
-            <p ref={this.setRef("elementRef")} />
-            <p className="test-num-value">{this.state.numState}</p>
-            <p className="test-str-value">{this.state.strState}</p>
-        </div>;
-    }
-}
-
-class WithHandlesComp extends SrUiComponent<{ numProp: number, strProp: string }, { numState: number, strState: string }>{
-    initialState() {
-        return { numState: this.props.numProp, strState: this.props.strProp };
-    }
-
-    public customHandles: string[] = ["a handle"];
-
-    getHandles() {
-        return this.customHandles;
-    }
-
-    performRender() {
-        return <div className="test-component">
-            <p ref={this.setRef("elementRef")} />
-            <p className="test-num-value">{this.state.numState}</p>
-            <p className="test-str-value">{this.state.strState}</p>
-        </div>;
-    }
-}
-
-const delay = function (milliseconds: number): Promise<void> {
-    return new Promise<void>(resolve => {
-        origTimeout(resolve, milliseconds);
-    });
-}
-
-beforeEach(async (done) => {
-    const doc = new JSDOM("<html><head><title>Test Application</title></head><body><div id=\"app-item\" <div id=\"app-content\"></div></body></html>");
-    (global as any).document = doc;
-    (global as any).window = doc.window;
-
-    mount(<StrontiumApp>
-        <LoggerConfigElement loggingLevel={LogLevel.Error} />
-        <ServicesConfigElement />
-        <UiConfigElement urlNavigationEnabled navigateOnQueryChanges appTitle="Test App" basePath="app" defaultLocation="test" rootElement="app-content" internalRenderer={(elem) => { }}>
-            <RouteConfigElement title="Make a new team" route="test" view={d => <div id="test-view" />} />
-        </UiConfigElement>
-    </StrontiumApp>, { attachTo: document.getElementById('app-content') });
-
-    for (var i = 0; i < 50; i++) {
-        await delay(100);
-        if (runtime.ui.initialized()) {
-            done();
-            return;
-        }
-    }
-
-    done();
-}, 5000);
+beforeEach(setupRuntime, 5000);
 
 describe('SrUiComponent', () => {
     test('renders correctly', () => {
@@ -424,7 +352,7 @@ describe('SrUiComponent', () => {
     test('unregisterResizeHandler unregisters listener if resizeCallback is present', () => {
         const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
         const instance = component.instance() as any;
-        instance.resizeListener = (e: Event) => { };
+        instance.resizeListener = () => { };
         window.removeEventListener = jest.fn();
         instance.unregisterResizeHandler();
         expect(instance.resizeListener).toBeNull();

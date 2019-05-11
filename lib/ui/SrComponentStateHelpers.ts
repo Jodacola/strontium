@@ -15,6 +15,7 @@ export default class SrComponentStateHelpers<P, S> {
     public set(state: S): void {
         if (!this._component.mounted()) {
             Log.w(this, "State setting while not mounted; ignoring.", state);
+            return;
         }
         Log.t(this, "Setting new state", state);
         this._component.setState(state);
@@ -38,6 +39,7 @@ export default class SrComponentStateHelpers<P, S> {
     public setAsync(state: S): Promise<S> {
         if (!this._component.mounted()) {
             Log.w(this, "State setting while not mounted; ignoring.", state);
+            return new Promise(resolve => resolve());
         }
         Log.t(this, "Setting new state", state);
         return new Promise(resolve => {
@@ -66,12 +68,7 @@ export default class SrComponentStateHelpers<P, S> {
         if (!this._component.state) {
             return null;
         }
-        var copy: any = {};
-        for (var key in this._component.state) {
-            if (this._component.state.hasOwnProperty(key)) {
-                copy[key] = this._component.state[key];
-            }
-        }
-        return copy as S;
+
+        return Object.assign({}, this._component.state) as S;
     }
 }
