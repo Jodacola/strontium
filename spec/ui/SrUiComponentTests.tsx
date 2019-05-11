@@ -523,10 +523,9 @@ describe('SrUiComponent', () => {
         const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
         const instance = component.instance() as any;
         window.setTimeout = jest.fn();
-        const fn = () => { };
-        instance.deferred(fn);
+        instance.deferred(() => { });
         expect(window.setTimeout).toHaveBeenCalledTimes(1);
-        expect(window.setTimeout).toHaveBeenCalledWith(fn, 0);
+        expect(window.setTimeout).toHaveBeenCalledWith(expect.any(Function), 0);
     });
 
     test('deferred setTimeout calls function', async (done) => {

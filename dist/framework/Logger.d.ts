@@ -1,5 +1,5 @@
-import { IErrorReporter } from "../config/Config";
 import LogLevel from "./LogLevel";
+import IErrorReporter from "../config/IErrorReporter";
 export default class Logger {
     level: LogLevel;
     logFilter?: string[];

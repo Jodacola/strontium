@@ -6,11 +6,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { CommonMessages } from "../messaging/Messaging";
-import { Log, runtime } from "../framework/Framework";
 import * as ReactDOM from "react-dom";
 import * as React from "react";
 import NavigationTarget from "../navigation/NavigationTarget";
+import CommonMessages from "../messaging/CommonMessages";
+import { runtime } from "../framework/SrApp";
+import Log from "../framework/Log";
 export default class SrUi {
     constructor() {
         this.overlayVisible = false;

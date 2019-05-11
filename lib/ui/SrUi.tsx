@@ -1,10 +1,13 @@
-﻿import { IMessageHandler, CommonMessages, SrAppMessage } from "../messaging/Messaging";
-import { Log, runtime } from "../framework/Framework";
-import { IUiInitializer } from "../config/Config";
-import * as ReactDOM from "react-dom";
+﻿import * as ReactDOM from "react-dom";
 import * as React from "react";
 import INavigationHandler from "../navigation/INavigationHandler";
 import NavigationTarget from "../navigation/NavigationTarget";
+import IMessageHandler from "../messaging/IMessageHandler";
+import IUiInitializer from "../config/IUiInitializer";
+import CommonMessages from "../messaging/CommonMessages";
+import SrAppMessage from "../messaging/SrAppMessage";
+import { runtime } from "../framework/SrApp";
+import Log from "../framework/Log";
 
 export default class SrUi implements IMessageHandler {
     private overlayVisible = false;

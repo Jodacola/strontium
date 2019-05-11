@@ -1,5 +1,6 @@
 import * as React from "react";
-import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
+import IMessageHandler from "../messaging/IMessageHandler";
+import SrAppMessage from "../messaging/SrAppMessage";
 export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
     private stateHelpers;
     private resizeListener;

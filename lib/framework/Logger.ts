@@ -1,7 +1,7 @@
 import { runtime } from "./SrApp";
 import { stringify } from "circular-json";
-import { IErrorReporter } from "../config/Config";
 import LogLevel from "./LogLevel";
+import IErrorReporter from "../config/IErrorReporter";
 
 export default class Logger {
     private static _logger: Logger;

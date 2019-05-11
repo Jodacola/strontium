@@ -6,9 +6,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Log, runtime } from "../framework/Framework";
 import * as React from "react";
 import SrComponentStateHelpers from "./SrComponentStateHelpers";
+import Log from "../framework/Log";
+import { runtime } from "../framework/SrApp";
 export default class SrUiComponent extends React.Component {
     constructor(props) {
         super(props);

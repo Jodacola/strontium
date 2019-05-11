@@ -1,7 +1,9 @@
-﻿import { Log, runtime } from "../framework/Framework";
-import * as React from "react";
-import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
+﻿import * as React from "react";
 import SrComponentStateHelpers from "./SrComponentStateHelpers";
+import IMessageHandler from "../messaging/IMessageHandler";
+import Log from "../framework/Log";
+import SrAppMessage from "../messaging/SrAppMessage";
+import { runtime } from "../framework/SrApp";
 
 export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
     private stateHelpers: SrComponentStateHelpers<P, S> = new SrComponentStateHelpers<P, S>(this);

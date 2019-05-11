@@ -1,8 +1,6 @@
 import IMatchItem from "./IMatchItem";
 import MatchByTypes from "./MatchByTypes";
 import NavigationTarget from "./NavigationTarget";
-import { Log } from "../lib";
-import { QueryUtility } from "../utils/Utils";
 
 /* Allows a path to be parsed for building matches.
     * For example:

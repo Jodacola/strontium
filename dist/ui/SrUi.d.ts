@@ -1,6 +1,7 @@
 /// <reference types="react" />
-import { IMessageHandler, SrAppMessage } from "../messaging/Messaging";
-import { IUiInitializer } from "../config/Config";
+import IMessageHandler from "../messaging/IMessageHandler";
+import IUiInitializer from "../config/IUiInitializer";
+import SrAppMessage from "../messaging/SrAppMessage";
 export default class SrUi implements IMessageHandler {
     private overlayVisible;
     private currentView;
