@@ -1,10 +1,11 @@
-
 import React from "react";
 import Enzyme, { mount } from "enzyme";
 import Adapter from 'enzyme-adapter-react-16';
 import { StrontiumApp, LoggerConfigElement, LogLevel, ServicesConfigElement, UiConfigElement, RouteConfigElement, runtime, SrUiComponent, SrAppMessage } from "../../lib/lib";
 import { JSDOM } from "jsdom";
-import { element } from "prop-types";
+
+const origTimeout = window.setTimeout;
+const origAddEventListener = window.addEventListener;
 
 Enzyme.configure({ adapter: new Adapter() });
 
@@ -51,7 +52,7 @@ class WithHandlesComp extends SrUiComponent<{ numProp: number, strProp: string }
 
 const delay = function (milliseconds: number): Promise<void> {
     return new Promise<void>(resolve => {
-        setTimeout(resolve, milliseconds);
+        origTimeout(resolve, milliseconds);
     });
 }
 
@@ -409,10 +410,21 @@ describe('SrUiComponent', () => {
         expect(window.addEventListener).toHaveBeenCalledTimes(1);
     });
 
+    test('resizeListener func called if window resized', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        const resizeCall = jest.fn();
+        instance.resizeCallback = function () { return resizeCall; };
+        window.addEventListener = origAddEventListener;
+        instance.registerResizeHandler();
+        window.dispatchEvent(new Event('resize'));
+        expect(resizeCall).toHaveBeenCalledTimes(1);
+    });
+
     test('unregisterResizeHandler unregisters listener if resizeCallback is present', () => {
         const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
         const instance = component.instance() as any;
-        instance.resizeListener = (e: Event) => {};
+        instance.resizeListener = (e: Event) => { };
         window.removeEventListener = jest.fn();
         instance.unregisterResizeHandler();
         expect(instance.resizeListener).toBeNull();
@@ -426,5 +438,147 @@ describe('SrUiComponent', () => {
         instance.unregisterResizeHandler();
         expect(instance.resizeListener).toBeNull();
         expect(window.removeEventListener).toHaveBeenCalledTimes(0);
+    });
+
+    test('set calls stateHelpers.set with state', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.stateHelpers.set = jest.fn();
+        const value = { someKey: 12 };
+        instance.set(value);
+        expect(instance.stateHelpers.set).toHaveBeenCalledTimes(1);
+        expect(instance.stateHelpers.set).toHaveBeenCalledWith(value);
+    });
+
+    test('setAsync calls stateHelpers.setAsync with state', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.stateHelpers.setAsync = jest.fn();
+        const value = { someKey: 12 };
+        instance.setAsync(value);
+        expect(instance.stateHelpers.setAsync).toHaveBeenCalledTimes(1);
+        expect(instance.stateHelpers.setAsync).toHaveBeenCalledWith(value);
+    });
+
+    test('setPartial calls stateHelpers.setPartial with state', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.stateHelpers.setPartial = jest.fn();
+        const value = { someKey: 12 };
+        instance.setPartial(value);
+        expect(instance.stateHelpers.setPartial).toHaveBeenCalledTimes(1);
+        expect(instance.stateHelpers.setPartial).toHaveBeenCalledWith(value);
+    });
+
+    test('setPartialAsync calls stateHelpers.setPartialAsync with state', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.stateHelpers.setPartialAsync = jest.fn();
+        const value = { someKey: 12 };
+        instance.setPartialAsync(value);
+        expect(instance.stateHelpers.setPartialAsync).toHaveBeenCalledTimes(1);
+        expect(instance.stateHelpers.setPartialAsync).toHaveBeenCalledWith(value);
+    });
+
+    test('copyState calls stateHelpers.copyState', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.stateHelpers.copyState = jest.fn();
+        instance.copyState();
+        expect(instance.stateHelpers.copyState).toHaveBeenCalledTimes(1);
+    });
+
+    test('deferred cancels previous deferral', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.cancelDeferred = jest.fn();
+        instance.deferred(() => { }, 1000, 'someId');
+        expect(instance.cancelDeferred).toHaveBeenCalledTimes(1);
+        expect(instance.cancelDeferred).toHaveBeenCalledWith('someId');
+    });
+
+    test('deferred sets handle for id', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.deferred(() => { }, 1000, 'someId');
+        expect(instance.deferHandlers["someId"]).toBeDefined();
+    });
+
+    test('deferred sets nothing when no id', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.deferred(() => { }, 1000);
+        expect(Object.keys(instance.deferHandlers).length).toBe(0);
+    });
+
+    test('deferred issues setTimeout', async () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.setTimeout = jest.fn();
+        instance.deferred(() => { }, 500);
+        expect(window.setTimeout).toHaveBeenCalledTimes(1);
+    });
+
+    test('deferred issues setTimeout of 0 when no timeout', async () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.setTimeout = jest.fn();
+        const fn = () => { };
+        instance.deferred(fn);
+        expect(window.setTimeout).toHaveBeenCalledTimes(1);
+        expect(window.setTimeout).toHaveBeenCalledWith(fn, 0);
+    });
+
+    test('deferred setTimeout calls function', async (done) => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.setTimeout = origTimeout;
+        const callback = jest.fn();
+        instance.deferred(() => { callback() }, 500);
+        expect(callback).toHaveBeenCalledTimes(0);
+        await delay(1500);
+        expect(callback).toHaveBeenCalledTimes(1);
+        done();
+    });
+
+    test('cancelAllDeferrrals cancels all pending deferrals', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        instance.cancelDeferred = jest.fn();
+        instance.deferred(() => { }, 1000, 'id1');
+        instance.deferred(() => { }, 1000, 'id2');
+        expect(instance.cancelDeferred).toHaveBeenCalledTimes(2);
+        instance.cancelAllDeferrals();
+        expect(instance.cancelDeferred).toHaveBeenCalledTimes(4);
+        expect(instance.cancelDeferred).toHaveBeenCalledWith('id1');
+        expect(instance.cancelDeferred).toHaveBeenCalledWith('id2');
+    });
+
+    test('cancelDeferred cancels pending deferral', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.clearTimeout = jest.fn();
+        instance.deferred(() => { }, 1000, 'id1');
+        const handle = instance.deferHandlers['id1'];
+        instance.cancelDeferred('id1');
+        expect(window.clearTimeout).toHaveBeenCalledTimes(1);
+        expect(window.clearTimeout).toHaveBeenCalledWith(handle);
+        expect(instance.deferHandlers['id1']).toBeUndefined();
+    });
+
+    test('cancelDeferred cancels is no-op when no id', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.clearTimeout = jest.fn();
+        instance.cancelDeferred();
+        expect(window.clearTimeout).toHaveBeenCalledTimes(0);
+    });
+
+    test('cancelDeferred cancels is no-op when non-existent id', () => {
+        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
+        const instance = component.instance() as any;
+        window.clearTimeout = jest.fn();
+        instance.cancelDeferred('someId');;
+        expect(window.clearTimeout).toHaveBeenCalledTimes(0);
     });
 });
