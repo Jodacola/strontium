@@ -2,7 +2,7 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "noEmitOnError": true,
-    "allowSyntheticDefaultImports": true,
+    "allowSyntheticDefaultImports": false,
     "removeComments": false,
     "outDir": "./dist",
     "sourceMap": true,

@@ -32,10 +32,9 @@ export { default as ApiHelpers } from "./api/ApiHelpers";
 export { default as ServicesConfigElement } from "./config/ServicesConfigElement";
 export { default as ServiceConfigElement } from "./config/ServiceConfigElement";
 export { default as SrServiceContainer } from "./framework/SrServiceContainer";
-export { default as QueryUtility } from "./utils/QueryUtility";
-export { default as GeneralUtility } from "./utils/GeneralUtility";
 export { default as ApiContainer } from "./api/ApiContainer";
 export { navigate } from "./utils/NavigationUtility";
 export { broadcast } from "./utils/BroadcastUtility";
-export { updateQuery } from "./utils/QueryUtility";
+export { currentQuery, asObject, buildQuery, stripDelimiter, updateQuery } from "./utils/QueryUtility";
+export { delay } from "./utils/GeneralUtility";
 //# sourceMappingURL=lib.js.map

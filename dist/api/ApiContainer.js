@@ -1,6 +1,6 @@
 import Log from "../framework/Log";
 import { CommonMessages } from "../lib";
-import uuid from "uuid";
+import * as uuid from "uuid";
 export default class ApiContainer {
     constructor(messaging) {
         this._apiMap = {};

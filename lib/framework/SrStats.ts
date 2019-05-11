@@ -1,5 +1,5 @@
 ﻿import Log from "./Log";
-import uuid from "uuid";
+import * as uuid from "uuid";
 
 export default class Stats {
     private static pendingTimings: { [id: string]: number } = {};

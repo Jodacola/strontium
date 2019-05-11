@@ -2,7 +2,7 @@ import SrApi from "./SrApi";
 import Log from "../framework/Log";
 import { IAppService, CommonMessages, SrAppMessage, IApiConnection } from "../lib";
 import IAppMessaging from "../messaging/IAppMessaging";
-import uuid from "uuid";
+import * as uuid from "uuid";
 
 interface IApiContainerItem {
     api: SrApi,

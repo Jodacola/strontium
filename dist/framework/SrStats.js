@@ -1,5 +1,5 @@
 import Log from "./Log";
-import uuid from "uuid";
+import * as uuid from "uuid";
 export default class Stats {
     static start(token) {
         token = token || uuid.v4();
