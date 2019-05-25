@@ -87,9 +87,9 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         this.doComponentDidMount();
     };
 
-    componentWillReceiveProps(props: P) {
+    componentDidUpdate?(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot?: any) {
         Log.t(this, "Receiving props update");
-        this.onNewProps(props);
+        this.onUpdated(prevProps, prevState);
     }
 
     componentWillUnmount() {
@@ -145,7 +145,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         return this.componentMounted;
     }
 
-    protected onNewProps(props: P): void {
+    protected onUpdated(prevProps: Readonly<P>, prevState: Readonly<S>): void {
 
     }
 

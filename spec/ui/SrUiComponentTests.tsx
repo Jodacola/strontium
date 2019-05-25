@@ -200,10 +200,11 @@ describe('SrUiComponent', () => {
 
     test('component calls internal new props method when new props', () => {
         const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onNewProps = jest.fn();
-        const newProps = { propData: 12 };
-        (component.instance() as any).componentWillReceiveProps(newProps);
-        expect((component.instance() as any).onNewProps).toHaveBeenCalledWith(newProps);
+        (component.instance() as any).onUpdated = jest.fn();
+        const prevProps = { propData: 12 };
+        const prevState = { stateData: 13 };
+        (component.instance() as any).componentDidUpdate(prevProps, prevState);
+        expect((component.instance() as any).onUpdated).toHaveBeenCalledWith(prevProps, prevState);
     });
 
     test('component calls internal performRender methods when render called', () => {
@@ -218,9 +219,9 @@ describe('SrUiComponent', () => {
         (component.instance() as any).onCleanUp();
     });
 
-    test('base onNewProps calls with no adverse effects', () => {
+    test('base onUpdated calls with no adverse effects', () => {
         const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onNewProps({});
+        (component.instance() as any).onUpdated({}, {});
     });
 
     test('base onComponentMounted calls with no adverse effects', () => {

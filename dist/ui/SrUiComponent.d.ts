@@ -21,7 +21,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     private unregisterHandlers;
     protected initialState(): S;
     componentDidMount(): void;
-    componentWillReceiveProps(props: P): void;
+    componentDidUpdate?(prevProps: Readonly<P>, prevState: Readonly<S>, snapshot?: any): void;
     componentWillUnmount(): void;
     private doComponentDidMount;
     private doComponentWillUnmount;
@@ -36,7 +36,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     protected onComponentWillUnmount(): void;
     abstract performRender(): React.ReactNode;
     mounted(): boolean;
-    protected onNewProps(props: P): void;
+    protected onUpdated(prevProps: Readonly<P>, prevState: Readonly<S>): void;
     protected resizeCallback(): () => void;
     protected registerResizeHandler(): void;
     protected unregisterResizeHandler(): void;

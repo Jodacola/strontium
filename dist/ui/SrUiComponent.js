@@ -76,9 +76,9 @@ export default class SrUiComponent extends React.Component {
         this.doComponentDidMount();
     }
     ;
-    componentWillReceiveProps(props) {
+    componentDidUpdate(prevProps, prevState, snapshot) {
         Log.t(this, "Receiving props update");
-        this.onNewProps(props);
+        this.onUpdated(prevProps, prevState);
     }
     componentWillUnmount() {
         this.doComponentWillUnmount();
@@ -131,7 +131,7 @@ export default class SrUiComponent extends React.Component {
     mounted() {
         return this.componentMounted;
     }
-    onNewProps(props) {
+    onUpdated(prevProps, prevState) {
     }
     /* Window Resizing */
     resizeCallback() {
