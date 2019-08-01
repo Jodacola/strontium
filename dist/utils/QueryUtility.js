@@ -18,7 +18,7 @@ export const asObject = (queryString) => {
     });
     return obj;
 };
-export const buildQuery = (obj, exclusive = false) => {
+export const buildQuery = (obj, exclusive = false, encodeComponents = true) => {
     let current = currentQuery(true);
     if (exclusive) {
         current = {};
@@ -32,7 +32,11 @@ export const buildQuery = (obj, exclusive = false) => {
             if (typeof value === 'object') {
                 value = JSON.stringify(value);
             }
-            finalParts.push(`${k}=${encodeURIComponent(value.toString())}`);
+            let component = value.toString();
+            if (encodeComponents) {
+                component = encodeURIComponent(component);
+            }
+            finalParts.push(`${k}=${component}`);
         }
     });
     return finalParts.join('&');

@@ -104,6 +104,24 @@ describe('QueryUtility', () => {
             expect(newQuery.indexOf('key2=value2r')).toBeGreaterThan(-1);
             expect(newQuery.indexOf('keyNull')).toEqual(-1);
         });
+
+        it('encodes component in query by default', () => {
+            // "http://www.roadtonowhere.com/path1/path2/?id=someId&key1=value1&key2=value2"
+            let newQuery = buildQuery({ encodedKey: '1,2' });
+            expect(newQuery.indexOf('encodedKey=1%2C2')).toBeGreaterThan(-1);
+        });
+
+        it('encodes component in query explicitly', () => {
+            // "http://www.roadtonowhere.com/path1/path2/?id=someId&key1=value1&key2=value2"
+            let newQuery = buildQuery({ encodedKey: '1,2' }, false, true);
+            expect(newQuery.indexOf('encodedKey=1%2C2')).toBeGreaterThan(-1);
+        });
+
+        it('does not encode component in query explicitly', () => {
+            // "http://www.roadtonowhere.com/path1/path2/?id=someId&key1=value1&key2=value2"
+            let newQuery = buildQuery({ encodedKey: '1,2' }, false, false);
+            expect(newQuery.indexOf('encodedKey=1,2')).toBeGreaterThan(-1);
+        });
     });
 
     it('updateQuery calls runtime.ui.updateQuery', async () => {

@@ -20,7 +20,7 @@ export const asObject = (queryString: string): { [key: string]: any } => {
     return obj;
 };
 
-export const buildQuery = (obj: object, exclusive: boolean = false): string => {
+export const buildQuery = (obj: object, exclusive: boolean = false, encodeComponents: boolean = true): string => {
     let current = currentQuery(true);
 
     if (exclusive) {
@@ -37,7 +37,11 @@ export const buildQuery = (obj: object, exclusive: boolean = false): string => {
             if (typeof value === 'object') {
                 value = JSON.stringify(value);
             }
-            finalParts.push(`${k}=${encodeURIComponent(value.toString())}`);
+            let component = value.toString();
+            if (encodeComponents) {
+                component = encodeURIComponent(component);
+            }
+            finalParts.push(`${k}=${component}`);
         }
     });
 
