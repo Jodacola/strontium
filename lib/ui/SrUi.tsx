@@ -48,7 +48,7 @@ export default class SrUi implements IMessageHandler {
     }
 
     handles(): string[] {
-        return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
+        return [CommonMessages.AppReady, CommonMessages.AppLaunch, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
 
     receiveMessage(msg: SrAppMessage): void {
@@ -56,8 +56,8 @@ export default class SrUi implements IMessageHandler {
             runtime.messaging.broadcast(CommonMessages.AppReady);
         }
 
-        if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
-            this.handleInitialization(msg.action === CommonMessages.AppReady);
+        if (msg.action === CommonMessages.AppLaunch || msg.action === CommonMessages.ApiInitializationFailed) {
+            this.handleInitialization(msg.action === CommonMessages.AppLaunch);
         }
     }
 

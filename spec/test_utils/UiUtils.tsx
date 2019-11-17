@@ -2,7 +2,7 @@ import React from "react";
 import SrUiComponent from "../../lib/ui/SrUiComponent";
 import { JSDOM } from "jsdom";
 import { mount } from "enzyme";
-import { StrontiumApp, LoggerConfigElement, LogLevel, ServicesConfigElement, UiConfigElement, RouteConfigElement, runtime } from "../../lib/lib";
+import { StrontiumApp, LoggerConfigElement, LogLevel, ServicesConfigElement, UiConfigElement, RouteConfigElement, runtime, ServiceConfigElement, CommonMessages, IAppService, SrAppMessage } from "../../lib/lib";
 
 export const origTimeout = window.setTimeout;
 export const origAddEventListener = window.addEventListener;
@@ -54,6 +54,18 @@ export const delay = function (milliseconds: number): Promise<void> {
     });
 }
 
+class StartupService implements IAppService {
+    initialize(): void {
+    }
+
+    handles(): string[] { return [CommonMessages.AppReady]; }
+
+    receiveMessage(msg: SrAppMessage): void {
+        runtime.messaging.broadcast(CommonMessages.AppLaunch);
+    }
+}
+
+
 export const setupRuntime = async (done) => {
     const doc = new JSDOM("<html><head><title>Test Application</title></head><body><div id=\"app-item\" <div id=\"app-content\"></div></body></html>");
     (global as any).document = doc;
@@ -61,7 +73,9 @@ export const setupRuntime = async (done) => {
 
     mount(<StrontiumApp>
         <LoggerConfigElement loggingLevel={LogLevel.Error} />
-        <ServicesConfigElement />
+        <ServicesConfigElement>
+            <ServiceConfigElement id="startupService" service={new StartupService()} />
+        </ServicesConfigElement>
         <UiConfigElement urlNavigationEnabled navigateOnQueryChanges appTitle="Test App" basePath="app" defaultLocation="test" rootElement="app-content" internalRenderer={(elem) => { }}>
             <RouteConfigElement title="Make a new team" route="test" view={d => <div id="test-view" />} />
         </UiConfigElement>
