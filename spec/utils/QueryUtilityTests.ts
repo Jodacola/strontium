@@ -8,7 +8,7 @@ Enzyme.configure({ adapter: new Adapter() });
 describe('QueryUtility', () => {
     describe('currentQuery', () => {
         it('returns current query string in string form', () => {
-            let expected = "?id=someId&key1=value1&key2=value2";
+            let expected = "?id=someId&key1=value1&key2=value2&encodedKey=Some%20Encoded%20Valu%C3%A9%3F";
             let current = currentQuery();
             expect(current).toBe(expected);
         });
@@ -35,11 +35,12 @@ describe('QueryUtility', () => {
 
     describe('asObject', () => {
         it('builds object from supplied query string', () => {
-            let current = asObject('?id=newId&key1=newValue1&key2=newValue2');
+            let current = asObject('?id=newId&key1=newValue1&key2=newValue2&encodedKey=Some%20Encoded%20Valu%C3%A9%3F');
             expect(typeof current).toBe('object');
             expect(current.id).toBe('newId');
             expect(current.key1).toBe('newValue1');
             expect(current.key2).toBe('newValue2');
+            expect(current.encodedKey).toBe('Some Encoded Valué?');
         });
     });
 
@@ -65,6 +66,7 @@ describe('QueryUtility', () => {
             expect(newQuery.indexOf('key1=newValue1')).toBeGreaterThan(-1);
             expect(newQuery.indexOf('key2=value2')).toBeGreaterThan(-1);
             expect(newQuery.indexOf('id=someId')).toBeGreaterThan(-1);
+            expect(newQuery.indexOf('encodedKey=Some%20Encoded%20Valu%C3%A9%3F')).toBeGreaterThan(-1);
             expect(newQuery.indexOf('encKey=%7B%22someValue%22%3A%22meat%20%26%20potatoes!%3F%22%7D')).toBeGreaterThan(-1);
             let parsed = asObject(newQuery);
             expect(parsed.encKey).toBeDefined();
@@ -82,6 +84,7 @@ describe('QueryUtility', () => {
             expect(newQuery.indexOf('key1=value1')).toEqual(-1);
             expect(newQuery.indexOf('key2=value2')).toEqual(-1);
             expect(newQuery.indexOf('id=someId')).toEqual(-1);
+            expect(newQuery.indexOf('encodedKey=Some%20Encoded%20Valu%C3%A9%3F')).toEqual(-1);
         });
 
         it('builds a new query string by stringifying objects', () => {

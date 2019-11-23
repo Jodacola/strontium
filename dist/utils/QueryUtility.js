@@ -14,7 +14,7 @@ export const asObject = (queryString) => {
     let components = queryString.split('&');
     components.forEach(c => {
         let split = c.split('=');
-        obj[split[0]] = split[1];
+        obj[split[0]] = decodeURIComponent(split[1]);
     });
     return obj;
 };

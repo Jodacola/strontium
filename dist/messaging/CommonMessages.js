@@ -7,4 +7,5 @@ CommonMessages.OverlayClosed = "Strontium.CommonMessages.OverlayClosed";
 CommonMessages.RemoteOriginatedMessage = "Strontium.CommonMessages.RemoteOriginatedMessage";
 CommonMessages.AppInitialized = "Strontium.CommonMessages.AppInitialized";
 CommonMessages.AppReady = "Strontium.CommonMessages.AppReady";
+CommonMessages.AppLaunch = "Strontium.CommonMessages.AppLaunch";
 //# sourceMappingURL=CommonMessages.js.map

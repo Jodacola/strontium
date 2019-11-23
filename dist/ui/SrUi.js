@@ -43,14 +43,14 @@ export default class SrUi {
         this.setupHandlers(uiInit);
     }
     handles() {
-        return [CommonMessages.AppReady, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
+        return [CommonMessages.AppReady, CommonMessages.AppLaunch, CommonMessages.ApiInitialized, CommonMessages.ApiInitializationFailed];
     }
     receiveMessage(msg) {
         if (msg.action === CommonMessages.ApiInitialized && !msg.data) {
             runtime.messaging.broadcast(CommonMessages.AppReady);
         }
-        if (msg.action === CommonMessages.AppReady || msg.action === CommonMessages.ApiInitializationFailed) {
-            this.handleInitialization(msg.action === CommonMessages.AppReady);
+        if (msg.action === CommonMessages.AppLaunch || msg.action === CommonMessages.ApiInitializationFailed) {
+            this.handleInitialization(msg.action === CommonMessages.AppLaunch);
         }
     }
     initialized() {

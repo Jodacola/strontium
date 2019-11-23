@@ -6,4 +6,5 @@ export default class CommonMessages {
     static RemoteOriginatedMessage: string;
     static AppInitialized: string;
     static AppReady: string;
+    static AppLaunch: string;
 }
