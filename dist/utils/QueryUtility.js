@@ -13,8 +13,10 @@ export const asObject = (queryString) => {
     queryString = stripDelimiter(queryString || '');
     let components = queryString.split('&');
     components.forEach(c => {
-        let split = c.split('=');
-        obj[split[0]] = decodeURIComponent(split[1]);
+        if (c.trim().length > 0) {
+            let split = c.split('=');
+            obj[split[0]] = decodeURIComponent(split[1]);
+        }
     });
     return obj;
 };
