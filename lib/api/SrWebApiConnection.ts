@@ -94,7 +94,7 @@ export default class WebApiConnection implements IApiConnection {
             return request.options[key];
         }
 
-        return (this.defaults || {})[key];
+        return this.defaults?.[key] as any;
     }
 
     protected checkStatus(response: Response) {

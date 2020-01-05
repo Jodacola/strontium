@@ -207,34 +207,34 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
      */
     protected set(state: S): void {
-        return this.stateHelpers.set(state);
+        return this.stateHelpers?.set(state);
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setPartial(state).
      */
     protected setPartial(obj: Partial<S>): void {
-        return this.stateHelpers.setPartial(obj);
+        return this.stateHelpers?.setPartial(obj);
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
      */
     protected setAsync(state: S): Promise<S> {
-        return this.stateHelpers.setAsync(state);
+        return this.stateHelpers?.setAsync(state);
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
      */
     protected async setPartialAsync(obj: Partial<S>) {
-        return this.stateHelpers.setPartialAsync(obj);
+        return this.stateHelpers?.setPartialAsync(obj);
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
      */
     protected copyState(): S {
-        return this.stateHelpers.copyState();
+        return this.stateHelpers?.copyState();
     }
 }

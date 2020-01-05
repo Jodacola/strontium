@@ -1,8 +1,9 @@
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -183,33 +184,38 @@ export default class SrUiComponent extends React.Component {
      * Helper wrapper that calls [[SrComponentStateHelpers]] set(state).
      */
     set(state) {
-        return this.stateHelpers.set(state);
+        var _a;
+        return (_a = this.stateHelpers) === null || _a === void 0 ? void 0 : _a.set(state);
     }
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setPartial(state).
      */
     setPartial(obj) {
-        return this.stateHelpers.setPartial(obj);
+        var _a;
+        return (_a = this.stateHelpers) === null || _a === void 0 ? void 0 : _a.setPartial(obj);
     }
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
      */
     setAsync(state) {
-        return this.stateHelpers.setAsync(state);
+        var _a;
+        return (_a = this.stateHelpers) === null || _a === void 0 ? void 0 : _a.setAsync(state);
     }
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
      */
     setPartialAsync(obj) {
+        var _a;
         return __awaiter(this, void 0, void 0, function* () {
-            return this.stateHelpers.setPartialAsync(obj);
+            return (_a = this.stateHelpers) === null || _a === void 0 ? void 0 : _a.setPartialAsync(obj);
         });
     }
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
      */
     copyState() {
-        return this.stateHelpers.copyState();
+        var _a;
+        return (_a = this.stateHelpers) === null || _a === void 0 ? void 0 : _a.copyState();
     }
 }
 //# sourceMappingURL=SrUiComponent.js.map

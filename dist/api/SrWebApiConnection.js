@@ -68,10 +68,11 @@ export default class WebApiConnection {
         return this.optionOrDefault('process', request) === true;
     }
     optionOrDefault(key, request) {
+        var _a;
         if (request.options && Object.keys(request.options).indexOf(key) !== -1) {
             return request.options[key];
         }
-        return (this.defaults || {})[key];
+        return (_a = this.defaults) === null || _a === void 0 ? void 0 : _a[key];
     }
     checkStatus(response) {
         if (!(response.ok)) {
