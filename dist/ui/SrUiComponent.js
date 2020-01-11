@@ -23,16 +23,17 @@ export default class SrUiComponent extends React.Component {
         this.state = this.initialState();
     }
     /* Reference helpers */
-    setRef(key) {
+    setRef(key, callback = undefined) {
         if (!this.refHandlers[key]) {
-            this.refHandlers[key] = (ref) => this.assignRef(key, ref);
+            this.refHandlers[key] = (ref) => this.assignRef(key, ref, callback);
         }
         return this.refHandlers[key];
     }
-    assignRef(key, ref) {
+    assignRef(key, ref, callback = undefined) {
         Log.t(this, "Assigning ref", { key, refPresent: !!ref });
         if (this.refHandlers && this.refHandlers[key]) {
             this.refHandles[key] = ref;
+            callback && callback(ref);
         }
     }
     getRef(key) {

@@ -9,7 +9,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     private refHandlers;
     private refHandles;
     constructor(props: any);
-    protected setRef(key: string): (ref: any) => void;
+    protected setRef<TRef>(key: string, callback?: (ref: TRef) => void): (ref: TRef) => void;
     private assignRef;
     protected getRef<T>(key: string): T;
     private cleanUpRefs;

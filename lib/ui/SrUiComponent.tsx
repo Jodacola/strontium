@@ -20,18 +20,19 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
 
     /* Reference helpers */
 
-    protected setRef(key: string): (ref: any) => void {
+    protected setRef<TRef>(key: string, callback: (ref: TRef) => void = undefined): (ref: TRef) => void {
         if (!this.refHandlers[key]) {
-            this.refHandlers[key] = (ref) => this.assignRef(key, ref);
+            this.refHandlers[key] = (ref) => this.assignRef(key, ref, callback);
         }
 
         return this.refHandlers[key];
     }
 
-    private assignRef(key: string, ref: any) {
+    private assignRef<TRef>(key: string, ref: any, callback: (ref: TRef) => void = undefined) {
         Log.t(this, "Assigning ref", { key, refPresent: !!ref });
         if (this.refHandlers && this.refHandlers[key]) {
             this.refHandles[key] = ref;
+            callback && callback(ref);
         }
     }
 

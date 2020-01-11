@@ -42,11 +42,11 @@ describe('SrUiComponent', () => {
         expect(func).toEqual(funcAgain);
     });
 
-    test('setRef for key returns same function', () => {
+    test('setRef with callback for key returns same function', () => {
         const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
         const instance = component.instance() as WithInitialStateComp;
-        const func = (instance as any).setRef("key1");
-        const funcAgain = (instance as any).setRef("key1");
+        const func = (instance as any).setRef("key1", (ref: any) => { });
+        const funcAgain = (instance as any).setRef("key1", (ref: any) => { });
         expect(func).toEqual(funcAgain);
     });
 
@@ -56,6 +56,16 @@ describe('SrUiComponent', () => {
         const func = (instance as any).setRef("key1");
         const obj = { someKey: "someValue" };
         func(obj);
+    });
+
+    test('setRef func stores item and calls callback', () => {
+        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
+        const instance = component.instance() as WithInitialStateComp;
+        const callback = jest.fn();
+        const func = (instance as any).setRef("key1", callback);
+        const obj = { someKey: "someValue" };
+        func(obj);
+        expect(callback).toHaveBeenCalledWith(obj);
     });
 
     test('setRef creates func in dictionary', () => {
@@ -83,7 +93,25 @@ describe('SrUiComponent', () => {
         expect((instance as any).refHandles["key1"]).toBe(obj);
     });
 
+    test('assignRef calls callback on item storage', () => {
+        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
+        const instance = component.instance() as WithInitialStateComp;
+        const callback = jest.fn();
+        (instance as any).setRef("key1");
+        const obj = { someKey: "someValue" };
+        (instance as any).assignRef("key1", obj, callback);
+        expect(callback).toHaveBeenCalledWith(obj);
+    });
+
     test('assignRef doesn\'t store item if handler key not present', () => {
+        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
+        const instance = component.instance() as WithInitialStateComp;
+        const obj = { someKey: "someValue" };
+        (instance as any).assignRef("key1", obj);
+        expect((instance as any).refHandles["key1"]).toBeUndefined();
+    });
+
+    test('assignRef doesn\'t invoke callback if handler key not present', () => {
         const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
         const instance = component.instance() as WithInitialStateComp;
         const obj = { someKey: "someValue" };
@@ -443,7 +471,7 @@ describe('SrUiComponent', () => {
     test('deferred issues setTimeout', async () => {
         const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
         const instance = component.instance() as any;
-        window.setTimeout = jest.fn();
+        (window as any).setTimeout = jest.fn();
         instance.deferred(() => { }, 500);
         expect(window.setTimeout).toHaveBeenCalledTimes(1);
     });
@@ -451,7 +479,7 @@ describe('SrUiComponent', () => {
     test('deferred issues setTimeout of 0 when no timeout', async () => {
         const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
         const instance = component.instance() as any;
-        window.setTimeout = jest.fn();
+        (window as any).setTimeout = jest.fn();
         instance.deferred(() => { });
         expect(window.setTimeout).toHaveBeenCalledTimes(1);
         expect(window.setTimeout).toHaveBeenCalledWith(expect.any(Function), 0);
