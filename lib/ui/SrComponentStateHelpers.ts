@@ -3,6 +3,8 @@ import Log from "../framework/Log";
 
 export default class SrComponentStateHelpers<P, S> {
     private _component: SrUiComponent<P, S> = null;
+    private _batch: Partial<S> = {};
+    private _batchHandle: number = undefined;
 
     constructor(component: SrUiComponent<P, S>) {
         this._component = component;
@@ -24,12 +26,28 @@ export default class SrComponentStateHelpers<P, S> {
     /**
      * Merges the partial state object with a shallow copy of component's state
      * and calls sets via set.
+     * 
+     * Will batch setPartial updates within same event loop iteration if `batched`
+     * is true (default).
      */
-    public setPartial(obj: Partial<S>): void {
+    public setPartial(obj: Partial<S>, batched: boolean = true): void {
         Log.d(this, "Setting partial data on state", obj);
-        var state = this.copyState();
-        Object.assign(state, obj);
-        this.set(state);
+        if (batched) {
+            this._batch = { ...this._batch, ...obj };
+            if (this._batchHandle !== undefined) {
+                window.clearTimeout(this._batchHandle);
+            }
+            this._batchHandle = window.setTimeout(() => {
+                var state = this.copyState();
+                Object.assign(state, this._batch);
+                this._batch = {};
+                this.set(state);
+            }, 0);
+        } else {
+            var state = this.copyState();
+            Object.assign(state, obj);
+            this.set(state);
+        }
     }
 
     /**

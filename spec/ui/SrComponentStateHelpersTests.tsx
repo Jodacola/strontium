@@ -37,18 +37,38 @@ describe('SrUiComponentStateHelpers', () => {
     });
 
     describe('setPartial', () => {
-        it('copies current state and merges', () => {
+        it('copies current state and merges immediately when unbatched', () => {
             const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
             const instance = comp.instance() as any;
             const helper = new SrComponentStateHelpers(instance);
             helper.copyState = jest.fn(() => { return { firstKey: 10, secondKey: "value" } });
             let newValue = null;
             helper.set = jest.fn((value) => { newValue = value; });
-            helper.setPartial({ firstKey: 12 });
+            helper.setPartial({ firstKey: 12 }, false);
             expect(helper.copyState).toHaveBeenCalledTimes(1);
             expect(helper.set).toHaveBeenCalledTimes(1);
             expect(newValue.firstKey).toBe(12);
             expect(newValue.secondKey).toBe("value");
+        });
+
+        it('eventually copies current state and merges when batched', async () => {
+            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
+            const instance = comp.instance() as any;
+            const helper = new SrComponentStateHelpers(instance);
+            helper.copyState = jest.fn(() => { return { firstKey: 10, secondKey: "value", thirdKey: "original" } });
+            let newValue = null;
+            helper.set = jest.fn((value) => { newValue = value; });
+            helper.setPartial({ firstKey: 12 });
+            helper.setPartial({ secondKey: "new value" });
+            expect(helper.copyState).toHaveBeenCalledTimes(0);
+            expect(helper.set).toHaveBeenCalledTimes(0);
+            expect(newValue).toBeNull();
+            await delay(10);
+            expect(helper.copyState).toHaveBeenCalledTimes(1);
+            expect(helper.set).toHaveBeenCalledTimes(1);
+            expect(newValue.firstKey).toBe(12);
+            expect(newValue.secondKey).toBe("new value");
+            expect(newValue.thirdKey).toBe("original");
         });
     });
 
