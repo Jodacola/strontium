@@ -2,6 +2,13 @@
 Starting with v0.7.0, this changelog will be maintained to describe notable changes to the project.
 
 Until v1.0.0, expect breaking changes between minor version bumps.
+
+## [0.8.6] - 2020-12-31
+### Changed
+- Fixes the `Logger` class for context outputs to search for constructors starting with `function` _and_ `class`.
+- Update to `SrComponentStateHelpers` to return an appropriate `Promise<TState>` from all paths in `setAsync`.
+- Happy New Year! Goodbye, 2020!
+
 ## [0.8.5] - 2020-01-13
 ### Changed
 - Adds optional and default batching to the `SrComponentStateHelpers.setPartial` function.
