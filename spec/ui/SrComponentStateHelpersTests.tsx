@@ -83,7 +83,7 @@ describe('SrUiComponentStateHelpers', () => {
             expect(instance.mounted).toHaveBeenCalledTimes(1);
             const resolved = await promise;
             expect(instance.setState).toHaveBeenCalledTimes(0);
-            expect(resolved).toBeUndefined();
+            expect(resolved).toMatchObject({});
         });
 
         it('sets state via promise if mounted', async () => {

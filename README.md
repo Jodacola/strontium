@@ -6,7 +6,7 @@ This project is built against React v16, and is usable with the current version 
 
 Some notes, which will change over time as this project progresses and matures:
 
-* Testing, via Jest and Enzyme, are incorporated, but test coverage is effectively 0%.  Tests will be a major focus going forward, and will play a significant role in refactoring the code for readability, testability, and usability.
+* Testing is present, via Jest and Enzyme, but test coverage is still needs improvement.  Tests will be a major focus going forward, and will play a significant role in refactoring the code for readability, testability, and usability.
 * This project has added features available to it, if React Transition Group, Bootstrap, and React-Bootstrap components are incorporated into your build process or included via `script` tags in your application.
 * React itself is not a dependency of this project.  That is intentional, and left up to you to decide how to integrate.
 * TypeScript definitions for all classes and modules are included in the package, allowing you to import this project and utilize it in other TypeScript projects.

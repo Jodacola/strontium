@@ -126,10 +126,9 @@ export default class Logger {
 
     private getContextName(obj: any): string {
         if (obj && obj.constructor && obj.constructor.toString) {
-            var arr: string[] = obj.constructor.toString().match(/function\s*(\w+)/);
-
-            if (arr && arr.length === 2) {
-                return arr[1];
+            const classConstructor: string[] = obj.constructor.toString().match(/^(class|function)\s*(\w+)/);
+            if (classConstructor && classConstructor.length >= 3) {
+                return classConstructor[2];
             }
         }
 

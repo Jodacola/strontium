@@ -57,10 +57,10 @@ export default class SrComponentStateHelpers<P, S> {
     public setAsync(state: S): Promise<S> {
         if (!this._component.mounted()) {
             Log.w(this, "State setting while not mounted; ignoring.", state);
-            return new Promise(resolve => resolve());
+            return new Promise<S>(resolve => resolve({} as S));
         }
         Log.t(this, "Setting new state", state);
-        return new Promise(resolve => {
+        return new Promise<S>(resolve => {
             this._component.setState(state,
                 () => {
                     resolve(state);
