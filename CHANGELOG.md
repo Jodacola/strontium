@@ -3,6 +3,14 @@ Starting with v0.7.0, this changelog will be maintained to describe notable chan
 
 Until v1.0.0, expect breaking changes between minor version bumps.
 
+## [0.9.0] - 2024-02-20
+### Changed
+- Removes Yarn support in favor of npm, since that does the trick these days.
+- Upgrades most dependencies to make this compatiable with React 18.2.
+- Migrates from Enzyme to RTL for component testing.
+- Updates some lib files for buildability with latest TypeScript version.
+- Updates README with important info regarding this library.
+
 ## [0.8.6] - 2020-12-31
 ### Changed
 - Fixes the `Logger` class for context outputs to search for constructors starting with `function` _and_ `class`.
