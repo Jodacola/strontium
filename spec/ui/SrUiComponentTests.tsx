@@ -1,66 +1,62 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import Enzyme, { mount } from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
 import { runtime, SrAppMessage } from "../../lib/lib";
 import { setupRuntime, WithInitialStateComp, BareComp, WithHandlesComp, origAddEventListener, origTimeout, delay } from "../test_utils/UiUtils";
-
-Enzyme.configure({ adapter: new Adapter() });
+import {render, screen} from '@testing-library/react'
 
 beforeEach(setupRuntime, 5000);
 
 describe('SrUiComponent', () => {
     test('renders correctly', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        expect(component.find('.test-component')).toHaveLength(1);
+        render(<WithInitialStateComp numProp={12} strProp="test" />);
+        expect(screen.getAllByRole('test-component')).toHaveLength(1);
     });
 
     test('base initialState returns empty object', () => {
-        const component = mount(<BareComp />);
-        const initialState = (component.instance() as any).initialState();
+        const component = new BareComp({}) as any;
+        const initialState = component.initialState();
         expect(initialState).toBeDefined();
         expect(Object.keys(initialState).length).toBe(0);
     })
 
     test('applies initial state properly', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        expect(component.find('.test-num-value').text()).toBe("12");
-        expect(component.find('.test-str-value').text()).toBe("test");
+        render(<WithInitialStateComp numProp={12} strProp="test" />);
+        expect(screen.getByRole('test-num-value').textContent).toBe("12");
+        expect(screen.getByRole('test-str-value').textContent).toBe("test");
     });
 
     test('applies initial state properly', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const state = (component.instance() as WithInitialStateComp).initialState();
+        const state = (new WithInitialStateComp({numProp: 12, strProp:"test"})).initialState();
         expect(state.numState).toBe(12);
         expect(state.strState).toBe("test");
     });
 
     test('setRef for key returns same function', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const func = (instance as any).setRef("key1");
         const funcAgain = (instance as any).setRef("key1");
         expect(func).toEqual(funcAgain);
     });
 
     test('setRef with callback for key returns same function', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const func = (instance as any).setRef("key1", (ref: any) => { });
         const funcAgain = (instance as any).setRef("key1", (ref: any) => { });
         expect(func).toEqual(funcAgain);
     });
 
     test('setRef func stores item', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const func = (instance as any).setRef("key1");
         const obj = { someKey: "someValue" };
         func(obj);
     });
 
     test('setRef func stores item and calls callback', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const callback = jest.fn();
         const func = (instance as any).setRef("key1", callback);
         const obj = { someKey: "someValue" };
@@ -69,24 +65,21 @@ describe('SrUiComponent', () => {
     });
 
     test('setRef creates func in dictionary', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         expect((instance as any).refHandlers["key1"]).toBeUndefined();
         const func = (instance as any).setRef("key1");
         expect((instance as any).refHandlers["key1"]).toBe(func);
     });
 
     test('multiple setRefs return same func', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const func = (instance as any).setRef("key1");
         const func2 = (instance as any).setRef("key1");
         expect(func).toBe(func2);
     });
 
     test('assignRef stores item', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         (instance as any).setRef("key1");
         const obj = { someKey: "someValue" };
         (instance as any).assignRef("key1", obj);
@@ -94,8 +87,7 @@ describe('SrUiComponent', () => {
     });
 
     test('assignRef calls callback on item storage', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const callback = jest.fn();
         (instance as any).setRef("key1");
         const obj = { someKey: "someValue" };
@@ -104,24 +96,21 @@ describe('SrUiComponent', () => {
     });
 
     test('assignRef doesn\'t store item if handler key not present', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const obj = { someKey: "someValue" };
         (instance as any).assignRef("key1", obj);
         expect((instance as any).refHandles["key1"]).toBeUndefined();
     });
 
     test('assignRef doesn\'t invoke callback if handler key not present', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const obj = { someKey: "someValue" };
         (instance as any).assignRef("key1", obj);
         expect((instance as any).refHandles["key1"]).toBeUndefined();
     });
 
     test('getRef returns stored item', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const func = (instance as any).setRef("key1");
         const obj = { someKey: "someValue" };
         func(obj);
@@ -130,15 +119,13 @@ describe('SrUiComponent', () => {
     });
 
     test('getRef for non-stored item returns nothing', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const otherObj = (instance as any).getRef("key1");
         expect(otherObj).toBeUndefined();
     });
 
     test('cleanUpRefs removes all ref handles and handlers', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const key1func = (instance as any).setRef("key1");
         const key2func = (instance as any).setRef("key2");
         key1func("key1value");
@@ -151,13 +138,12 @@ describe('SrUiComponent', () => {
     });
 
     test('component unmounts successfully', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        component.unmount();
+        const item = render(<WithInitialStateComp numProp={12} strProp="test" />);
+        item.unmount();
     });
 
     test('component without getHandles implemented has no handles', () => {
-        const component = Enzyme.mount(<WithInitialStateComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithInitialStateComp;
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
         const handles = instance.handles();
         expect(handles).toBeNull();
         const handlesFromGet = (instance as any).getHandles();
@@ -165,19 +151,17 @@ describe('SrUiComponent', () => {
     });
 
     test('component with getHandles implemented has no handles', () => {
-        const component = Enzyme.mount(<WithHandlesComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithHandlesComp;
+        const instance = new WithHandlesComp({numProp: 12, strProp:"test"});
         const handles = instance.handles();
         expect(handles).toBeDefined();
         const handlesFromGet = (instance as any).getHandles();
         expect(handlesFromGet).toBeDefined();
         expect(handles).toEqual(handlesFromGet);
-        expect(handles[0]).toBe("a handle");
+        expect(handles![0]).toBe("a handle");
     });
 
     test('component registers itself properly as handler', () => {
-        const component = Enzyme.mount(<WithHandlesComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithHandlesComp;
+        const instance = new WithHandlesComp({numProp: 12, strProp:"test"});
         instance.customHandles = ["a new handle"];
         expect((runtime.messaging as any).serviceHandlers["a new handle"]).toBeUndefined();
         (instance as any).registerHandlers();
@@ -186,8 +170,7 @@ describe('SrUiComponent', () => {
     });
 
     test('component deregisters itself properly as handler', () => {
-        const component = Enzyme.mount(<WithHandlesComp numProp={12} strProp="test" />, { attachTo: document.getElementById('app-content') });
-        const instance = component.instance() as WithHandlesComp;
+        const instance = new WithHandlesComp({numProp: 12, strProp:"test"});
         instance.customHandles = ["a new handle"];
         expect((runtime.messaging as any).serviceHandlers["a new handle"]).toBeUndefined();
         (instance as any).registerHandlers();
@@ -199,78 +182,77 @@ describe('SrUiComponent', () => {
     });
 
     test('component calls onAppMessage when message received', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onAppMessage = jest.fn();
+        const instance = new WithInitialStateComp({numProp: 12, strProp:"test"});
+        (instance as any).onAppMessage = jest.fn();
         const msg = new SrAppMessage("action", { data: 12 }, true);
-        (component.instance() as BareComp).receiveMessage(msg);
-        expect((component.instance() as any).onAppMessage).toHaveBeenCalledWith(msg);
+        (instance as BareComp).receiveMessage(msg);
+        expect((instance as any).onAppMessage).toHaveBeenCalledWith(msg);
     });
 
     test('onAppMessage calls with no adverse effects', () => {
-        const component = Enzyme.mount(<BareComp />);
+        const instance = new BareComp({});
         const msg = new SrAppMessage("action", { data: 12 }, true);
-        (component.instance() as any).onAppMessage(msg);
+        (instance as any).onAppMessage(msg);
     });
 
     test('component calls internal mounting methods when mounted', () => {
-        const component = Enzyme.shallow(<BareComp />);
-        (component.instance() as any).doComponentDidMount = jest.fn();
-        (component.instance() as any).componentDidMount();
-        expect((component.instance() as any).doComponentDidMount).toHaveBeenCalled();
+        const instance = new BareComp({});
+        (instance as any).doComponentDidMount = jest.fn();
+        (instance as any).componentDidMount();
+        expect((instance as any).doComponentDidMount).toHaveBeenCalled();
     });
 
     test('component calls internal unmounting methods when mounted', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).doComponentWillUnmount = jest.fn();
-        (component.instance() as any).componentWillUnmount();
-        expect((component.instance() as any).doComponentWillUnmount).toHaveBeenCalled();
+        const instance = new BareComp({});
+        (instance as any).doComponentWillUnmount = jest.fn();
+        (instance as any).componentWillUnmount();
+        expect((instance as any).doComponentWillUnmount).toHaveBeenCalled();
     });
 
     test('component calls internal new props method when new props', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onUpdated = jest.fn();
+        const instance = new BareComp({});
+        (instance as any).onUpdated = jest.fn();
         const prevProps = { propData: 12 };
         const prevState = { stateData: 13 };
-        (component.instance() as any).componentDidUpdate(prevProps, prevState);
-        expect((component.instance() as any).onUpdated).toHaveBeenCalledWith(prevProps, prevState);
+        (instance as any).componentDidUpdate(prevProps, prevState);
+        expect((instance as any).onUpdated).toHaveBeenCalledWith(prevProps, prevState);
     });
 
     test('component calls internal performRender methods when render called', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).performRender = jest.fn();
-        (component.instance() as any).render();
-        expect((component.instance() as any).performRender).toHaveBeenCalled();
+        const instance = new BareComp({});
+        (instance as any).performRender = jest.fn();
+        (instance as any).render();
+        expect((instance as any).performRender).toHaveBeenCalled();
     });
 
     test('base onCleanUp calls with no adverse effects', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onCleanUp();
+        const instance = new BareComp({});
+        (instance as any).onCleanUp();
     });
 
     test('base onUpdated calls with no adverse effects', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onUpdated({}, {});
+        const instance = new BareComp({});
+        (instance as any).onUpdated({}, {});
     });
 
     test('base onComponentMounted calls with no adverse effects', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onComponentMounted({});
+        const instance = new BareComp({});
+        (instance as any).onComponentMounted({});
     });
 
     test('base onComponentWillUnmount calls with no adverse effects', () => {
-        const component = Enzyme.mount(<BareComp />);
-        (component.instance() as any).onComponentWillUnmount({});
+        const instance = new BareComp({});
+        (instance as any).onComponentWillUnmount({});
     });
 
     test('base resizeCallback returns null', () => {
-        const component = Enzyme.mount(<BareComp />);
-        const callback = (component.instance() as any).resizeCallback();
+        const instance = new BareComp({});
+        const callback = (instance as any).resizeCallback();
         expect(callback).toBeNull();
     });
 
     test('doComponentDidMount sets internal mounted flag and calls appropriate set-up methods', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.registerHandlers = jest.fn();
         instance.registerResizeHandler = jest.fn();
         instance.onComponentMounted = jest.fn();
@@ -289,8 +271,7 @@ describe('SrUiComponent', () => {
     });
 
     test('doComponentWillUnmount sets internal mounted flag and calls appropriate tear-down methods', () => {
-        const component = Enzyme.mount(<BareComp />);
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.cancelAllDeferrals = jest.fn();
         instance.unregisterResizeHandler = jest.fn();
         instance.unregisterHandlers = jest.fn();
@@ -298,9 +279,11 @@ describe('SrUiComponent', () => {
         instance.cleanUpRefs = jest.fn();
         instance.cleanUp = jest.fn();
 
+        instance.componentDidMount(); // simulate lifecycle event
+
         expect(instance.componentMounted).toBe(true);
         expect(instance.cancelAllDeferrals).toHaveBeenCalledTimes(0);
-        expect(instance.unregisterResizeHandler).toHaveBeenCalledTimes(0);
+        expect(instance.unregisterResizeHandler).toHaveBeenCalledTimes(1);
         expect(instance.unregisterHandlers).toHaveBeenCalledTimes(0);
         expect(instance.onComponentWillUnmount).toHaveBeenCalledTimes(0);
         expect(instance.cleanUpRefs).toHaveBeenCalledTimes(0);
@@ -310,7 +293,7 @@ describe('SrUiComponent', () => {
 
         expect(instance.componentMounted).toBe(false);
         expect(instance.cancelAllDeferrals).toHaveBeenCalledTimes(1);
-        expect(instance.unregisterResizeHandler).toHaveBeenCalledTimes(1);
+        expect(instance.unregisterResizeHandler).toHaveBeenCalledTimes(2);
         expect(instance.unregisterHandlers).toHaveBeenCalledTimes(1);
         expect(instance.onComponentWillUnmount).toHaveBeenCalledTimes(1);
         expect(instance.cleanUpRefs).toHaveBeenCalledTimes(1);
@@ -318,8 +301,7 @@ describe('SrUiComponent', () => {
     });
 
     test('cleanUp nulls properties and calls onCleanUp', () => {
-        const component = Enzyme.mount(<BareComp />);
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.onCleanUp = jest.fn();
 
         expect(instance.stateHelpers).toBeDefined();
@@ -338,15 +320,14 @@ describe('SrUiComponent', () => {
     });
 
     test('mounted returns componentMounted property', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        expect((component.instance() as BareComp).mounted()).toBe(false);
-        (component.instance() as any).componentMounted = true;
-        expect((component.instance() as BareComp).mounted()).toBe(true);
+        const instance = new BareComp({});
+        expect((instance as BareComp).mounted()).toBe(false);
+        (instance as any).componentMounted = true;
+        expect((instance as BareComp).mounted()).toBe(true);
     });
 
     test('registerResizeHandler does nothing if resizeCallback is null', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.unregisterResizeHandler = jest.fn();
         window.addEventListener = jest.fn();
         instance.registerResizeHandler();
@@ -356,8 +337,7 @@ describe('SrUiComponent', () => {
     });
 
     test('registerResizeHandler registers listener if resizeCallback is present', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.unregisterResizeHandler = jest.fn();
         instance.resizeCallback = function () { return () => { } };
         window.addEventListener = jest.fn();
@@ -368,8 +348,7 @@ describe('SrUiComponent', () => {
     });
 
     test('resizeListener func called if window resized', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         const resizeCall = jest.fn();
         instance.resizeCallback = function () { return resizeCall; };
         window.addEventListener = origAddEventListener;
@@ -379,8 +358,7 @@ describe('SrUiComponent', () => {
     });
 
     test('unregisterResizeHandler unregisters listener if resizeCallback is present', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.resizeListener = () => { };
         window.removeEventListener = jest.fn();
         instance.unregisterResizeHandler();
@@ -389,8 +367,7 @@ describe('SrUiComponent', () => {
     });
 
     test('unregisterResizeHandler does nothing if resizeCallback is not present', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         window.removeEventListener = jest.fn();
         instance.unregisterResizeHandler();
         expect(instance.resizeListener).toBeNull();
@@ -398,8 +375,7 @@ describe('SrUiComponent', () => {
     });
 
     test('set calls stateHelpers.set with state', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.stateHelpers.set = jest.fn();
         const value = { someKey: 12 };
         instance.set(value);
@@ -408,8 +384,7 @@ describe('SrUiComponent', () => {
     });
 
     test('setAsync calls stateHelpers.setAsync with state', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.stateHelpers.setAsync = jest.fn();
         const value = { someKey: 12 };
         instance.setAsync(value);
@@ -418,8 +393,7 @@ describe('SrUiComponent', () => {
     });
 
     test('setPartial calls stateHelpers.setPartial with state', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.stateHelpers.setPartial = jest.fn();
         const value = { someKey: 12 };
         instance.setPartial(value);
@@ -428,8 +402,7 @@ describe('SrUiComponent', () => {
     });
 
     test('setPartialAsync calls stateHelpers.setPartialAsync with state', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.stateHelpers.setPartialAsync = jest.fn();
         const value = { someKey: 12 };
         instance.setPartialAsync(value);
@@ -438,16 +411,14 @@ describe('SrUiComponent', () => {
     });
 
     test('copyState calls stateHelpers.copyState', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.stateHelpers.copyState = jest.fn();
         instance.copyState();
         expect(instance.stateHelpers.copyState).toHaveBeenCalledTimes(1);
     });
 
     test('deferred cancels previous deferral', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.cancelDeferred = jest.fn();
         instance.deferred(() => { }, 1000, 'someId');
         expect(instance.cancelDeferred).toHaveBeenCalledTimes(1);
@@ -455,51 +426,44 @@ describe('SrUiComponent', () => {
     });
 
     test('deferred sets handle for id', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.deferred(() => { }, 1000, 'someId');
         expect(instance.deferHandlers["someId"]).toBeDefined();
     });
 
     test('deferred sets nothing when no id', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.deferred(() => { }, 1000);
         expect(Object.keys(instance.deferHandlers).length).toBe(0);
     });
 
     test('deferred issues setTimeout', async () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         (window as any).setTimeout = jest.fn();
         instance.deferred(() => { }, 500);
         expect(window.setTimeout).toHaveBeenCalledTimes(1);
     });
 
     test('deferred issues setTimeout of 0 when no timeout', async () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         (window as any).setTimeout = jest.fn();
         instance.deferred(() => { });
         expect(window.setTimeout).toHaveBeenCalledTimes(1);
         expect(window.setTimeout).toHaveBeenCalledWith(expect.any(Function), 0);
     });
 
-    test('deferred setTimeout calls function', async (done) => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+    test('deferred setTimeout calls function', async () => {
+        const instance = new BareComp({}) as any;
         window.setTimeout = origTimeout;
         const callback = jest.fn();
         instance.deferred(() => { callback() }, 500);
         expect(callback).toHaveBeenCalledTimes(0);
         await delay(1500);
         expect(callback).toHaveBeenCalledTimes(1);
-        done();
     });
 
     test('cancelAllDeferrrals cancels all pending deferrals', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         instance.cancelDeferred = jest.fn();
         instance.deferred(() => { }, 1000, 'id1');
         instance.deferred(() => { }, 1000, 'id2');
@@ -511,8 +475,7 @@ describe('SrUiComponent', () => {
     });
 
     test('cancelDeferred cancels pending deferral', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         window.clearTimeout = jest.fn();
         instance.deferred(() => { }, 1000, 'id1');
         const handle = instance.deferHandlers['id1'];
@@ -523,16 +486,14 @@ describe('SrUiComponent', () => {
     });
 
     test('cancelDeferred cancels is no-op when no id', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         window.clearTimeout = jest.fn();
         instance.cancelDeferred();
         expect(window.clearTimeout).toHaveBeenCalledTimes(0);
     });
 
     test('cancelDeferred cancels is no-op when non-existent id', () => {
-        const component = Enzyme.shallow(<BareComp />, { disableLifecycleMethods: true });
-        const instance = component.instance() as any;
+        const instance = new BareComp({}) as any;
         window.clearTimeout = jest.fn();
         instance.cancelDeferred('someId');;
         expect(window.clearTimeout).toHaveBeenCalledTimes(0);

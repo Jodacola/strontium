@@ -452,7 +452,7 @@ describe('NavHandlerUtils', () => {
     describe("maxPatternReducer", () => {
         it('returns b when a is not present', () => {
             const b = NavHandlerUtils.exactMatch(1, 'path');
-            const result = NavHandlerUtils.maxPatternReduce(null, b);
+            const result = NavHandlerUtils.maxPatternReduce(null!, b);
             expect(result).toBe(b);
         });
 

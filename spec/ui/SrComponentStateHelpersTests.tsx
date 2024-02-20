@@ -1,19 +1,17 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import Enzyme, { mount, shallow } from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-import { runtime, SrAppMessage } from "../../lib/lib";
-import { setupRuntime, WithInitialStateComp, BareComp, WithHandlesComp, origAddEventListener, origTimeout, delay } from "../test_utils/UiUtils";
+import { setupRuntime, BareComp, delay } from "../test_utils/UiUtils";
 import SrComponentStateHelpers from "../../lib/ui/SrComponentStateHelpers";
 
-Enzyme.configure({ adapter: new Adapter() });
-
-beforeEach(setupRuntime, 5000);
+beforeEach(() => setupRuntime, 5000);
 
 describe('SrUiComponentStateHelpers', () => {
     describe('set', () => {
         it('returns if component not mounted', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             instance.mounted = jest.fn(() => false);
             instance.setState = jest.fn();
             const helper = new SrComponentStateHelpers(instance);
@@ -23,8 +21,7 @@ describe('SrUiComponentStateHelpers', () => {
         });
 
         it('calls setState if mounted', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             instance.mounted = jest.fn(() => true);
             instance.setState = jest.fn();
             const helper = new SrComponentStateHelpers(instance);
@@ -38,11 +35,10 @@ describe('SrUiComponentStateHelpers', () => {
 
     describe('setPartial', () => {
         it('copies current state and merges immediately when unbatched', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             const helper = new SrComponentStateHelpers(instance);
             helper.copyState = jest.fn(() => { return { firstKey: 10, secondKey: "value" } });
-            let newValue = null;
+            let newValue: any = null;
             helper.set = jest.fn((value) => { newValue = value; });
             helper.setPartial({ firstKey: 12 }, false);
             expect(helper.copyState).toHaveBeenCalledTimes(1);
@@ -52,11 +48,10 @@ describe('SrUiComponentStateHelpers', () => {
         });
 
         it('eventually copies current state and merges when batched', async () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             const helper = new SrComponentStateHelpers(instance);
             helper.copyState = jest.fn(() => { return { firstKey: 10, secondKey: "value", thirdKey: "original" } });
-            let newValue = null;
+            let newValue: any = null;
             helper.set = jest.fn((value) => { newValue = value; });
             helper.setPartial({ firstKey: 12 });
             helper.setPartial({ secondKey: "new value" });
@@ -74,8 +69,7 @@ describe('SrUiComponentStateHelpers', () => {
 
     describe('setAsync', () => {
         it('returns no-op promise if component not mounted', async () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             instance.mounted = jest.fn(() => false);
             instance.setState = jest.fn();
             const helper = new SrComponentStateHelpers(instance);
@@ -87,10 +81,9 @@ describe('SrUiComponentStateHelpers', () => {
         });
 
         it('sets state via promise if mounted', async () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             instance.mounted = jest.fn(() => true);
-            instance.setState = jest.fn((value, resolve) => { resolve(value); });
+            instance.setState = jest.fn((value, resolve: any) => { resolve(value); });
             const helper = new SrComponentStateHelpers(instance);
             const value = { someKey: 12 };
             const promise = helper.setAsync(value) as Promise<any>;
@@ -104,11 +97,10 @@ describe('SrUiComponentStateHelpers', () => {
 
     describe('setPartialAsync', () => {
         it('copies current state and merges via promise', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             const helper = new SrComponentStateHelpers(instance);
             helper.copyState = jest.fn(() => { return { firstKey: 10, secondKey: "value" } });
-            let newValue = null;
+            let newValue: any = null;
             let promise = new Promise<any>(() => { });
             helper.setAsync = jest.fn((value) => { newValue = value; return promise; });
             const returnPromise = helper.setPartialAsync({ firstKey: 12 });
@@ -122,17 +114,15 @@ describe('SrUiComponentStateHelpers', () => {
 
     describe('copyState', () => {
         it('returns null if component has no state', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
-            instance.state = undefined;
+            const instance = new BareComp({});
+            instance.state = undefined!;
             const helper = new SrComponentStateHelpers(instance);
             const copy = helper.copyState();
             expect(copy).toBeNull();
         });
 
         it('returns copied state if component has state', () => {
-            const comp = shallow(<BareComp />, { disableLifecycleMethods: true });
-            const instance = comp.instance() as any;
+            const instance = new BareComp({});
             instance.state = { keyA: 12, keyB: "valueB" };
             const helper = new SrComponentStateHelpers(instance);
             const copy = helper.copyState();

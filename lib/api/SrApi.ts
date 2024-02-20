@@ -9,7 +9,7 @@ import IAppMessaging from "../messaging/IAppMessaging";
 
 export default class SrApi {
     private _initialized: boolean = false;
-    private _connection: IApiConnection = null;
+    private _connection?: IApiConnection;
     private _pendingRequests: { [id: string]: SrServiceRequest } = {};
     private _messaging: IAppMessaging;
 
@@ -30,7 +30,7 @@ export default class SrApi {
     public checkConnection(conn: IApiConnection): boolean {
         if (!conn) {
             Log.w(this, "Invalid API connection supplied.  Cannot initialize API.  Proceeding without API.");
-            this._messaging.broadcast(CommonMessages.ApiInitialized, true, { connection: conn.name || 'default' });
+            this._messaging.broadcast(CommonMessages.ApiInitialized, true, { connection: 'default' });
             return false;
         }
         return true;
@@ -54,7 +54,7 @@ export default class SrApi {
         if (!this._initialized) {
             return false;
         }
-        return this._connection.connected();
+        return this._connection?.connected() === true;
     }
 
     public sendMessage(
@@ -62,11 +62,13 @@ export default class SrApi {
         action: string,
         content: any,
         options: any,
-        manualCb: (resp: SrServiceResponse) => void = null): string {
+        manualCb: (resp: SrServiceResponse) => void): string | undefined {
+
         if (!this.connected()) {
             Log.e(this, "Attempt to send message against unconnected service", { action: action, content: content });
             return;
         }
+
         var req: SrServiceRequest = new SrServiceRequest(type, action, content, options, manualCb);
         this.sendRequest(req);
         return req.requestId;
@@ -77,7 +79,7 @@ export default class SrApi {
             req.requestId = SrStats.start();
         }
         this._pendingRequests[req.requestId] = req;
-        this._connection.sendRequest(req);
+        this._connection?.sendRequest(req);
     }
 
     private handleResponse(resp: SrServiceResponse): void {

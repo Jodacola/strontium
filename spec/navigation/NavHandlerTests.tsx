@@ -1,11 +1,13 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import NavHandler from "../../lib/navigation/NavHandler";
 import { createElement } from "react";
 import { parseMatches } from "../../lib/navigation/NavHandlerUtils";
 import NavigationTarget from "../../lib/navigation/NavigationTarget";
 import React from "react";
-import Enzyme from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-Enzyme.configure({ adapter: new Adapter() });
+import {render, screen} from '@testing-library/react'
 
 describe("NavHandler", () => {
     it('returns the title from typeIdentifier()', () => {
@@ -14,12 +16,12 @@ describe("NavHandler", () => {
     });
 
     it('builds the element', () => {
-        const handler = new NavHandler('/app/path/:value', 'Route title', (data, parsed) => <div className={data.query.query}>{parsed.value}</div>);
+        const handler = new NavHandler('/app/path/:value', 'Route title', (data, parsed) => <div role={data.query.query} className={data.query.query}>{parsed.value}</div>);
         const target = new NavigationTarget('/app/path/something?query=queryValue', { key: 'value' }, '');
         handler.handlesType(target);
-        const built = Enzyme.shallow(handler.buildElement(target));
-        expect(built.find('.queryValue')).toHaveLength(1);
-        expect(built.text()).toBe('something');
+        render(handler.buildElement(target));
+        expect(screen.getAllByRole('queryValue')).toHaveLength(1);
+        expect(screen.getByRole('queryValue').textContent).toBe('something');
     });
 
     it('returns the title from getTitle()', () => {

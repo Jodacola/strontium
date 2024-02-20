@@ -133,7 +133,7 @@ export default class WebApiConnection implements IApiConnection {
         return true;
     }
 
-    onResponse: (resp: SrServiceResponse) => void;
-    onFailedRequest: (req: SrServiceRequest, error: any[]) => void;
-    onServerMessage: (resp: SrServiceResponse) => void;
+    onResponse?: (resp: SrServiceResponse) => void;
+    onFailedRequest?: (req: SrServiceRequest, error: any[]) => void;
+    onServerMessage?: (resp: SrServiceResponse) => void;
 }

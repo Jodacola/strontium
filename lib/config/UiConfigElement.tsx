@@ -28,19 +28,19 @@ export default class UiConfig extends StrontiumAppConfigElement<IUiConfig> {
     config(): any {
         return new StrontiumUiConfig(
             {
-                defaultLocation: this.props.defaultLocation,
-                basePath: this.props.basePath,
-                rootElement: this.props.rootElement,
-                urlNavEnabled: this.props.urlNavigationEnabled,
-                navigateOnQueryChange: this.props.navigateOnQueryChanges,
-                appTitle: this.props.appTitle,
-                appInitializing: this.props.appInitializing,
-                appInitFailed: this.props.appInitFailed,
-                appReady: this.props.appReady,
+                defaultLocation: this.props.defaultLocation!,
+                basePath: this.props.basePath!,
+                rootElement: this.props.rootElement!,
+                urlNavEnabled: this.props.urlNavigationEnabled!,
+                navigateOnQueryChange: this.props.navigateOnQueryChanges!,
+                appTitle: this.props.appTitle!,
+                appInitializing: this.props.appInitializing!,
+                appInitFailed: this.props.appInitFailed!,
+                appReady: this.props.appReady!,
                 navHandlers: this.navigationHandlers(),
                 headerElement: this.uiElementFor('header'),
                 footerElement: this.uiElementFor('footer'),
-                viewRenderer: this.props.viewRenderer,
+                viewRenderer: this.props.viewRenderer!,
                 containerElement: this.uiElementFor('container'),
                 internalRenderer: this.props.internalRenderer
             }

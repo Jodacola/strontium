@@ -8,13 +8,13 @@ import SrServiceContainer from "./SrServiceContainer";
 import ApiContainer from "../api/ApiContainer";
 
 export class SrApp {
-    public config: SrAppConfig;
-    public messaging: SrLocalMessaging;
-    public ui: SrUi;
+    public config: SrAppConfig = undefined!;
+    public messaging: SrLocalMessaging = undefined!;
+    public ui: SrUi = undefined!;
     public services: SrServiceContainer = new SrServiceContainer();
-    public apis: ApiContainer;
+    public apis: ApiContainer = undefined!;
 
-    private initialized: boolean;
+    private initialized: boolean = false;
 
     public initialize(config: SrAppConfig): void {
         if (this.initialized) {
@@ -50,7 +50,7 @@ export class SrApp {
     private initializeUi(): void {
         Log.t(this, 'Initializing UI');
         this.ui = new SrUi();
-        this.ui.initialize(this.config.uiInitializer());
+        this.ui.initialize(this.config.uiInitializer()!);
     }
 
     private initializeApis(): void {

@@ -1,8 +1,7 @@
 import React from "react";
 import SrUiComponent from "../../lib/ui/SrUiComponent";
-import { JSDOM } from "jsdom";
-import { mount } from "enzyme";
 import { StrontiumApp, LoggerConfigElement, LogLevel, ServicesConfigElement, UiConfigElement, RouteConfigElement, runtime, ServiceConfigElement, CommonMessages, IAppService, SrAppMessage } from "../../lib/lib";
+import {render, screen} from '@testing-library/react'
 
 export const origTimeout = window.setTimeout;
 export const origAddEventListener = window.addEventListener;
@@ -20,10 +19,10 @@ export class WithInitialStateComp extends SrUiComponent<{ numProp: number, strPr
     }
 
     performRender() {
-        return <div className="test-component">
+        return <div role="test-component" className="test-component">
             <p ref={this.setRef("elementRef")} />
-            <p className="test-num-value">{this.state.numState}</p>
-            <p className="test-str-value">{this.state.strState}</p>
+            <p role="test-num-value" className="test-num-value">{this.state.numState}</p>
+            <p role="test-str-value" className="test-str-value">{this.state.strState}</p>
         </div>;
     }
 }
@@ -66,12 +65,8 @@ class StartupService implements IAppService {
 }
 
 
-export const setupRuntime = async (done) => {
-    const doc = new JSDOM("<html><head><title>Test Application</title></head><body><div id=\"app-item\" <div id=\"app-content\"></div></body></html>");
-    (global as any).document = doc;
-    (global as any).window = doc.window;
-
-    mount(<StrontiumApp>
+export const setupRuntime = async () => {
+    render(<StrontiumApp>
         <LoggerConfigElement loggingLevel={LogLevel.Error} />
         <ServicesConfigElement>
             <ServiceConfigElement id="startupService" service={new StartupService()} />
@@ -79,15 +74,12 @@ export const setupRuntime = async (done) => {
         <UiConfigElement urlNavigationEnabled navigateOnQueryChanges appTitle="Test App" basePath="app" defaultLocation="test" rootElement="app-content" internalRenderer={(elem) => { }}>
             <RouteConfigElement title="Make a new team" route="test" view={d => <div id="test-view" />} />
         </UiConfigElement>
-    </StrontiumApp>, { attachTo: document.getElementById('app-content') });
+    </StrontiumApp>);
 
     for (var i = 0; i < 50; i++) {
         await delay(100);
         if (runtime.ui.initialized()) {
-            done();
             return;
         }
     }
-
-    done();
 }

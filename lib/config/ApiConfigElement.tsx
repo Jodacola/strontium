@@ -14,7 +14,9 @@ export default class ApiConfigElement extends StrontiumAppConfigElement<IApiConf
 
     config(): any {
         let conn = this.props.connection;
-        conn.name = this.props.name;
+        if (conn) {
+            conn.name = this.props.name;
+        }
         return conn;
     }
 }

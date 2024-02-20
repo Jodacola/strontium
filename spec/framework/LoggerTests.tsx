@@ -105,7 +105,7 @@ describe('Logger', () => {
 
     test('error reporter called with empty error', () => {
         let report: IErrorReporter = { report: jest.fn() };
-        let logger = new Logger(LogLevel.Info, null, report) as any;
+        let logger = new Logger(LogLevel.Info, null!, report) as any;
         logger.reportError('context', 'msg', 'data');
         expect(report.report).toHaveBeenCalledWith('context - msg', new Error(), 'data');
         expect(report.report).toHaveBeenCalledTimes(1);
@@ -113,7 +113,7 @@ describe('Logger', () => {
 
     test('error reporter called with supplied error', () => {
         let report: IErrorReporter = { report: jest.fn() };
-        let logger = new Logger(LogLevel.Info, null, report) as any;
+        let logger = new Logger(LogLevel.Info, null!, report) as any;
         let error = new Error('a message');
         logger.reportError('context', 'msg', error);
         expect(report.report).toHaveBeenCalledWith('context - msg', error, error);
@@ -122,7 +122,7 @@ describe('Logger', () => {
 
     test('error reporter called with data exception', () => {
         let report: IErrorReporter = { report: jest.fn() };
-        let logger = new Logger(LogLevel.Info, null, report) as any;
+        let logger = new Logger(LogLevel.Info, null!, report) as any;
         let error = new Error('a message');
         let data = { exception: error };
         logger.reportError('context', 'msg', data);
@@ -132,7 +132,7 @@ describe('Logger', () => {
 
     test('error reporter called when error log called', () => {
         let report: IErrorReporter = { report: jest.fn() };
-        let logger = new Logger(LogLevel.Info, null, report) as any;
+        let logger = new Logger(LogLevel.Info, null!, report) as any;
         let error = new Error('a message');
         let data = { exception: error };
         logger.error(null, 'msg', data);
@@ -142,7 +142,7 @@ describe('Logger', () => {
 
     test('error reporter not called when info log called', () => {
         let report: IErrorReporter = { report: jest.fn() };
-        let logger = new Logger(LogLevel.Info, null, report) as any;
+        let logger = new Logger(LogLevel.Info, null!, report) as any;
         let error = new Error('a message');
         let data = { exception: error };
         logger.info(null, 'msg', data);

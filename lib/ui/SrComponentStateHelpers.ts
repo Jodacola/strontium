@@ -2,9 +2,9 @@ import SrUiComponent from "./SrUiComponent";
 import Log from "../framework/Log";
 
 export default class SrComponentStateHelpers<P, S> {
-    private _component: SrUiComponent<P, S> = null;
+    private _component: SrUiComponent<P, S> = null!;
     private _batch: Partial<S> = {};
-    private _batchHandle: number = undefined;
+    private _batchHandle: number = undefined!;
 
     constructor(component: SrUiComponent<P, S>) {
         this._component = component;
@@ -39,13 +39,13 @@ export default class SrComponentStateHelpers<P, S> {
             }
             this._batchHandle = window.setTimeout(() => {
                 var state = this.copyState();
-                Object.assign(state, this._batch);
+                Object.assign(state!, this._batch);
                 this._batch = {};
                 this.set(state);
             }, 0);
         } else {
             var state = this.copyState();
-            Object.assign(state, obj);
+            Object.assign(state!, obj);
             this.set(state);
         }
     }
@@ -75,7 +75,7 @@ export default class SrComponentStateHelpers<P, S> {
     public async setPartialAsync(obj: Partial<S>) {
         Log.d(this, "Setting partial data on state", obj);
         var state = this.copyState();
-        Object.assign(state, obj);
+        Object.assign(state!, obj);
         await this.setAsync(state);
     }
 
@@ -84,7 +84,7 @@ export default class SrComponentStateHelpers<P, S> {
      */
     public copyState(): S {
         if (!this._component.state) {
-            return null;
+            return null!;
         }
 
         return Object.assign({}, this._component.state) as S;

@@ -22,14 +22,14 @@ export default class SrServiceContainer {
     }
 
     public register(service: IAppService) {
-        this.checkServiceId(service.serviceId);
+        this.checkServiceId(service.serviceId!);
         Log.t(this, `Registring service: ${service.serviceId}`);
-        if (this.services[service.serviceId]) {
+        if (this.services[service.serviceId!]) {
             Log.w(this, `Service ${service.serviceId} was already registered.  Overwriting.`);
-            this.deregister(service.serviceId);
+            this.deregister(service.serviceId!);
         }
 
-        this.services[service.serviceId] = service;
+        this.services[service.serviceId!] = service;
         runtime.messaging.registerHandler(service);
         service.initialize();
     }
@@ -43,6 +43,6 @@ export default class SrServiceContainer {
         }
 
         runtime.messaging.removeHandler(this.services[serviceId]);
-        this.services[serviceId] = null;
+        this.services[serviceId!] = null!;
     }
 }

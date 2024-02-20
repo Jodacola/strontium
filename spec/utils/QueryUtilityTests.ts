@@ -1,9 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { setupRuntime } from '../test_utils/UiUtils';
 import { runtime, updateQuery } from '../../lib/lib';
 import { currentQuery, asObject, stripDelimiter, buildQuery } from '../../lib/utils/QueryUtility';
-import Enzyme from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('QueryUtility', () => {
     describe('currentQuery', () => {
@@ -94,7 +95,7 @@ describe('QueryUtility', () => {
         });
 
         it('builds a new query string from null incoming object', () => {
-            let newQuery = buildQuery(null, true);
+            let newQuery = buildQuery(null!, true);
             expect(newQuery).toBe('');
         });
 

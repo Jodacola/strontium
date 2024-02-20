@@ -7,7 +7,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _urlNavEnabled: boolean;
     private _navigateOnQueryChange: boolean;
     private _appTitle: string;
-    private _navHandlers: INavigationHandler[] = null;
+    private _navHandlers: INavigationHandler[];
     private _appReady: () => void;
     private _appInitFailed: () => void;
     private _appInitializing: () => void;
@@ -15,7 +15,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _footerElement: React.ReactNode | React.ReactNode[];
     private _headerElement: React.ReactNode | React.ReactNode[];
     private _viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
-    private _internalRenderer: (element: React.ReactElement<any>) => void;
+    private _internalRenderer?: (element: React.ReactElement<any>) => void;
 
     constructor(options: {
         defaultLocation: string,
@@ -90,7 +90,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     }
 
     public navigationHandlers(): INavigationHandler[] {
-        return this._navHandlers || [];
+        return this._navHandlers ?? [];
     }
 
     public appTitle(): string {
@@ -114,6 +114,6 @@ export default class StrontiumUiConfig implements IUiInitializer {
     }
 
     public internalRenderer(): (element: React.ReactElement<any>) => void {
-        return this._internalRenderer;
+        return this._internalRenderer!;
     }
 }

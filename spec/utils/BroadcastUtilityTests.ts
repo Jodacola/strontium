@@ -1,9 +1,10 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { broadcast } from "../../lib/utils/BroadcastUtility";
 import { setupRuntime } from "../test_utils/UiUtils";
 import { runtime } from "../../lib/lib";
-import Enzyme from "enzyme";
-import Adapter from 'enzyme-adapter-react-16';
-Enzyme.configure({ adapter: new Adapter() });
 
 describe('BroadcastUtility', () => {
     describe('broadcast', () => {

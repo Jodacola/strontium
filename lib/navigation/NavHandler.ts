@@ -5,7 +5,7 @@ import { sortedAndFilledPattern, navTargetMatchesPattern, parsePathValues } from
 import INavigationHandler from "./INavigationHandler";
 
 export default class NavHandler implements INavigationHandler {
-    private _matches: IMatchItem[] = null;
+    private _matches: IMatchItem[] = null!;
     private _route: string;
     private _title: string;
     private _builder: (data: NavigationTarget, routeValues: any) => JSX.Element;

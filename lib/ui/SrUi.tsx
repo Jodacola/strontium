@@ -11,22 +11,22 @@ import Log from "../framework/Log";
 
 export default class SrUi implements IMessageHandler {
     private overlayVisible = false;
-    private currentView: JSX.Element = null;
+    private currentView: JSX.Element = null!;
     private navigationHandlers: INavigationHandler[] = [];
-    private lastViewType: string = null;
-    private lastViewId: string = null;
-    private lastQuery: string = null;
-    private defaultLocation: string = null;
-    private basePath: string = null;
-    private rootElement: string = null;
-    private urlNavigationEnabled: boolean;
-    private appTitle: string;
-    private configurer: IUiInitializer;
+    private lastViewType: string = null!;
+    private lastViewId: string = null!;
+    private lastQuery: string = null!;
+    private defaultLocation: string = null!;
+    private basePath: string = null!;
+    private rootElement: string = null!;
+    private urlNavigationEnabled: boolean = null!;
+    private appTitle: string = undefined!;
+    private configurer: IUiInitializer = undefined!;
     private footerElement: React.ReactNode | React.ReactNode[];
     private headerElement: React.ReactNode | React.ReactNode[];
     private containerElement: React.ReactNode;
-    private viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any>;
-    private renderer: (element: React.ReactElement<any>) => void = undefined;
+    private viewRenderer: (view: React.ReactNode, headerElement: React.ReactNode | React.ReactNode[], footerElement: React.ReactNode | React.ReactNode[]) => React.ReactElement<any> = undefined!;
+    private renderer: (element: React.ReactElement<any>) => void = undefined!;
     private _initialized: boolean = false;
 
     public initialize(uiInit: IUiInitializer): void {
@@ -39,7 +39,7 @@ export default class SrUi implements IMessageHandler {
                 return;
             }
             Log.t(this, "State popped");
-            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null!, true);
         };
 
         this.configureUi(uiInit);
@@ -80,7 +80,7 @@ export default class SrUi implements IMessageHandler {
         this.viewRenderer = uiInit.viewRenderer();
         this.footerElement = uiInit.footerElement();
         this.containerElement = uiInit.containerElement();
-        this.renderer = uiInit.internalRenderer();
+        this.renderer = uiInit.internalRenderer()!;
         runtime.messaging.registerHandler(this);
     }
 
@@ -97,7 +97,7 @@ export default class SrUi implements IMessageHandler {
     }
 
     private loadCurrentUrl() {
-        this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
+        this.onAppLocationChanged(this.getCurrentLocation(false), null, null!, true);
     }
 
     private getCurrentLocation(replacePrefix: boolean = true): string {
@@ -141,8 +141,8 @@ export default class SrUi implements IMessageHandler {
             return;
         }
 
-        var view: JSX.Element = null;
-        var viewType: string = null, viewId: string = null;
+        var view: JSX.Element = null!;
+        var viewType: string = null!, viewId: string = null!;
 
         this.navigationHandlers.forEach((h) => {
             if (h.handlesType(nav)) {
@@ -169,7 +169,7 @@ export default class SrUi implements IMessageHandler {
         let query = `?${Object.keys(nav.query || {}).sort((k1, k2) => { return k1.localeCompare(k2); }).map((k) => { return `${k}=${nav.query[k]}`; }).join("&")}}`;
 
         if (viewType === this.lastViewType && viewId !== this.lastViewId) {
-            this.performNavigationChange(title, view, nav.original, fromPopOrManual);
+            this.performNavigationChange(title!, view, nav.original, fromPopOrManual);
             this.setLastViewInfo(viewType, viewId, query);
             return;
         }
@@ -185,7 +185,7 @@ export default class SrUi implements IMessageHandler {
         }
 
         this.setLastViewInfo(viewType, viewId, query);
-        this.performNavigationChange(title, view, nav.original, fromPopOrManual, newQuery);
+        this.performNavigationChange(title!, view, nav.original, fromPopOrManual, newQuery);
     }
 
     private setLastViewInfo(type: string, id: string, query: string) {
@@ -200,7 +200,7 @@ export default class SrUi implements IMessageHandler {
             history.pushState({}, document.title, window.location.pathname + "?" + query);
         }
         if (this.configurer.navigateOnQueryChange()) {
-            this.onAppLocationChanged(this.getCurrentLocation(false), null, null, true);
+            this.onAppLocationChanged(this.getCurrentLocation(false), null, null!, true);
         }
     }
 

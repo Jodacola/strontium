@@ -4,17 +4,17 @@ import { runtime } from "./SrApp";
 import StrontiumAppConfig from "../config/StrontiumAppConfig";
 import ConfigElementTypes from "../config/ConfigElementTypes";
 
-export interface IStrontiumAppProps {
+export type IStrontiumAppProps = {
     environment?: string,
     errorReporter?: IErrorReporter,
     onPreInit?: () => void,
     onPostInit?: () => void
-}
+} & React.PropsWithChildren;
 
 export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}> {
     private _awaitingConfigTypes: { [key: string]: number } = {};
     private _configuredTypes: { [key: string]: any } = {};
-    private _configTimeoutHandler: number = null;
+    private _configTimeoutHandler: number = null!;
 
     render(): React.ReactNode {
         return React.Children.map(this.props.children, (child, index) => {
@@ -32,7 +32,7 @@ export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}
     registerValidChild(child): boolean {
         if (React.isValidElement(child)) {
             let props = child.props;
-            let type = props['srConfigElementType'] as ConfigElementTypes;
+            let type = props!['srConfigElementType'] as ConfigElementTypes;
             if (typeof type !== 'undefined') {
                 if (!this._awaitingConfigTypes[ConfigElementTypes[type]]) {
                     this._awaitingConfigTypes[ConfigElementTypes[type]] = 1;
@@ -86,14 +86,14 @@ export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}
     finalizeConfiguration() {
         let cfg = new StrontiumAppConfig(
             {
-                environment: this.props.environment,
+                environment: this.props.environment!,
                 logConfig: this.getConfiguredType(ConfigElementTypes.Logger),
                 errorReporter: this.props.errorReporter,
                 apiConnections: this.getConfiguredType(ConfigElementTypes.Api),
                 uiInitializer: this.getConfiguredType(ConfigElementTypes.Ui),
                 services: this.getConfiguredType(ConfigElementTypes.Services),
-                preInit: this.props.onPreInit,
-                postInit: this.props.onPostInit
+                preInit: this.props.onPreInit!,
+                postInit: this.props.onPostInit!
             });
         runtime.initialize(cfg);
     }

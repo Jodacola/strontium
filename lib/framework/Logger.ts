@@ -9,7 +9,7 @@ export default class Logger {
     public static getLogger(): Logger {
         if (!this._logger) {
             if (this.runtimeReady()) {
-                this._logger = new Logger(runtime.config.loggingLevel, runtime.config.logFilter, runtime.config.errorReporter());
+                this._logger = new Logger(runtime.config.loggingLevel, runtime.config.logFilter, runtime.config.errorReporter()!);
             } else {
                 return new Logger(LogLevel.Error);
             }
@@ -104,7 +104,7 @@ export default class Logger {
             return;
         }
 
-        var err: Error = null;
+        var err: Error = null!;
         if (data != null && data.exception != null && data.exception instanceof Error) {
             err = data.exception;
         } else if (data != null && data instanceof Error) {
@@ -113,7 +113,7 @@ export default class Logger {
             err = new Error();
         }
 
-        this.reporter.report([context, msg].filter(m => !!m).join(' - '), err, data || {});
+        this.reporter.report([context, msg].filter(m => !!m).join(' - '), err!, data || {});
     }
 
     private shouldLog(level: LogLevel, context: string) {

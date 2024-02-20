@@ -2,11 +2,12 @@
   "compilerOptions": {
     "noImplicitAny": false,
     "noEmitOnError": true,
-    "allowSyntheticDefaultImports": false,
+    "allowSyntheticDefaultImports": true,
     "removeComments": false,
     "outDir": "./dist",
     "sourceMap": true,
     "target": "es6",
+    "strict": true,
     "declaration": true,
     "declarationDir": "./dist",
     "moduleResolution": "node",

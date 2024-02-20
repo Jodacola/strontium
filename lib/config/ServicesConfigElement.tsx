@@ -1,7 +1,7 @@
 import StrontiumAppConfigElement, { IConfigElement } from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
 import IAppService from "../framework/IAppService";
-import * as React from "react";
+import React from "react";
 
 export interface IServicesConfig extends IConfigElement {
 }

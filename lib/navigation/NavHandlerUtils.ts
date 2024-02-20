@@ -28,7 +28,7 @@ export function parseMatches(format: string): IMatchItem[] {
 export function parseMatch(item: string, index: number): IMatchItem {
     if (item.startsWith(":")) {
         let id: string = item.substr(1);
-        let fmt: string = null;
+        let fmt: string = null!;
         if (id.startsWith("[int]")) {
             fmt = "int";
             id = id.substr(5);
@@ -36,7 +36,7 @@ export function parseMatch(item: string, index: number): IMatchItem {
         return presentMatch(index, id, fmt);
     } else if (item.startsWith("?")) {
         let id: string = item.substr(1);
-        let fmt: string = null;
+        let fmt: string = null!;
         if (id.startsWith("[int]")) {
             fmt = "int";
             id = id.substr(5);
@@ -47,19 +47,19 @@ export function parseMatch(item: string, index: number): IMatchItem {
     }
 }
 
-export function exactMatch(position: number, value: string, format: string = null): IMatchItem {
+export function exactMatch(position: number, value: string, format: string = null!): IMatchItem {
     return newMatch(position, MatchByTypes.Exact, value, format);
 }
 
-export function presentMatch(position: number, value: string = null, format: string = null): IMatchItem {
+export function presentMatch(position: number, value: string = null!, format: string = null!): IMatchItem {
     return newMatch(position, MatchByTypes.Present, value, format);
 }
 
-export function optionalMatch(position: number, value: string = null, format: string = null): IMatchItem {
+export function optionalMatch(position: number, value: string = null!, format: string = null!): IMatchItem {
     return newMatch(position, MatchByTypes.Optional, value, format);
 }
 
-export function newMatch(position: number, type: MatchByTypes, value: string = null, format: string = null): IMatchItem {
+export function newMatch(position: number, type: MatchByTypes, value: string = null!, format: string = null!): IMatchItem {
     return { position: position, matchBy: type, value: value, parseFormat: format };
 }
 
@@ -91,7 +91,7 @@ export function checkNumericMatch(segment: string, match: IMatchItem): boolean {
 
 export function sortedAndFilledPattern(newMatches: IMatchItem[]): IMatchItem[] {
     newMatches = newMatches.sort((a, b) => { return a.position - b.position });
-    const finalMatches = [];
+    const finalMatches: IMatchItem[] = [];
     let lastIndex = -1;
     newMatches.forEach((m) => {
         if (m.position !== lastIndex + 1) {
@@ -123,7 +123,7 @@ export function cleanPath(path: string, basePath: string) {
 
 export function splitPathAndQuery(path: string): { path: string, query: string } {
     const queryIdx = path.indexOf("?");
-    let query: string = null;
+    let query: string = null!;
     if (queryIdx !== -1) {
         query = path.substr(queryIdx + 1);
         path = path.substr(0, path.length - (path.length - queryIdx));
@@ -171,12 +171,12 @@ export function maxPatternIndex(pattern: IMatchItem[], withOptionals: boolean = 
             return p.matchBy !== MatchByTypes.Optional;
         });
 
-        let nonOptional = filteredPatterns.reduce(maxPatternReduce, null);
+        let nonOptional = filteredPatterns.reduce(maxPatternReduce, null!);
 
         return (nonOptional ? nonOptional.position : -1);
     }
 
-    const optional = pattern.reduce(maxPatternReduce, null);
+    const optional = pattern.reduce(maxPatternReduce, null!);
 
     return optional.position;
 }

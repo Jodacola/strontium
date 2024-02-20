@@ -9,14 +9,14 @@ import LogLevel from "../framework/LogLevel";
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter: IErrorReporter;
     private _uiInitializer: IUiInitializer;
-    private _preInit: () => void;
-    private _postInit: () => void;
+    private _preInit?: () => void;
+    private _postInit?: () => void;
     private _services: IAppService[];
 
     constructor(options: {
         environment: string,
         logConfig: ILoggerConfig,
-        errorReporter: IErrorReporter,
+        errorReporter?: IErrorReporter,
         apiConnections: IApiConnection[],
         uiInitializer: IUiInitializer,
         services: IAppService[],
@@ -27,7 +27,7 @@ export default class StrontiumAppConfig extends SrAppConfig {
         options.logConfig = this.defaultLogConfig(options.logConfig);
         this.loggingLevel = this.getLoggingLevel(options.environment, options.logConfig);
         this.logFilter = this.getLogFilters(options.logConfig);
-        this._errorReporter = this.errorReporterOrDefault(options.errorReporter);
+        this._errorReporter = this.errorReporterOrDefault(options.errorReporter!);
         this.apiConnections = options.apiConnections;
         this._uiInitializer = options.uiInitializer;
         this._services = options.services;
@@ -48,10 +48,10 @@ export default class StrontiumAppConfig extends SrAppConfig {
     }
 
     private errorReporterOrDefault(reporter: IErrorReporter): IErrorReporter {
-        return reporter || {
+        return reporter ?? {
             report: (message: string, error: Error, data: any): void => {
                 console.error(`Strontium error: ${message}`);
-                console.error(Error);
+                console.error(error);
                 if (data) {
                     console.error(data);
                 }

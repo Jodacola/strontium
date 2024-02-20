@@ -32,7 +32,7 @@ export const buildQuery = (obj: object, exclusive: boolean = false, encodeCompon
     obj = obj || {};
     Object.keys(obj).forEach(k => current[k] = obj[k]);
 
-    let finalParts = [];
+    let finalParts : string[] = [];
     Object.keys(current).forEach(k => {
         let value = current[k];
         if (value) {

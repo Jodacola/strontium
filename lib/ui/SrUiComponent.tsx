@@ -6,8 +6,8 @@ import SrAppMessage from "../messaging/SrAppMessage";
 import { runtime } from "../framework/SrApp";
 
 export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
-    private stateHelpers: SrComponentStateHelpers<P, S> = new SrComponentStateHelpers<P, S>(this);
-    private resizeListener: EventListener = null;
+    private stateHelpers?: SrComponentStateHelpers<P, S> = new SrComponentStateHelpers<P, S>(this);
+    private resizeListener: EventListener = null!;
     private componentMounted = false;
     private deferHandlers: { [id: string]: number } = {};
     private refHandlers: { [id: string]: (ref: any) => void } = {};
@@ -20,7 +20,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
 
     /* Reference helpers */
 
-    protected setRef<TRef>(key: string, callback: (ref: TRef) => void = undefined): (ref: TRef) => void {
+    protected setRef<TRef>(key: string, callback: (ref: TRef) => void = undefined!): (ref: TRef) => void {
         if (!this.refHandlers[key]) {
             this.refHandlers[key] = (ref) => this.assignRef(key, ref, callback);
         }
@@ -28,7 +28,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
         return this.refHandlers[key];
     }
 
-    private assignRef<TRef>(key: string, ref: any, callback: (ref: TRef) => void = undefined) {
+    private assignRef<TRef>(key: string, ref: any, callback: (ref: TRef) => void = undefined!) {
         Log.t(this, "Assigning ref", { key, refPresent: !!ref });
         if (this.refHandlers && this.refHandlers[key]) {
             this.refHandles[key] = ref;
@@ -50,14 +50,14 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
 
     /* IMessageHandler Implementation Details */
 
-    handles(): string[] {
+    handles(): string[]{
         var handles = this.getHandles();
         Log.t(this, "Returning handler registrations", { handles: handles });
-        return handles;
+        return handles!;
     }
 
     protected getHandles(): string[] {
-        return null;
+        return null!;
     }
 
     receiveMessage(msg: SrAppMessage): void {
@@ -117,10 +117,10 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     };
 
     private cleanUp(): void {
-        this.stateHelpers = null;
-        this.deferHandlers = null;
-        this.refHandlers = null;
-        this.refHandles = null;
+        this.stateHelpers = null!;
+        this.deferHandlers = null!;
+        this.refHandlers = null!;
+        this.refHandles = null!;
         this.onCleanUp();
     };
 
@@ -152,19 +152,19 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
 
     /* Window Resizing */
     protected resizeCallback(): () => void {
-        return null;
+        return null!;
     };
 
     protected registerResizeHandler(): void {
         this.unregisterResizeHandler();
 
-        var rc: () => void = this.resizeCallback();
+        var rc = this.resizeCallback();
         if (!rc) {
             return;
         }
 
         this.resizeListener = (e: Event) => {
-            rc();
+            rc?.();
         };
 
         window.addEventListener("resize", this.resizeListener, true);
@@ -173,12 +173,12 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     protected unregisterResizeHandler(): void {
         if (this.resizeListener) {
             window.removeEventListener("resize", this.resizeListener, true);
-            this.resizeListener = null;
+            this.resizeListener = null!;
         }
     };
 
     /* Utility Functions */
-    protected deferred(func: Function, time: number = 0, id: string = null) {
+    protected deferred(func: Function, time: number = 0, id: string) {
         this.cancelDeferred(id);
 
         var handle = window.setTimeout(() => {
@@ -199,6 +199,10 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     protected cancelDeferred(id: string) {
         if (id && this.deferHandlers[id]) {
             clearTimeout(this.deferHandlers[id]);
+        }
+
+        if (!id) {
+            return;
         }
 
         delete this.deferHandlers[id];
@@ -222,20 +226,20 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
      * Helper wrapper that calls [[SrComponentStateHelpers]] setAsync(state).
      */
     protected setAsync(state: S): Promise<S> {
-        return this.stateHelpers?.setAsync(state);
+        return this.stateHelpers?.setAsync(state)!;
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] setPartialAsync(state).
      */
     protected async setPartialAsync(obj: Partial<S>) {
-        return this.stateHelpers?.setPartialAsync(obj);
+        return this.stateHelpers?.setPartialAsync(obj)!;
     }
 
     /**
      * Helper wrapper that calls [[SrComponentStateHelpers]] copyState().
      */
     protected copyState(): S {
-        return this.stateHelpers?.copyState();
+        return this.stateHelpers?.copyState()!;
     }
 }
