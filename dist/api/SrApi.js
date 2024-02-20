@@ -6,7 +6,6 @@ import CommonMessages from "../messaging/CommonMessages";
 export default class SrApi {
     constructor(messaging) {
         this._initialized = false;
-        this._connection = null;
         this._pendingRequests = {};
         this._messaging = messaging;
     }
@@ -21,7 +20,7 @@ export default class SrApi {
     checkConnection(conn) {
         if (!conn) {
             Log.w(this, "Invalid API connection supplied.  Cannot initialize API.  Proceeding without API.");
-            this._messaging.broadcast(CommonMessages.ApiInitialized, true, { connection: conn.name || 'default' });
+            this._messaging.broadcast(CommonMessages.ApiInitialized, true, { connection: 'default' });
             return false;
         }
         return true;
@@ -39,12 +38,13 @@ export default class SrApi {
         conn.onServerMessage = resp => this.handleDirectMessage(resp);
     }
     connected() {
+        var _a;
         if (!this._initialized) {
             return false;
         }
-        return this._connection.connected();
+        return ((_a = this._connection) === null || _a === void 0 ? void 0 : _a.connected()) === true;
     }
-    sendMessage(type, action, content, options, manualCb = null) {
+    sendMessage(type, action, content, options, manualCb) {
         if (!this.connected()) {
             Log.e(this, "Attempt to send message against unconnected service", { action: action, content: content });
             return;
@@ -54,11 +54,12 @@ export default class SrApi {
         return req.requestId;
     }
     sendRequest(req) {
+        var _a;
         if (req.requestId == null) {
             req.requestId = SrStats.start();
         }
         this._pendingRequests[req.requestId] = req;
-        this._connection.sendRequest(req);
+        (_a = this._connection) === null || _a === void 0 ? void 0 : _a.sendRequest(req);
     }
     handleResponse(resp) {
         Log.d(this, "API Response", { response: resp });

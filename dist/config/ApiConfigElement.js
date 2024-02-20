@@ -1,13 +1,16 @@
 import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
-export default class ApiConfigElement extends StrontiumAppConfigElement {
+class ApiConfigElement extends StrontiumAppConfigElement {
     config() {
         let conn = this.props.connection;
-        conn.name = this.props.name;
+        if (conn) {
+            conn.name = this.props.name;
+        }
         return conn;
     }
 }
 ApiConfigElement.defaultProps = {
     srConfigElementType: ConfigElementTypes.Api
 };
+export default ApiConfigElement;
 //# sourceMappingURL=ApiConfigElement.js.map

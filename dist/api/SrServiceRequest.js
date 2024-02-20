@@ -5,6 +5,7 @@ export default class SrServiceRequest {
         this.content = content;
         this.options = options;
         this.callbackHandler = callbackHandler;
+        this.requestId = null;
     }
 }
 //# sourceMappingURL=SrServiceRequest.js.map

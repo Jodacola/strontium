@@ -4,13 +4,13 @@ export interface UiElementProps {
 }
 export declare class HeaderElement extends React.Component<UiElementProps, {}> {
     static defaultProps: UiElementProps;
-    render(): any;
+    render(): null;
 }
 export declare class FooterElement extends React.Component<UiElementProps, {}> {
     static defaultProps: UiElementProps;
-    render(): any;
+    render(): null;
 }
 export declare class ContainerElement extends React.Component<UiElementProps, {}> {
     static defaultProps: UiElementProps;
-    render(): any;
+    render(): null;
 }

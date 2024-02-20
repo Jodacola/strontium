@@ -3,7 +3,7 @@ import ConfigElementTypes from "./ConfigElementTypes";
 import StrontiumUiConfig from "./StrontiumUiConfig";
 import NavHandler from "../navigation/NavHandler";
 import * as React from "react";
-export default class UiConfig extends StrontiumAppConfigElement {
+class UiConfig extends StrontiumAppConfigElement {
     config() {
         return new StrontiumUiConfig({
             defaultLocation: this.props.defaultLocation,
@@ -54,4 +54,5 @@ export default class UiConfig extends StrontiumAppConfigElement {
 UiConfig.defaultProps = {
     srConfigElementType: ConfigElementTypes.Ui
 };
+export default UiConfig;
 //# sourceMappingURL=UiConfigElement.js.map

@@ -1,12 +1,12 @@
 import * as React from "react";
 import IErrorReporter from "../config/IErrorReporter";
 import ConfigElementTypes from "../config/ConfigElementTypes";
-export interface IStrontiumAppProps {
+export type IStrontiumAppProps = {
     environment?: string;
     errorReporter?: IErrorReporter;
     onPreInit?: () => void;
     onPostInit?: () => void;
-}
+} & React.PropsWithChildren;
 export default class StrontiumApp extends React.Component<IStrontiumAppProps, {}> {
     private _awaitingConfigTypes;
     private _configuredTypes;

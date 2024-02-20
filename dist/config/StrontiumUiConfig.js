@@ -1,6 +1,5 @@
 export default class StrontiumUiConfig {
     constructor(options) {
-        this._navHandlers = null;
         this._defaultLocation = options.defaultLocation;
         this._basePath = options.basePath;
         this._rootElement = options.rootElement;
@@ -48,7 +47,8 @@ export default class StrontiumUiConfig {
         }
     }
     navigationHandlers() {
-        return this._navHandlers || [];
+        var _a;
+        return (_a = this._navHandlers) !== null && _a !== void 0 ? _a : [];
     }
     appTitle() {
         return this._appTitle;

@@ -2,11 +2,6 @@ import { runtime } from "./SrApp";
 import { stringify } from "circular-json";
 import LogLevel from "./LogLevel";
 export default class Logger {
-    constructor(level, logFilter, reporter) {
-        this.level = level;
-        this.logFilter = logFilter;
-        this.reporter = reporter;
-    }
     static getLogger() {
         if (!this._logger) {
             if (this.runtimeReady()) {
@@ -20,6 +15,11 @@ export default class Logger {
     }
     static runtimeReady() {
         return (!!runtime && !!runtime.config && runtime.config.loggingLevel != null && !!runtime.config.errorReporter);
+    }
+    constructor(level, logFilter, reporter) {
+        this.level = level;
+        this.logFilter = logFilter;
+        this.reporter = reporter;
     }
     error(ctx, msg, data = null) {
         this.e(ctx, msg, data);

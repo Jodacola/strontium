@@ -24,6 +24,10 @@ export default class SrUi {
         this.defaultLocation = null;
         this.basePath = null;
         this.rootElement = null;
+        this.urlNavigationEnabled = null;
+        this.appTitle = undefined;
+        this.configurer = undefined;
+        this.viewRenderer = undefined;
         this.renderer = undefined;
         this._initialized = false;
     }

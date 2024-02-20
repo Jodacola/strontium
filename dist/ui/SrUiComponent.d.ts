@@ -2,7 +2,7 @@ import * as React from "react";
 import IMessageHandler from "../messaging/IMessageHandler";
 import SrAppMessage from "../messaging/SrAppMessage";
 export default abstract class SrUiComponent<P, S> extends React.Component<P, S> implements IMessageHandler {
-    private stateHelpers;
+    private stateHelpers?;
     private resizeListener;
     private componentMounted;
     private deferHandlers;
@@ -40,7 +40,7 @@ export default abstract class SrUiComponent<P, S> extends React.Component<P, S> 
     protected resizeCallback(): () => void;
     protected registerResizeHandler(): void;
     protected unregisterResizeHandler(): void;
-    protected deferred(func: Function, time?: number, id?: string): void;
+    protected deferred(func: Function, time: number | undefined, id: string): void;
     protected cancelAllDeferrals(): void;
     protected cancelDeferred(id: string): void;
     /**

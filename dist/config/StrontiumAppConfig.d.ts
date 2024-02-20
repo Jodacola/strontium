@@ -7,13 +7,13 @@ import { IApiConnection } from "../lib";
 export default class StrontiumAppConfig extends SrAppConfig {
     private _errorReporter;
     private _uiInitializer;
-    private _preInit;
-    private _postInit;
+    private _preInit?;
+    private _postInit?;
     private _services;
     constructor(options: {
         environment: string;
         logConfig: ILoggerConfig;
-        errorReporter: IErrorReporter;
+        errorReporter?: IErrorReporter;
         apiConnections: IApiConnection[];
         uiInitializer: IUiInitializer;
         services: IAppService[];

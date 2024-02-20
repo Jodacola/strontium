@@ -2,12 +2,12 @@ import LogLevel from "./LogLevel";
 import IErrorReporter from "../config/IErrorReporter";
 export default class Logger {
     level: LogLevel;
-    logFilter?: string[];
-    reporter?: IErrorReporter;
+    logFilter?: string[] | undefined;
+    reporter?: IErrorReporter | undefined;
     private static _logger;
     static getLogger(): Logger;
     private static runtimeReady;
-    constructor(level: LogLevel, logFilter?: string[], reporter?: IErrorReporter);
+    constructor(level: LogLevel, logFilter?: string[] | undefined, reporter?: IErrorReporter | undefined);
     error(ctx: any, msg: string, data?: any): void;
     e(ctx: any, msg: string, data?: any): void;
     warn(ctx: any, msg: string, data?: any): void;

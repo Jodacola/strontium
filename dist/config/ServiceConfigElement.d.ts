@@ -5,5 +5,5 @@ export interface IServiceConfig {
     service: IAppService;
 }
 export default class RouteConfig extends React.Component<IServiceConfig, {}> {
-    render(): any;
+    render(): null;
 }

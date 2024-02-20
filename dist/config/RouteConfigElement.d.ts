@@ -6,5 +6,5 @@ export interface IRouteConfig {
     view: (data: NavigationTarget, parsed: any) => JSX.Element;
 }
 export default class RouteConfig extends React.Component<IRouteConfig, {}> {
-    render(): any;
+    render(): null;
 }

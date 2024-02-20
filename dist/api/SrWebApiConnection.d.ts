@@ -24,8 +24,8 @@ export default class WebApiConnection implements IApiConnection {
     protected handleResponse(response: string, req: SrServiceRequest): void;
     protected handleError(error: any, req: SrServiceRequest): void;
     connected(): boolean;
-    onResponse: (resp: SrServiceResponse) => void;
-    onFailedRequest: (req: SrServiceRequest, error: any[]) => void;
-    onServerMessage: (resp: SrServiceResponse) => void;
+    onResponse?: (resp: SrServiceResponse) => void;
+    onFailedRequest?: (req: SrServiceRequest, error: any[]) => void;
+    onServerMessage?: (resp: SrServiceResponse) => void;
 }
 export {};

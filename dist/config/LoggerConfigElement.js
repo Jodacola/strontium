@@ -1,6 +1,6 @@
 import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
-export default class LoggerConfig extends StrontiumAppConfigElement {
+class LoggerConfig extends StrontiumAppConfigElement {
     config() {
         return { loggingLevel: this.props.loggingLevel, logExclusions: this.props.logExclusions };
     }
@@ -8,4 +8,5 @@ export default class LoggerConfig extends StrontiumAppConfigElement {
 LoggerConfig.defaultProps = {
     srConfigElementType: ConfigElementTypes.Logger
 };
+export default LoggerConfig;
 //# sourceMappingURL=LoggerConfigElement.js.map

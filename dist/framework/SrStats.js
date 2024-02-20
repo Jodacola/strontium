@@ -1,6 +1,6 @@
 import Log from "./Log";
 import * as uuid from "uuid";
-export default class Stats {
+class Stats {
     static start(token) {
         token = token || uuid.v4();
         this.pendingTimings[token] = new Date().getTime();
@@ -24,4 +24,5 @@ export default class Stats {
     }
 }
 Stats.pendingTimings = {};
+export default Stats;
 //# sourceMappingURL=SrStats.js.map

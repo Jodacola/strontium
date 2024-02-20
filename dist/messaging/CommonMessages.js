@@ -1,4 +1,4 @@
-export default class CommonMessages {
+class CommonMessages {
 }
 CommonMessages.ApiInitialized = "Strontium.CommonMessages.ApiInitialized";
 CommonMessages.ApiInitializationFailed = "Strontium.CommonMessages.ApiInitializationFailied";
@@ -8,4 +8,5 @@ CommonMessages.RemoteOriginatedMessage = "Strontium.CommonMessages.RemoteOrigina
 CommonMessages.AppInitialized = "Strontium.CommonMessages.AppInitialized";
 CommonMessages.AppReady = "Strontium.CommonMessages.AppReady";
 CommonMessages.AppLaunch = "Strontium.CommonMessages.AppLaunch";
+export default CommonMessages;
 //# sourceMappingURL=CommonMessages.js.map

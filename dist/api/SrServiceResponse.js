@@ -1,5 +1,10 @@
 export default class SrServiceResponse {
     constructor(fromReq) {
+        this.requestId = undefined;
+        this.action = undefined;
+        this.good = undefined;
+        this.errors = undefined;
+        this.data = undefined;
         if (fromReq) {
             this.requestId = fromReq.requestId;
             this.action = fromReq.action;

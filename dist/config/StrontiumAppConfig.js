@@ -24,10 +24,10 @@ export default class StrontiumAppConfig extends SrAppConfig {
         return config.logExclusions || [];
     }
     errorReporterOrDefault(reporter) {
-        return reporter || {
+        return reporter !== null && reporter !== void 0 ? reporter : {
             report: (message, error, data) => {
                 console.error(`Strontium error: ${message}`);
-                console.error(Error);
+                console.error(error);
                 if (data) {
                     console.error(data);
                 }

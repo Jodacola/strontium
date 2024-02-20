@@ -147,7 +147,7 @@ export default class SrUiComponent extends React.Component {
             return;
         }
         this.resizeListener = (e) => {
-            rc();
+            rc === null || rc === void 0 ? void 0 : rc();
         };
         window.addEventListener("resize", this.resizeListener, true);
     }
@@ -160,7 +160,7 @@ export default class SrUiComponent extends React.Component {
     }
     ;
     /* Utility Functions */
-    deferred(func, time = 0, id = null) {
+    deferred(func, time = 0, id) {
         this.cancelDeferred(id);
         var handle = window.setTimeout(() => {
             func();
@@ -178,6 +178,9 @@ export default class SrUiComponent extends React.Component {
     cancelDeferred(id) {
         if (id && this.deferHandlers[id]) {
             clearTimeout(this.deferHandlers[id]);
+        }
+        if (!id) {
+            return;
         }
         delete this.deferHandlers[id];
     }

@@ -7,7 +7,12 @@ import SrServiceContainer from "./SrServiceContainer";
 import ApiContainer from "../api/ApiContainer";
 export class SrApp {
     constructor() {
+        this.config = undefined;
+        this.messaging = undefined;
+        this.ui = undefined;
         this.services = new SrServiceContainer();
+        this.apis = undefined;
+        this.initialized = false;
     }
     initialize(config) {
         if (this.initialized) {

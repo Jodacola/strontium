@@ -8,7 +8,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static create(resource, data = null, options = null, handler = null) {
+    static create(resource, data = null, options = null, handler) {
         return this.sendRequest('default', RequestType.Create, resource, data, options, handler);
     }
     ;
@@ -19,7 +19,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static read(resource, data = null, options = null, handler = null) {
+    static read(resource, data = null, options = null, handler) {
         return this.sendRequest('default', RequestType.Read, resource, data, options, handler);
     }
     ;
@@ -30,7 +30,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static update(resource, data = null, options = null, handler = null) {
+    static update(resource, data = null, options = null, handler) {
         return this.sendRequest('default', RequestType.Update, resource, data, options, handler);
     }
     ;
@@ -41,7 +41,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static delete(resource, data = null, options = null, handler = null) {
+    static delete(resource, data = null, options = null, handler) {
         return this.sendRequest('default', RequestType.Delete, resource, data, options, handler);
     }
     ;
@@ -53,7 +53,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static createTo(api, resource, data = null, options = null, handler = null) {
+    static createTo(api, resource, data = null, options = null, handler) {
         return this.sendRequest(api, RequestType.Create, resource, data, options, handler);
     }
     ;
@@ -65,7 +65,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static readFrom(api, resource, data = null, options = null, handler = null) {
+    static readFrom(api, resource, data = null, options = null, handler) {
         return this.sendRequest(api, RequestType.Read, resource, data, options, handler);
     }
     ;
@@ -77,7 +77,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static updateTo(api, resource, data = null, options = null, handler = null) {
+    static updateTo(api, resource, data = null, options = null, handler) {
         return this.sendRequest(api, RequestType.Update, resource, data, options, handler);
     }
     ;
@@ -89,7 +89,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static deleteFrom(api, resource, data = null, options = null, handler = null) {
+    static deleteFrom(api, resource, data = null, options = null, handler) {
         return this.sendRequest(api, RequestType.Delete, resource, data, options, handler);
     }
     ;
@@ -102,7 +102,7 @@ export default class ApiHelpers {
      * @param options
      * @param handler
      */
-    static sendRequest(api, type, resource, data = null, options = null, handler = null) {
+    static sendRequest(api, type, resource, data = null, options = null, handler) {
         return new Promise(resolve => {
             let targetApi = runtime.apis.get(api);
             targetApi.sendMessage(type, resource, data, options, (r) => {

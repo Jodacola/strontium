@@ -1,7 +1,7 @@
 import StrontiumAppConfigElement from "./StrontiumAppConfigElement";
 import ConfigElementTypes from "./ConfigElementTypes";
-import * as React from "react";
-export default class ServicesConfigElement extends StrontiumAppConfigElement {
+import React from "react";
+class ServicesConfigElement extends StrontiumAppConfigElement {
     config() {
         return this.services();
     }
@@ -21,4 +21,5 @@ export default class ServicesConfigElement extends StrontiumAppConfigElement {
 ServicesConfigElement.defaultProps = {
     srConfigElementType: ConfigElementTypes.Services
 };
+export default ServicesConfigElement;
 //# sourceMappingURL=ServicesConfigElement.js.map

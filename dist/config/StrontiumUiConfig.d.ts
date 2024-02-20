@@ -15,7 +15,7 @@ export default class StrontiumUiConfig implements IUiInitializer {
     private _footerElement;
     private _headerElement;
     private _viewRenderer;
-    private _internalRenderer;
+    private _internalRenderer?;
     constructor(options: {
         defaultLocation: string;
         basePath: string;
